@@ -2,7 +2,7 @@
 
 import unittest
 
-from solvronix_desk import chart_config
+from sanpra_uiv16 import chart_config
 
 
 class ChartSchemaTest(unittest.TestCase):

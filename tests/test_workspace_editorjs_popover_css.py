@@ -5,9 +5,9 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CSS = ROOT / "solvronix_desk" / "public" / "css" / "solvronix_desk.css"
-JS = ROOT / "solvronix_desk" / "public" / "js" / "solvronix_desk.js"
-HOOKS = ROOT / "solvronix_desk" / "hooks.py"
+CSS = ROOT / "sanpra_uiv16" / "public" / "css" / "sanpra_uiv16.css"
+JS = ROOT / "sanpra_uiv16" / "public" / "js" / "sanpra_uiv16.js"
+HOOKS = ROOT / "sanpra_uiv16" / "hooks.py"
 
 
 class WorkspaceEditorJSPopoverCSSTest(unittest.TestCase):
@@ -39,8 +39,8 @@ class WorkspaceEditorJSPopoverCSSTest(unittest.TestCase):
     def test_workspace_css_cache_is_bumped(self):
         hooks = HOOKS.read_text(encoding="utf-8")
 
-        self.assertIn("/assets/solvronix_desk/css/solvronix_desk.css?v=65", hooks)
-        self.assertIn("/assets/solvronix_desk/js/solvronix_desk.js?v=67", hooks)
+        self.assertIn("/assets/sanpra_uiv16/css/sanpra_uiv16.css?v=65", hooks)
+        self.assertIn("/assets/sanpra_uiv16/js/sanpra_uiv16.js?v=67", hooks)
 
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-ENGINE_PATH = ROOT / "solvronix_desk" / "theme_engine.py"
+ENGINE_PATH = ROOT / "sanpra_uiv16" / "theme_engine.py"
 
 
 def load_engine():

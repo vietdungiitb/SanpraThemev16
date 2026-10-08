@@ -1,6 +1,6 @@
 # Theme Studio visual guide
 
-Theme Studio is the visual control centre for Solvronix Desk. This guide shows the complete editor, every settings group, responsive preview modes, publishing workflow, and the contextual property inspector used by the Dashboard, Form, Table, Login, Workspace, and Charts previews.
+Theme Studio is the visual control centre for Sanpra UI V16. This guide shows the complete editor, every settings group, responsive preview modes, publishing workflow, and the contextual property inspector used by the Dashboard, Form, Table, Login, Workspace, and Charts previews.
 
 Open Theme Studio from `Ctrl+K` or visit `/desk/theme-studio` as a System Manager.
 

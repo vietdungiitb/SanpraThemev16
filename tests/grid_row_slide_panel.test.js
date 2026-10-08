@@ -5,7 +5,7 @@ const test = require("node:test");
 const vm = require("node:vm");
 
 const modulePath = path.join(
-  __dirname, "..", "solvronix_desk", "public", "js", "grid_row_slide_panel.js"
+  __dirname, "..", "sanpra_uiv16", "public", "js", "grid_row_slide_panel.js"
 );
 
 function fakeJQueryElement(overrides = {}) {

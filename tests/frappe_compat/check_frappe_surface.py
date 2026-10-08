@@ -1,4 +1,4 @@
-"""List upstream Frappe changes to the files Solvronix Desk styles or hooks into.
+"""List upstream Frappe changes to the files Sanpra UI V16 styles or hooks into.
 
 Run before every release and after every Frappe update:
 
@@ -50,7 +50,7 @@ DOCK_API = {
         "dock_entry_key(entry)",
         "app_landing_route(app)",
     ],
-    # dark_mode.css pins these semantic tokens; css/solvronix_desk.css styles the solid es-button.
+    # dark_mode.css pins these semantic tokens; css/sanpra_uiv16.css styles the solid es-button.
     "frappe/public/css/espresso/colors.css": ["--ink-gray-9:", "--surface-gray-1:", "--outline-gray-1:"],
 }
 
@@ -93,7 +93,7 @@ def main(repo, old, new):
             found = True
             print(f"\n## {area}\n{log}")
     if not found:
-        print(f"No upstream changes to the Solvronix Desk surface between {old} and {new}.")
+        print(f"No upstream changes to the Sanpra UI V16 surface between {old} and {new}.")
     return 0 if check_dock_api(repo) else 1
 
 

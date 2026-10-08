@@ -6,25 +6,25 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PUBLIC = ROOT / "solvronix_desk" / "public"
+PUBLIC = ROOT / "sanpra_uiv16" / "public"
 COMPAT = PUBLIC / "js" / "frappe_compat.js"
-DESK_JS = PUBLIC / "js" / "solvronix_desk.js"
+DESK_JS = PUBLIC / "js" / "sanpra_uiv16.js"
 SIDEBAR_CSS = PUBLIC / "css" / "sidebar.css"
 DARK_CSS = PUBLIC / "css" / "dark_mode.css"
-DESK_CSS = PUBLIC / "css" / "solvronix_desk.css"
-HOOKS = ROOT / "solvronix_desk" / "hooks.py"
+DESK_CSS = PUBLIC / "css" / "sanpra_uiv16.css"
+HOOKS = ROOT / "sanpra_uiv16" / "hooks.py"
 
 
 class FrappeCompatTest(unittest.TestCase):
     def test_adapter_loads_first(self):
         """The adapter patches frappe.ui.Sidebar before Frappe builds the sidebar
-        and before solvronix_desk.js asks it anything, so it must load first."""
+        and before sanpra_uiv16.js asks it anything, so it must load first."""
         hooks = HOOKS.read_text(encoding="utf-8")
         block = hooks[hooks.index("app_include_js = ["):]
-        includes = re.findall(r'"/assets/solvronix_desk/js/([a-z_]+)\.js\?v=\d+"', block)
+        includes = re.findall(r'"/assets/sanpra_uiv16/js/([a-z_]+)\.js\?v=\d+"', block)
         self.assertEqual(includes[0], "frappe_compat")
-        self.assertIn("/assets/solvronix_desk/js/frappe_compat.js?v=2", hooks)
-        self.assertIn("/assets/solvronix_desk/css/dark_mode.css?v=17", hooks)
+        self.assertIn("/assets/sanpra_uiv16/js/frappe_compat.js?v=2", hooks)
+        self.assertIn("/assets/sanpra_uiv16/css/dark_mode.css?v=17", hooks)
 
     def test_adapter_detects_by_feature_not_version(self):
         js = COMPAT.read_text(encoding="utf-8")
@@ -34,7 +34,7 @@ class FrappeCompatTest(unittest.TestCase):
 
     def test_adapter_uses_existing_namespace(self):
         js = COMPAT.read_text(encoding="utf-8")
-        self.assertIn("window.solvronix_desk = window.solvronix_desk || {}", js)
+        self.assertIn("window.sanpra_uiv16 = window.sanpra_uiv16 || {}", js)
         self.assertNotIn("window.ST =", js)
 
     def test_dock_hidden_only_while_icon_rail_is_on(self):

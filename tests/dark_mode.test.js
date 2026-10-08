@@ -4,10 +4,10 @@ const path = require("node:path");
 const test = require("node:test");
 const vm = require("node:vm");
 
-const darkModePath = path.join(__dirname, "..", "solvronix_desk", "public", "js", "dark_mode.js");
-const runtimePath = path.join(__dirname, "..", "solvronix_desk", "public", "js", "theme_runtime.js");
+const darkModePath = path.join(__dirname, "..", "sanpra_uiv16", "public", "js", "dark_mode.js");
+const runtimePath = path.join(__dirname, "..", "sanpra_uiv16", "public", "js", "theme_runtime.js");
 const studioPath = path.join(
-  __dirname, "..", "solvronix_desk", "solvronix_desk", "page", "theme_studio", "theme_studio.js"
+  __dirname, "..", "sanpra_uiv16", "sanpra_ui_v16", "page", "theme_studio", "theme_studio.js"
 );
 
 function loadDarkMode({ storedMode = null, osDark = false } = {}) {

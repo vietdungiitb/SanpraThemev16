@@ -1,12 +1,12 @@
-# Solvronix Desk
+# Sanpra UI V16
 
 > A professional white-label theme for Frappe/ERPNext v16 that makes your ERP look and feel like a modern SaaS product.
 
-[![Available on Frappe Cloud Marketplace](https://img.shields.io/badge/Frappe%20Cloud-Marketplace-0089FF)](https://cloud.frappe.io/marketplace/apps/solvronix_desk)
+[![Available on Frappe Cloud Marketplace](https://img.shields.io/badge/Frappe%20Cloud-Marketplace-0089FF)](https://cloud.frappe.io/marketplace/apps/sanpra_uiv16)
 
-**Available on Frappe Cloud Marketplace** — install Solvronix Desk on your Frappe Cloud site in one click: [cloud.frappe.io/marketplace/apps/solvronix_desk](https://cloud.frappe.io/marketplace/apps/solvronix_desk)
+**Available on Frappe Cloud Marketplace** — install Sanpra UI V16 on your Frappe Cloud site in one click: [cloud.frappe.io/marketplace/apps/sanpra_uiv16](https://cloud.frappe.io/marketplace/apps/sanpra_uiv16)
 
-![Solvronix Desk](docs/screenshots/smart-home.png)
+![Sanpra UI V16](docs/screenshots/smart-home.png)
 
 ---
 
@@ -14,7 +14,7 @@
 
 ERPNext is powerful. But the default interface is overwhelming — too many menus, outdated design, and non-technical users struggle to find anything. Businesses reject ERPNext because it "doesn't look professional" or "is too hard to use."
 
-**Solvronix Desk solves this.** Install it once and your ERPNext looks and feels like a tool people actually enjoy using — without touching a single line of your business logic.
+**Sanpra UI V16 solves this.** Install it once and your ERPNext looks and feels like a tool people actually enjoy using — without touching a single line of your business logic.
 
 ---
 
@@ -29,7 +29,7 @@ Open Theme Studio, enter your company name, upload your logo, pick your two bran
 ### Theme Studio — Visual Drag & Drop Editor
 Open **Theme Studio** from `Ctrl+K` or `/desk/theme-studio`. It is now the single user-facing home for theme settings, branding, feature toggles, and visual editing. Preview the result on dashboard, form, table, and login scenes; drag dashboard blocks into a new order; compare desktop/tablet/mobile and Frappe Default views; undo or reset changes; save a draft; then publish.
 
-Theme Studio includes Light, Dark, High Contrast, Frappe Default, Solvronix, and Forest profiles. System Managers can create, duplicate, rename, update, delete, import, export, schedule, and restore profiles. Themes can be assigned site-wide or by user, role, and company, while optional per-user profile selection and administrator locking control who can personalize the Desk.
+Theme Studio includes Light, Dark, High Contrast, Frappe Default, Sanpra, and Forest profiles. System Managers can create, duplicate, rename, update, delete, import, export, schedule, and restore profiles. Themes can be assigned site-wide or by user, role, and company, while optional per-user profile selection and administrator locking control who can personalize the Desk.
 
 Every Studio token is rendered into the real Desk and login page, including the top toolbar and actual Frappe sidebar. Publishing creates a restorable backup and refreshes connected sessions without requiring an asset rebuild.
 
@@ -60,7 +60,7 @@ See the [complete Theme Studio visual guide](docs/theme-studio.md) for every set
 Custom JavaScript is disabled by default and should only be enabled for trusted administrator-authored code. Hiding platform branding should only be used where your licensing and implementation permit it.
 
 ### Quick Color Presets
-Four one-click starting points appear in Theme Studio. Pick one and the brand and accent colors update instantly. Includes Solvronix (Navy + Orange), Forest (Green + Gold), Midnight (Slate + Violet), and Plum (Purple + Amber). Use as-is or fine-tune every token afterward.
+Four one-click starting points appear in Theme Studio. Pick one and the brand and accent colors update instantly. Includes Sanpra (Navy + Orange), Forest (Green + Gold), Midnight (Slate + Violet), and Plum (Purple + Amber). Use as-is or fine-tune every token afterward.
 
 ### Auto Color System
 You set one brand color. The system automatically generates your complete color palette — backgrounds, hover states, borders, shadows — using CSS `color-mix()`. Change your brand color and everything updates instantly. No developer needed.
@@ -114,7 +114,7 @@ Clicking the user avatar opens a dropdown with an installed apps grid, edit prof
 Press `Ctrl+M` from anywhere to open a searchable workspace switcher. Type a module name and press Enter to jump to it instantly.
 
 ### Named Theme Presets
-Save visual configurations as reusable profiles in Theme Studio. Built-in starting points (Solvronix, Forest, Midnight, Plum) make it quick to establish a base before refining the full design system.
+Save visual configurations as reusable profiles in Theme Studio. Built-in starting points (Sanpra, Forest, Midnight, Plum) make it quick to establish a base before refining the full design system.
 
 ### Real-Time Theme Sync
 When a System Manager publishes Theme Studio, color, branding, layout, and feature changes propagate to connected users through Frappe's realtime layer.
@@ -226,7 +226,7 @@ This means any company — whether their brand is navy, green, red, or black —
 | v15 | ⚠️ Not tested |
 | v14 | ❌ Not supported |
 
-Solvronix Desk tracks Frappe v16 API changes across minor releases — internal shims resolve renamed core methods automatically, so the app works on older production benches and the latest releases alike. All Desk navigation access goes through one compatibility layer (`public/js/frappe_compat.js`) that detects Frappe's navigation by feature rather than version; `tests/frappe_compat/check_frappe_surface.py` checks a new Frappe release against it before you update.
+Sanpra UI V16 tracks Frappe v16 API changes across minor releases — internal shims resolve renamed core methods automatically, so the app works on older production benches and the latest releases alike. All Desk navigation access goes through one compatibility layer (`public/js/frappe_compat.js`) that detects Frappe's navigation by feature rather than version; `tests/frappe_compat/check_frappe_surface.py` checks a new Frappe release against it before you update.
 
 Works with ERPNext and any other Frappe-based application.
 
@@ -242,24 +242,24 @@ See [LICENSE](license.txt) for full details.
 
 ---
 
-## About Solvronix
+## About Sanpra
 
-Solvronix builds Frappe/ERPNext products for businesses globally, based in Lahore, Pakistan.
+Sanpra builds Frappe/ERPNext products for businesses globally, based in Lahore, Pakistan.
 
-- Website: [solvronix.com](https://solvronix.com)
-- Email: sales@solvronix.com
+- Website: [sanpra.com](https://sanpra.com)
+- Email: sales@sanpra.com
 - WhatsApp: +92 307 9484220
 
 **Other products:**
-- [Edvronix](https://solvronix.com/edvronix) — School management system built on ERPNext. Fee collection, attendance, timetables, parent portal, and more.
+- [Sanpra](https://sanpra.com/edvronix) — School management system built on ERPNext. Fee collection, attendance, timetables, parent portal, and more.
 
 ---
 
 ## Support
 
-Something not working? Open an issue on [GitHub Issues](https://github.com/Solvronix/Solvronix-Desk/issues) or contact us directly.
+Something not working? Open an issue on [GitHub Issues](https://github.com/Sanpra/Sanpra-Desk/issues) or contact us directly.
 
-- Email: sales@solvronix.com
+- Email: sales@sanpra.com
 - WhatsApp: +92 307 9484220
 
 ---

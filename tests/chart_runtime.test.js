@@ -7,7 +7,7 @@ const vm = require("node:vm");
 const runtimePath = path.join(
   __dirname,
   "..",
-  "solvronix_desk",
+  "sanpra_uiv16",
   "public",
   "js",
   "chart_runtime.js"
@@ -82,7 +82,7 @@ function loadRuntime(options = {}) {
   };
   vm.createContext(context);
   vm.runInContext(fs.readFileSync(runtimePath, "utf8"), context);
-  return { runtime: window.solvronixChartRuntime, listeners, warnings };
+  return { runtime: window.sanpraChartRuntime, listeners, warnings };
 }
 
 function chartRoot() {

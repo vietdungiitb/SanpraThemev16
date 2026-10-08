@@ -1,4 +1,4 @@
 include MANIFEST.in
 include *.json *.md *.py *.txt
-recursive-include solvronix_desk *.css *.html *.ico *.js *.json *.md *.png *.py *.svg *.txt
-recursive-exclude solvronix_desk *.pyc
+recursive-include sanpra_uiv16 *.css *.html *.ico *.js *.json *.md *.png *.py *.svg *.txt
+recursive-exclude sanpra_uiv16 *.pyc

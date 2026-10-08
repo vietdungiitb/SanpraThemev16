@@ -7,8 +7,8 @@ const vm = require("node:vm");
 const pagePath = path.join(
   __dirname,
   "..",
-  "solvronix_desk",
-  "solvronix_desk",
+  "sanpra_uiv16",
+  "sanpra_uiv16",
   "page",
   "theme_studio",
   "theme_studio.js"
@@ -33,9 +33,9 @@ function loadThemeStudio() {
       provide() {},
       ui: { make_app_page() {} },
     },
-    solvronix_desk: {},
+    sanpra_uiv16: {},
     window: {
-      location: { origin: "https://desk.solvronix.local" },
+      location: { origin: "https://sanpra-uiv16.local" },
       matchMedia: () => ({ matches: true }),
       dispatchEvent() {},
     },
@@ -44,7 +44,7 @@ function loadThemeStudio() {
   };
   vm.createContext(context);
   vm.runInContext(fs.readFileSync(pagePath, "utf8"), context, { filename: pagePath });
-  const studio = Object.create(context.solvronix_desk.ThemeStudio.prototype);
+  const studio = Object.create(context.sanpra_uiv16.ThemeStudio.prototype);
   studio._context = context;
   studio.page_active = true;
   studio.lifecycle_generation = 1;
@@ -422,7 +422,7 @@ test("workspace chart classification takes precedence and preserves runtime iden
   const hit = workspaceTargetElement({ [workspaceTargetSelectors.card]: { name: "generic-card" } });
   const frameDocument = {
     defaultView: {
-      solvronixChartRuntime: {
+      sanpraChartRuntime: {
         describe(element) {
           assert.equal(element, hit);
           return { id: "chart-1", family: "dashboard_chart", capability: "full", element: chartElement };
@@ -457,7 +457,7 @@ test("Theme Studio pushes chart config and schema into the workspace runtime", (
   const calls = [];
   studio.$workspace_iframe = {
     length: 1,
-    0: { contentWindow: { solvronixChartRuntime: { setConfig(config, schema) { calls.push([config, schema]); } } } },
+    0: { contentWindow: { sanpraChartRuntime: { setConfig(config, schema) { calls.push([config, schema]); } } } },
   };
 
   assert.equal(studio._apply_chart_runtime_to_workspace(), true);
@@ -535,7 +535,7 @@ test("individual chart selection loads its real ERPNext preview data", () => {
 
   assert.equal(studio._select_registry_chart("chart-1"), true);
   assert.equal(requests.length, 1);
-  assert.equal(requests[0].method, "solvronix_desk.theme_api.get_chart_preview");
+  assert.equal(requests[0].method, "sanpra_uiv16.theme_api.get_chart_preview");
   assert.equal(requests[0].args.chart_id, "chart-1");
   assert.equal(studio.selected_chart_preview_data.status, "loading");
 
@@ -830,7 +830,7 @@ test("apply synchronizes every schema color control to the exact effective previ
     login_gradient_to: "--studio-login-to",
     icon_rail_background: "--studio-rail-bg", icon_rail_active_color: "--studio-rail-active",
   };
-  const definitions = studio._context.solvronix_desk.theme_studio_sections
+  const definitions = studio._context.sanpra_uiv16.theme_studio_sections
     .flatMap((section) => section.controls)
     .filter((definition) => definition[2] === "color" || definition[2] === "optional-color");
   const optionalKeys = Array.from(definitions
@@ -2333,7 +2333,7 @@ test("workspace inspector style creates one separate style and reuses it", () =>
   assert.equal(studio._install_workspace_inspector_css(frameDocument), true);
   assert.equal(styles.length, 1);
   assert.equal(inspectorStyle.id, "st-studio-workspace-inspector");
-  assert.equal(inspectorStyle.getAttribute("data-st-theme-owner"), "solvronix-desk");
+  assert.equal(inspectorStyle.getAttribute("data-st-theme-owner"), "sanpra-uiv16");
   assert.match(inspectorStyle.textContent, /\.st-theme-workspace-inspected/);
   assert.match(inspectorStyle.textContent, /outline\s*:[^;]+!important/);
   assert.match(inspectorStyle.textContent, /outline-offset\s*:[^;]+!important/);
@@ -2353,7 +2353,7 @@ test("workspace inspector style creates one separate style and reuses it", () =>
 
 test("workspace inspector style selection moves the owned rule last before highlighting", () => {
   const studio = loadThemeStudio();
-  const owner = "solvronix-desk";
+  const owner = "sanpra-uiv16";
   const attributes = { "data-st-theme-owner": owner };
   const inspectorStyle = {
     tagName: "STYLE", id: "st-studio-workspace-inspector", textContent: "stale", parentNode: null,
@@ -2400,7 +2400,7 @@ test("workspace inspector style selection moves the owned rule last before highl
 
 test("workspace inspector style reattaches an owned detached style but rejects a foreign parent", () => {
   const studio = loadThemeStudio();
-  const owner = "solvronix-desk";
+  const owner = "sanpra-uiv16";
   const makeOwnedStyle = (parentNode) => ({
     nodeName: "STYLE",
     id: "st-studio-workspace-inspector",
@@ -2434,7 +2434,7 @@ test("workspace inspector style reattaches an owned detached style but rejects a
 
 test("workspace inspector style collisions fail closed without mutation or selection changes", async (t) => {
   const cases = [
-    ["non-style reserved id", "DIV", "solvronix-desk"],
+    ["non-style reserved id", "DIV", "sanpra-uiv16"],
     ["unowned style reserved id", "STYLE", null],
   ];
 

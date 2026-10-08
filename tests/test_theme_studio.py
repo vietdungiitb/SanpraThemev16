@@ -10,27 +10,27 @@ from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
-API = ROOT / "solvronix_desk" / "api.py"
-THEME_API = ROOT / "solvronix_desk" / "theme_api.py"
-ENGINE = ROOT / "solvronix_desk" / "theme_engine.py"
-HOOKS = ROOT / "solvronix_desk" / "hooks.py"
-SETTINGS = ROOT / "solvronix_desk" / "solvronix_desk" / "doctype" / "theme_settings" / "theme_settings.json"
-PREFERENCE = ROOT / "solvronix_desk" / "solvronix_desk" / "doctype" / "theme_preference" / "theme_preference.json"
-PAGE = ROOT / "solvronix_desk" / "solvronix_desk" / "page" / "theme_studio" / "theme_studio.js"
+API = ROOT / "sanpra_uiv16" / "api.py"
+THEME_API = ROOT / "sanpra_uiv16" / "theme_api.py"
+ENGINE = ROOT / "sanpra_uiv16" / "theme_engine.py"
+HOOKS = ROOT / "sanpra_uiv16" / "hooks.py"
+SETTINGS = ROOT / "sanpra_uiv16" / "sanpra_ui_v16" / "doctype" / "theme_settings" / "theme_settings.json"
+PREFERENCE = ROOT / "sanpra_uiv16" / "sanpra_ui_v16" / "doctype" / "theme_preference" / "theme_preference.json"
+PAGE = ROOT / "sanpra_uiv16" / "sanpra_ui_v16" / "page" / "theme_studio" / "theme_studio.js"
 PAGE_JSON = PAGE.with_name("theme_studio.json")
-CSS = ROOT / "solvronix_desk" / "public" / "css" / "theme_studio.css"
-DESK_CSS = ROOT / "solvronix_desk" / "public" / "css" / "solvronix_desk.css"
-DESK_JS = ROOT / "solvronix_desk" / "public" / "js" / "solvronix_desk.js"
-SIDEBAR_CSS = ROOT / "solvronix_desk" / "public" / "css" / "sidebar.css"
-DARK_CSS = ROOT / "solvronix_desk" / "public" / "css" / "dark_mode.css"
-BOOT = ROOT / "solvronix_desk" / "boot.py"
+CSS = ROOT / "sanpra_uiv16" / "public" / "css" / "theme_studio.css"
+DESK_CSS = ROOT / "sanpra_uiv16" / "public" / "css" / "sanpra_uiv16.css"
+DESK_JS = ROOT / "sanpra_uiv16" / "public" / "js" / "sanpra_uiv16.js"
+SIDEBAR_CSS = ROOT / "sanpra_uiv16" / "public" / "css" / "sidebar.css"
+DARK_CSS = ROOT / "sanpra_uiv16" / "public" / "css" / "dark_mode.css"
+BOOT = ROOT / "sanpra_uiv16" / "boot.py"
 
 
 class ThemeStudioTest(unittest.TestCase):
     def test_chart_runtime_is_bootstrapped_after_theme_runtime(self):
         hooks = HOOKS.read_text(encoding="utf-8")
-        theme_index = hooks.index("/assets/solvronix_desk/js/theme_runtime.js")
-        chart_index = hooks.index("/assets/solvronix_desk/js/chart_runtime.js")
+        theme_index = hooks.index("/assets/sanpra_uiv16/js/theme_runtime.js")
+        chart_index = hooks.index("/assets/sanpra_uiv16/js/chart_runtime.js")
 
         self.assertGreater(chart_index, theme_index)
         self.assertRegex(hooks, r"chart_runtime\.js\?v=\d+")
@@ -38,15 +38,15 @@ class ThemeStudioTest(unittest.TestCase):
 
     def test_atomic_theme_runtime_refresh_includes_chart_schema(self):
         api = THEME_API.read_text(encoding="utf-8")
-        runtime = (ROOT / "solvronix_desk" / "public" / "js" / "theme_runtime.js").read_text(encoding="utf-8")
+        runtime = (ROOT / "sanpra_uiv16" / "public" / "js" / "theme_runtime.js").read_text(encoding="utf-8")
 
         self.assertIn('"chart_schema": chart_config.load_schema()', api)
-        self.assertIn("solvronixChartRuntime.setConfig(config, chartSchema)", runtime)
+        self.assertIn("sanpraChartRuntime.setConfig(config, chartSchema)", runtime)
         self.assertIn("runtime.chart_schema", runtime)
     def test_studio_state_exposes_canonical_chart_schema_and_safe_registry(self):
         source = THEME_API.read_text(encoding="utf-8")
 
-        self.assertIn("from solvronix_desk import chart_config, chart_registry", source)
+        self.assertIn("from sanpra_uiv16 import chart_config, chart_registry", source)
         self.assertIn('"chart_schema": chart_config.load_schema()', source)
         self.assertIn('"chart_registry": chart_registry.list_chart_sources(', source)
         self.assertIn('published.get("chart_overrides", {}).keys()', source)
@@ -184,7 +184,7 @@ class ThemeStudioTest(unittest.TestCase):
         js = PAGE.read_text(encoding="utf-8")
         css = CSS.read_text(encoding="utf-8")
         login_runtime = (
-            ROOT / "solvronix_desk" / "public" / "js" / "login_theme.js"
+            ROOT / "sanpra_uiv16" / "public" / "js" / "login_theme.js"
         ).read_text(encoding="utf-8")
         for token in (
             "sts-login-card-head", "sts-login-card-body", "sts-login-company-logo",
@@ -202,7 +202,7 @@ class ThemeStudioTest(unittest.TestCase):
         self.assertIn("st-hide-powered", login_runtime)
         self.assertIn('"preferred_mode": config.get("preferred_mode")', API.read_text(encoding="utf-8"))
         self.assertIn('html[data-theme="dark"] .for-login .page-card', ENGINE.read_text(encoding="utf-8"))
-        login_css = (ROOT / "solvronix_desk" / "public" / "css" / "login.css").read_text(encoding="utf-8")
+        login_css = (ROOT / "sanpra_uiv16" / "public" / "css" / "login.css").read_text(encoding="utf-8")
         self.assertIn("box-sizing: border-box !important;", login_css)
         self.assertIn("width: 100% !important;", login_css)
         self.assertIn("overflow: hidden !important;", login_css)
@@ -247,15 +247,15 @@ class ThemeStudioTest(unittest.TestCase):
 
     def test_assets_are_versioned(self):
         hooks = HOOKS.read_text(encoding="utf-8")
-        self.assertIn("/assets/solvronix_desk/css/theme_studio.css?v=19", hooks)
-        self.assertIn("/assets/solvronix_desk/js/command_palette.js?v=9", hooks)
-        self.assertIn("/assets/solvronix_desk/js/dark_mode.js?v=12", hooks)
-        self.assertIn("/assets/solvronix_desk/js/solvronix_desk.js?v=67", hooks)
-        self.assertIn("/assets/solvronix_desk/js/theme_runtime.js?v=8", hooks)
-        self.assertIn("/assets/solvronix_desk/js/chart_runtime.js?v=4", hooks)
-        self.assertIn("/assets/solvronix_desk/css/login.css?v=11", hooks)
-        self.assertIn("/assets/solvronix_desk/js/login_theme.js?v=9", hooks)
-        self.assertIn('"on_update": "solvronix_desk.events.theme_settings_on_update"', hooks)
+        self.assertIn("/assets/sanpra_uiv16/css/theme_studio.css?v=19", hooks)
+        self.assertIn("/assets/sanpra_uiv16/js/command_palette.js?v=9", hooks)
+        self.assertIn("/assets/sanpra_uiv16/js/dark_mode.js?v=12", hooks)
+        self.assertIn("/assets/sanpra_uiv16/js/sanpra_uiv16.js?v=67", hooks)
+        self.assertIn("/assets/sanpra_uiv16/js/theme_runtime.js?v=8", hooks)
+        self.assertIn("/assets/sanpra_uiv16/js/chart_runtime.js?v=4", hooks)
+        self.assertIn("/assets/sanpra_uiv16/css/login.css?v=11", hooks)
+        self.assertIn("/assets/sanpra_uiv16/js/login_theme.js?v=9", hooks)
+        self.assertIn('"on_update": "sanpra_uiv16.events.theme_settings_on_update"', hooks)
 
     def test_complete_studio_feature_surfaces_exist(self):
         js = PAGE.read_text(encoding="utf-8")
@@ -284,8 +284,8 @@ class ThemeStudioTest(unittest.TestCase):
         self.assertIn("_sync_profile_actions()", js)
         self.assertIn('__("Current Theme Copy")', js)
         self.assertIn('data-profile-action="apply"', js)
-        runtime = (ROOT / "solvronix_desk" / "public" / "js" / "theme_runtime.js").read_text(encoding="utf-8")
-        desk_js = (ROOT / "solvronix_desk" / "public" / "js" / "solvronix_desk.js").read_text(encoding="utf-8")
+        runtime = (ROOT / "sanpra_uiv16" / "public" / "js" / "theme_runtime.js").read_text(encoding="utf-8")
+        desk_js = (ROOT / "sanpra_uiv16" / "public" / "js" / "sanpra_uiv16.js").read_text(encoding="utf-8")
         self.assertIn("st-theme-runtime-refresh", runtime)
         self.assertIn("window.stApplyThemeCss", desk_js)
         self.assertIn("duplicate.remove()", desk_js)
@@ -324,10 +324,10 @@ class ThemeStudioTest(unittest.TestCase):
         engine = ENGINE.read_text(encoding="utf-8")
         api = THEME_API.read_text(encoding="utf-8")
         settings_js = (
-            ROOT / "solvronix_desk" / "solvronix_desk" / "doctype" /
+            ROOT / "sanpra_uiv16" / "sanpra_ui_v16" / "doctype" /
             "theme_settings" / "theme_settings.js"
         ).read_text(encoding="utf-8")
-        desk_js = (ROOT / "solvronix_desk" / "public" / "js" / "solvronix_desk.js").read_text(encoding="utf-8")
+        desk_js = (ROOT / "sanpra_uiv16" / "public" / "js" / "sanpra_uiv16.js").read_text(encoding="utf-8")
 
         for key in ("tagline", "enable_command_palette", "enable_smart_home"):
             self.assertIn(f'"{key}"', js)
@@ -344,7 +344,7 @@ class ThemeStudioTest(unittest.TestCase):
         replaces this.config with the profile's own stored config, which
         always carries blank company_logo/app_title/favicon/tagline unless
         the profile explicitly set them — confirmed live on
-        erp.solvronix.com, where loading a built-in profile then publishing
+        erp.sanpra.com, where loading a built-in profile then publishing
         silently erased the real company logo/name. The editor must restore
         these from what was there before loading, mirroring
         theme_engine.resolve_profile_config()'s server-side fix."""

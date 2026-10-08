@@ -9,8 +9,8 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-ENGINE_PATH = ROOT / "solvronix_desk" / "theme_engine.py"
-DESK_CSS_PATH = ROOT / "solvronix_desk" / "public" / "css" / "solvronix_desk.css"
+ENGINE_PATH = ROOT / "sanpra_uiv16" / "theme_engine.py"
+DESK_CSS_PATH = ROOT / "sanpra_uiv16" / "public" / "css" / "sanpra_uiv16.css"
 
 
 class FrappeStub(types.ModuleType):
@@ -289,7 +289,7 @@ class ThemeEngineTest(unittest.TestCase):
         """Regression test: every profile's stored config carries blank
         company_logo/app_title/favicon/tagline unless it explicitly set them
         (_profile() sanitizes overrides against DEFAULT_CONFIG, which
-        defaults these to "") — confirmed live on erp.solvronix.com, where
+        defaults these to "") — confirmed live on erp.sanpra.com, where
         loading a built-in profile and publishing it silently erased the
         site's real logo and company name. resolve_profile_config() must
         always keep these from the base config regardless of what the

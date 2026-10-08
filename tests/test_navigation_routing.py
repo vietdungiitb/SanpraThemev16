@@ -5,10 +5,10 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MODULE_CARDS = ROOT / "solvronix_desk" / "public" / "js" / "module_cards.js"
-DESK_JS = ROOT / "solvronix_desk" / "public" / "js" / "solvronix_desk.js"
-PALETTE = ROOT / "solvronix_desk" / "public" / "js" / "command_palette.js"
-HOOKS = ROOT / "solvronix_desk" / "hooks.py"
+MODULE_CARDS = ROOT / "sanpra_uiv16" / "public" / "js" / "module_cards.js"
+DESK_JS = ROOT / "sanpra_uiv16" / "public" / "js" / "sanpra_uiv16.js"
+PALETTE = ROOT / "sanpra_uiv16" / "public" / "js" / "command_palette.js"
+HOOKS = ROOT / "sanpra_uiv16" / "hooks.py"
 
 
 class NavigationRoutingTest(unittest.TestCase):
@@ -47,9 +47,9 @@ class NavigationRoutingTest(unittest.TestCase):
     def test_navigation_assets_are_cache_busted(self):
         hooks = HOOKS.read_text(encoding="utf-8")
 
-        self.assertIn("/assets/solvronix_desk/js/solvronix_desk.js?v=67", hooks)
-        self.assertIn("/assets/solvronix_desk/js/command_palette.js?v=9", hooks)
-        self.assertIn("/assets/solvronix_desk/js/module_cards.js?v=10", hooks)
+        self.assertIn("/assets/sanpra_uiv16/js/sanpra_uiv16.js?v=67", hooks)
+        self.assertIn("/assets/sanpra_uiv16/js/command_palette.js?v=9", hooks)
+        self.assertIn("/assets/sanpra_uiv16/js/module_cards.js?v=10", hooks)
 
 
 if __name__ == "__main__":

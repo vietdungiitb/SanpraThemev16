@@ -3,7 +3,7 @@
 import types
 import unittest
 
-from solvronix_desk import chart_config, chart_preview
+from sanpra_uiv16 import chart_config, chart_preview
 
 
 class FakeDocument(types.SimpleNamespace):

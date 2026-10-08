@@ -68,7 +68,7 @@ Affects Frappe v16.0+ (tested on v16.35). First release after 2.1.3; supersedes 
 ### Fixed
 - In dark mode, the active sidebar item was nearly invisible — only a 15%-opacity accent tint over the already brand-colored dark sidebar background, relying almost entirely on a thin 3px left border to show selection. Now a solid pill matching light mode's treatment, darkened via relative-color lightness scaling (hue/saturation preserved) rather than mixing toward black — the latter washes out saturation badly on light/pale custom accents (e.g. a pale yellow lost ~38 points of saturation, reading as muddy grey-brown instead of gold). Verified against WCAG AA (4.5:1, worst case 7.2:1) across five accent colors — default, near-black, pure-saturated, desaturated, and pale — using the same contrast formula Theme Studio's own accessibility audit uses
 - Workspace Shortcut/Links cards (e.g. a workspace's "Shortcuts"/"Meta" sections) looked flat and washed out on every workspace — a near-invisible `rgba(0,0,0,0.06)` border and a subtle idle shadow left cards barely distinguishable from the page canvas, and count badges fell back to a flat neutral gray whenever a shortcut had no configured color. Cards now use the theme's real card-border token with a stronger idle shadow, and gain a brand-accent top stripe on hover (matching the App Grid's existing card language); default-color count badges pick up an accent tint instead of flat gray — scoped specifically to Shortcut/Links widgets so ordinary status pills elsewhere keep their normal semantic gray meaning
-- Section labels typed as plain bold text in a workspace's content editor (e.g. Frappe CRM's "SHORTCUTS"/"META" headings) were being wrapped in their own stray white/dark card — a thin, oddly-shaped sliver rather than a real card. Root cause: Frappe's workspace editor tags every content block, including plain text paragraphs, with a bare `.widget` class meant only for spacing; the theme's card rules in `solvronix_desk.css`, `polish.css`, and the runtime `theme_engine.py` output were all painting card background/border/shadow onto that class unconditionally, and even after excluding EditorJS content blocks from all three, Frappe core's own un-important `.widget` rule was still shining through underneath with a plain background/radius. Added an explicit reset for EditorJS content blocks (`.widget.cdx-block`) so plain text renders as text, while real functional widgets (Shortcut, Links, Chart, Number Card, etc. — which don't carry that class) keep their normal card look. Workspaces that use Frappe's newer structured "Shortcuts"/"Links" group title (`.widget-group-title`) also get a proper shaded header bar instead of a bare label, matching the list-view column header treatment already used elsewhere in the theme
+- Section labels typed as plain bold text in a workspace's content editor (e.g. Frappe CRM's "SHORTCUTS"/"META" headings) were being wrapped in their own stray white/dark card — a thin, oddly-shaped sliver rather than a real card. Root cause: Frappe's workspace editor tags every content block, including plain text paragraphs, with a bare `.widget` class meant only for spacing; the theme's card rules in `sanpra_uiv16.css`, `polish.css`, and the runtime `theme_engine.py` output were all painting card background/border/shadow onto that class unconditionally, and even after excluding EditorJS content blocks from all three, Frappe core's own un-important `.widget` rule was still shining through underneath with a plain background/radius. Added an explicit reset for EditorJS content blocks (`.widget.cdx-block`) so plain text renders as text, while real functional widgets (Shortcut, Links, Chart, Number Card, etc. — which don't carry that class) keep their normal card look. Workspaces that use Frappe's newer structured "Shortcuts"/"Links" group title (`.widget-group-title`) also get a proper shaded header bar instead of a bare label, matching the list-view column header treatment already used elsewhere in the theme
 
 ## [2.1.2] — 2026-08-11
 
@@ -129,7 +129,7 @@ Affects Frappe v16.0+ (tested on v16.35). First release after 2.1.3; supersedes 
 
 ### Added
 - A complete searchable visual editor spanning colours, navigation, form controls, typography, cards, tables, dashboards, login branding, layout, accessibility, and advanced overrides
-- Frappe Default, Light, Dark, High Contrast, Solvronix, and Forest profiles, plus custom profile create, update, duplicate, rename, delete, import, and export workflows
+- Frappe Default, Light, Dark, High Contrast, Sanpra, and Forest profiles, plus custom profile create, update, duplicate, rename, delete, import, and export workflows
 - Live Dashboard, Form, Table, and Login preview scenes with desktop/tablet/mobile modes, Frappe comparison, drag-and-drop layout, undo/redo, draft saving, and section reset
 - Site, user, role, and company theme assignment; optional user profile selection; administrator locking; and scheduled profile activation
 - WCAG AA contrast feedback and optional publish enforcement, high-contrast and large-text modes, stronger focus outlines, and colour-blind-friendly status palettes
@@ -216,7 +216,7 @@ Affects Frappe v16.0+ (tested on v16.35). First release after 2.1.3; supersedes 
 ## [1.3.1] — 2026-07-18
 
 ### Fixed
-- Workspace list API compatibility across Frappe v16 releases: Frappe renamed `frappe.desk.desktop.get_workspace_sidebar_items` to `get_workspaces` between v16.20 and v16.22, which broke the module switcher, All Options panel, and app launcher grid on Frappe ≥ v16.21. All three now call a new `solvronix_desk.api.get_workspaces` shim that resolves whichever method exists (and fails soft with empty data if neither does), so the app works on every Frappe v16 release — old (≤ v16.20) and new (≥ v16.21) alike. Reported by @mn3m-cs on Frappe v16.27.1.
+- Workspace list API compatibility across Frappe v16 releases: Frappe renamed `frappe.desk.desktop.get_workspace_sidebar_items` to `get_workspaces` between v16.20 and v16.22, which broke the module switcher, All Options panel, and app launcher grid on Frappe ≥ v16.21. All three now call a new `sanpra_uiv16.api.get_workspaces` shim that resolves whichever method exists (and fails soft with empty data if neither does), so the app works on every Frappe v16 release — old (≤ v16.20) and new (≥ v16.21) alike. Reported by @mn3m-cs on Frappe v16.27.1.
 
 ## [1.3.0] — 2026-07-17 — Polish Pass
 
@@ -278,7 +278,7 @@ Affects Frappe v16.0+ (tested on v16.35). First release after 2.1.3; supersedes 
 - Command Palette (Ctrl+K) — search DocTypes, navigate, create documents from anywhere
 - White-label branding — company name, logo, favicon, browser tab title
 - Auto color system — two brand colors generate full palette via CSS color-mix()
-- Quick color presets — Solvronix, Forest, Midnight, Plum themes
+- Quick color presets — Sanpra, Forest, Midnight, Plum themes
 - Slim icon sidebar — 64px icon rail, expands to 240px, state persisted per user
 - Dark mode — flash-free toggle, synced to Frappe user preferences
 - Modern login page — full-screen branded login experience

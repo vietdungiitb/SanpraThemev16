@@ -5,8 +5,8 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CSS = ROOT / "solvronix_desk" / "public" / "css" / "solvronix_desk.css"
-JS = ROOT / "solvronix_desk" / "public" / "js" / "solvronix_desk.js"
+CSS = ROOT / "sanpra_uiv16" / "public" / "css" / "sanpra_uiv16.css"
+JS = ROOT / "sanpra_uiv16" / "public" / "js" / "sanpra_uiv16.js"
 
 
 class FullWidthToggleTest(unittest.TestCase):

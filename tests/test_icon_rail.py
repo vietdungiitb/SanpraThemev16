@@ -9,13 +9,13 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-JS = ROOT / "solvronix_desk" / "public" / "js" / "solvronix_desk.js"
-CSS = ROOT / "solvronix_desk" / "public" / "css" / "sidebar.css"
-HOOKS = ROOT / "solvronix_desk" / "hooks.py"
-THEME_SETTINGS_JSON = ROOT / "solvronix_desk" / "solvronix_desk" / "doctype" / "theme_settings" / "theme_settings.json"
-THEME_SETTINGS_PY = ROOT / "solvronix_desk" / "solvronix_desk" / "doctype" / "theme_settings" / "theme_settings.py"
-THEME_ENGINE = ROOT / "solvronix_desk" / "theme_engine.py"
-THEME_STUDIO_JS = ROOT / "solvronix_desk" / "solvronix_desk" / "page" / "theme_studio" / "theme_studio.js"
+JS = ROOT / "sanpra_uiv16" / "public" / "js" / "sanpra_uiv16.js"
+CSS = ROOT / "sanpra_uiv16" / "public" / "css" / "sidebar.css"
+HOOKS = ROOT / "sanpra_uiv16" / "hooks.py"
+THEME_SETTINGS_JSON = ROOT / "sanpra_uiv16" / "sanpra_ui_v16" / "doctype" / "theme_settings" / "theme_settings.json"
+THEME_SETTINGS_PY = ROOT / "sanpra_uiv16" / "sanpra_ui_v16" / "doctype" / "theme_settings" / "theme_settings.py"
+THEME_ENGINE = ROOT / "sanpra_uiv16" / "theme_engine.py"
+THEME_STUDIO_JS = ROOT / "sanpra_uiv16" / "sanpra_ui_v16" / "page" / "theme_studio" / "theme_studio.js"
 
 
 class FrappeStub(types.ModuleType):
@@ -50,7 +50,7 @@ class IconRailTest(unittest.TestCase):
         self.assertIn("function railEnabled", js)
         self.assertIn('id="st-icon-rail"', js)
         self.assertIn('sidebar_layout === "Icon Rail"', js)
-        self.assertIn("solvronix_desk.api.get_workspaces", js)
+        self.assertIn("sanpra_uiv16.api.get_workspaces", js)
         self.assertIn("page.parent_page", js)
 
     def test_rail_click_uses_normal_routing_and_syncs_highlight(self):
@@ -342,14 +342,14 @@ class IconRailTest(unittest.TestCase):
     def test_rail_assets_are_cache_busted(self):
         hooks = HOOKS.read_text(encoding="utf-8")
 
-        self.assertIn("/assets/solvronix_desk/css/sidebar.css?v=37", hooks)
-        self.assertIn("/assets/solvronix_desk/js/solvronix_desk.js?v=67", hooks)
-        self.assertIn("/assets/solvronix_desk/css/theme_studio.css?v=19", hooks)
+        self.assertIn("/assets/sanpra_uiv16/css/sidebar.css?v=37", hooks)
+        self.assertIn("/assets/sanpra_uiv16/js/sanpra_uiv16.js?v=67", hooks)
+        self.assertIn("/assets/sanpra_uiv16/css/theme_studio.css?v=19", hooks)
 
     def test_legacy_config_treats_never_set_icon_rail_width_as_unset_not_zero(self):
         """Regression test: frappe.utils.cint() coercion serializes an Int
         Single field that was never explicitly set to 0 (not None) on the
-        very first Document.save() — confirmed live on erp.solvronix.com,
+        very first Document.save() — confirmed live on erp.sanpra.com,
         where publishing a theme for the first time wrote icon_rail_width=0
         to the DB, which legacy_config() then read as a deliberate override,
         clamping it up to the range minimum instead of the documented

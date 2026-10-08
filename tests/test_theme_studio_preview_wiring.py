@@ -5,15 +5,15 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGE = ROOT / "solvronix_desk" / "solvronix_desk" / "page" / "theme_studio" / "theme_studio.js"
-CSS = ROOT / "solvronix_desk" / "public" / "css" / "theme_studio.css"
+PAGE = ROOT / "sanpra_uiv16" / "sanpra_ui_v16" / "page" / "theme_studio" / "theme_studio.js"
+CSS = ROOT / "sanpra_uiv16" / "public" / "css" / "theme_studio.css"
 DOCS = ROOT / "docs" / "theme-studio.md"
 
 
 class ThemeStudioPreviewWiringTest(unittest.TestCase):
     def test_chart_runtime_tokens_are_scoped_and_reduced_motion_safe(self):
-        desk_css = (ROOT / "solvronix_desk" / "public" / "css" / "solvronix_desk.css").read_text(encoding="utf-8")
-        dark_css = (ROOT / "solvronix_desk" / "public" / "css" / "dark_mode.css").read_text(encoding="utf-8")
+        desk_css = (ROOT / "sanpra_uiv16" / "public" / "css" / "sanpra_uiv16.css").read_text(encoding="utf-8")
+        dark_css = (ROOT / "sanpra_uiv16" / "public" / "css" / "dark_mode.css").read_text(encoding="utf-8")
 
         for token in (
             "--st-chart-surface",
@@ -83,7 +83,7 @@ class ThemeStudioPreviewWiringTest(unittest.TestCase):
             ".st-theme-workspace-inspected:not(#st-theme-workspace-inspector-sentinel){outline:2px solid #5b8def !important;outline-offset:2px !important;}",
             js,
         )
-        self.assertIn('data-st-theme-owner", "solvronix-desk"', js)
+        self.assertIn('data-st-theme-owner", "sanpra-uiv16"', js)
         self.assertIn("st-studio-workspace-draft", js)
 
     def test_workspace_docs_describe_dynamic_shortcut_and_number_card_controls(self):

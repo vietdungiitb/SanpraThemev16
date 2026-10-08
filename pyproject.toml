@@ -1,7 +1,7 @@
 [project]
-name = "solvronix_desk"
+name = "sanpra_uiv16"
 authors = [
-    { name = "Solvronix", email = "sales@solvronix.com" }
+    { name = "Sanpra", email = "sales@sanpra.com" }
 ]
 description = "Professional white-label theme for Frappe/ERPNext"
 requires-python = ">=3.10.0"
@@ -10,7 +10,7 @@ dynamic = ["version"]
 dependencies = []
 
 [project.urls]
-Repository = "https://github.com/Solvronix/Solvronix-Desk.git"
+Repository = "https://github.com/Sanpra/Sanpra-Desk.git"
 
 [build-system]
 requires = ["flit_core >=3.4,<4"]

@@ -66,15 +66,15 @@ def _install_frappe_stub():
 frappe = _install_frappe_stub()
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-for cached in ("solvronix_desk.login_config", "solvronix_desk.theme_engine"):
+for cached in ("sanpra_uiv16.login_config", "sanpra_uiv16.theme_engine"):
     sys.modules.pop(cached, None)
 
-from solvronix_desk import login_config  # noqa: E402
+from sanpra_uiv16 import login_config  # noqa: E402
 
-APP = ROOT / "solvronix_desk"
+APP = ROOT / "sanpra_uiv16"
 TEMPLATE = APP / "templates" / "login" / "split_login.html"
 CSS = APP / "public" / "css" / "login_split.css"
-DOCTYPE = APP / "solvronix_desk" / "doctype" / "login_page_settings" / "login_page_settings.json"
+DOCTYPE = APP / "sanpra_uiv16" / "doctype" / "login_page_settings" / "login_page_settings.json"
 LOGIN_CONFIG = APP / "login_config.py"
 SETUP = APP / "setup.py"
 
@@ -299,13 +299,13 @@ class FreshInstallSeedTest(unittest.TestCase):
         seed = source[source.index("def seed_login_page_settings"):]
         self.assertNotIn("headline", seed)
         self.assertNotIn("frappe.get_single(", seed)
-        self.assertNotIn('"company_name":           "Solvronix"', source)
+        self.assertNotIn('"company_name":           "Sanpra"', source)
 
     def test_brand_name_patch_is_guarded(self):
         patch = (APP / "patches" / "v2_4" / "clear_default_brand_name.py").read_text()
         self.assertIn('frappe.db.exists("Company", SEEDED_NAME)', patch)
         self.assertIn("!= SEEDED_NAME", patch)
-        self.assertIn("solvronix_desk.patches.v2_4.clear_default_brand_name", (APP / "patches.txt").read_text())
+        self.assertIn("sanpra_uiv16.patches.v2_4.clear_default_brand_name", (APP / "patches.txt").read_text())
 
 
 class BrandNameAutofillTest(unittest.TestCase):
@@ -341,7 +341,7 @@ class BrandNameAutofillTest(unittest.TestCase):
 
     def test_company_hook_is_registered(self):
         hooks = (APP / "hooks.py").read_text()
-        self.assertIn('"after_insert": "solvronix_desk.events.company_after_insert"', hooks)
+        self.assertIn('"after_insert": "sanpra_uiv16.events.company_after_insert"', hooks)
 
 
 if __name__ == "__main__":
