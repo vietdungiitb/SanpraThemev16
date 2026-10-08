@@ -686,7 +686,7 @@
   function injectPoweredBy() {
     var $sidebar = $(".body-sidebar").first();
     if (!$sidebar.length || $sidebar.find("#st-powered-by").length) return;
-    $sidebar.append('<div id="st-powered-by">Powered by <strong>Solvronix</strong></div>');
+    $sidebar.append('<div id="st-powered-by">Powered by <strong>Sanpra Software</strong></div>');
   }
 
   /* ────────────────────────────────────────────────────────────────────────────
@@ -728,7 +728,7 @@
     var html =
       '<div id="st-setup-guide">' +
         '<button class="st-sg-dismiss" title="' + frappe._("Dismiss") + '">&times;</button>' +
-        '<div class="st-sg-title">&#9881; ' + frappe._("Solvronix Desk Setup") + '</div>' +
+        '<div class="st-sg-title">&#9881; ' + frappe._("Sanpra Desk Setup") + '</div>' +
         stepHtml(step1done, frappe._("Set your company name")) +
         stepHtml(step2done, frappe._("Choose a brand color")) +
         stepHtml(step3done, frappe._("Upload your logo")) +
@@ -1027,7 +1027,7 @@
         payments:        { title: "Payments",       color: "#0ea5e9" },
         edvronix:        { title: "Edvronix",       color: "#e8610a" },
         gymronix:        { title: "Gymronix",       color: "#e84310" },
-        solvronix_desk:  { title: "Solvronix Desk", color: "#e8610a" },
+        solvronix_desk:  { title: "Sanpra Desk", color: "#e8610a" },
         school_fee_override: { title: "Fee Override", color: "#0891b2" },
       };
 

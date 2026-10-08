@@ -48,7 +48,7 @@
     /* Settings */
     "settings":             { color: "#6B7280", icon: "⚙️",  desc: "System configuration & setup" },
     /* Solvronix */
-    "solvronix":            { color: "#F97316", icon: "🔷", desc: "Solvronix platform settings" },
+    "solvronix":            { color: "#F97316", icon: "🔷", desc: "Sanpra platform settings" },
     /* Home — not shown in the grid itself */
     "home":                 { color: "#6B7280", icon: "🏠", desc: "Home" },
   };
