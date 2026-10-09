@@ -4,7 +4,7 @@
 
 [![Available on Frappe Cloud Marketplace](https://img.shields.io/badge/Frappe%20Cloud-Marketplace-0089FF)](https://cloud.frappe.io/marketplace/apps/sanpra_uiv16)
 
-**Available on Frappe Cloud Marketplace** — install Sanpra UI V16 on your Frappe Cloud site in one click: [cloud.frappe.io/marketplace/apps/sanpra_uiv16](https://cloud.frappe.io/marketplace/apps/sanpra_uiv16)
+
 
 ![Sanpra UI V16](docs/screenshots/smart-home.png)
 
