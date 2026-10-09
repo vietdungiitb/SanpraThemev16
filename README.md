@@ -242,25 +242,7 @@ See [LICENSE](license.txt) for full details.
 
 ---
 
-## About Sanpra
 
-Sanpra builds Frappe/ERPNext products for businesses globally, based in Lahore, Pakistan.
-
-- Website: [sanpra.com](https://sanpra.com)
-- Email: sales@sanpra.com
-- WhatsApp: +92 307 9484220
-
-**Other products:**
-- [Sanpra](https://sanpra.com/edvronix) — School management system built on ERPNext. Fee collection, attendance, timetables, parent portal, and more.
-
----
-
-## Support
-
-Something not working? Open an issue on [GitHub Issues](https://github.com/Sanpra/Sanpra-Desk/issues) or contact us directly.
-
-- Email: sales@sanpra.com
-- WhatsApp: +92 307 9484220
 
 ---
 
