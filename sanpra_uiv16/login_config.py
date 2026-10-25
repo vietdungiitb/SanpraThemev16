@@ -171,6 +171,15 @@ def get_settings_doc():
 
 def get_login_config():
     """Everything the login template needs, with branding fallbacks resolved."""
+    try:
+        req = getattr(frappe, "request", None)
+        cookies = getattr(req, "cookies", {}) if req else {}
+        pref_cookie = cookies.get("preferred_language") or cookies.get("user_lang")
+        if not pref_cookie and getattr(frappe.session, "user", "Guest") == "Guest":
+            frappe.local.lang = frappe.get_system_settings("language") or "vi"
+    except Exception:
+        pass
+
     config = theme_config()
     brand = branding_sources(config)
     doc = get_settings_doc()

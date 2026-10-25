@@ -340,6 +340,7 @@ html body.sl-split section::before { display: none !important; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  margin: 0 0 16px 8px;
   color: var(--sl-text) !important;
   font-size: 14px;
   font-weight: 500;
@@ -374,11 +375,19 @@ html body.sl-split .sl-card.page-card {
 
 .sl-card-head { display: flex; flex-direction: column; }
 .sl-card-logo { display: none; }
+.sl-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  width: 100%;
+}
 .sl-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 0 !important;
   padding: 4px 12px;
   border-radius: 9999px;
   background: #EEF4FF;

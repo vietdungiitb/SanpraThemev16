@@ -5,11 +5,7 @@
 -#}
 {% extends "templates/web.html" %}
 
-{% block navbar %}
-{% if show_language_picker %}
-	{{ super() }}
-{% endif %}
-{% endblock %}
+{% block navbar %}{% endblock %}
 
 {% block favicon %}
 <link rel="shortcut icon" href="{{ (sl.favicon or favicon or '/assets/frappe/images/frappe-favicon.svg') | abs_url | e }}" type="image/x-icon">
@@ -57,14 +53,27 @@
 {% macro card_head(title, subtitle=null, eyebrow=null) -%}
 <div class="sl-card-head">
 	{{ brand_mark(sl.logo, "sl-card-logo") }}
-	{% if eyebrow %}
-	<div class="sl-eyebrow">
-		<span class="sl-eyebrow-icon">
-			<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="#es-line-security"></use></svg>
-		</span>
-		{{ eyebrow | e }}
+	<div class="sl-head-row">
+		{% if eyebrow %}
+		<div class="sl-eyebrow">
+			<span class="sl-eyebrow-icon">
+				<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><use href="#es-line-security"></use></svg>
+			</span>
+			{{ eyebrow | e }}
+		</div>
+		{% else %}
+		<div></div>
+		{% endif %}
+		<div class="sl-lang-switch" role="group" aria-label="{{ _('Change language') }}">
+			<button type="button" class="sl-lang-btn {% if frappe.local.lang == 'vi' %}active{% endif %}" data-lang="vi" title="Tiếng Việt">
+				<span class="sl-lang-flag">🇻🇳</span> VN
+			</button>
+			<span class="sl-lang-divider">/</span>
+			<button type="button" class="sl-lang-btn {% if frappe.local.lang != 'vi' %}active{% endif %}" data-lang="en" title="English">
+				<span class="sl-lang-flag">🇬🇧</span> EN
+			</button>
+		</div>
 	</div>
-	{% endif %}
 	<h1 class="sl-card-title">{{ title | e }}</h1>
 	{% if subtitle %}
 	<p class="sl-card-subtitle">{{ subtitle | e }}</p>
@@ -218,25 +227,12 @@
 
 	<div class="sl-auth">
 		<div class="sl-auth-inner">
-			<div class="sl-auth-topbar">
-				{% if sl.back_link_url %}
-				<a class="sl-back-link" href="{{ sl.back_link_url | e }}">
-					<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="#es-line-left-chevron"></use></svg>
-					{{ sl.back_link_label | e }}
-				</a>
-				{% else %}
-				<div></div>
-				{% endif %}
-				<div class="sl-lang-switch" role="group" aria-label="{{ _('Change language') }}">
-					<button type="button" class="sl-lang-btn {% if frappe.local.lang == 'vi' %}active{% endif %}" data-lang="vi" title="Tiếng Việt">
-						<span class="sl-lang-flag">🇻🇳</span> Tiếng Việt
-					</button>
-					<span class="sl-lang-divider">/</span>
-					<button type="button" class="sl-lang-btn {% if frappe.local.lang != 'vi' %}active{% endif %}" data-lang="en" title="English">
-						<span class="sl-lang-flag">🇬🇧</span> English
-					</button>
-				</div>
-			</div>
+			{% if sl.back_link_url %}
+			<a class="sl-back-link" href="{{ sl.back_link_url | e }}">
+				<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="#es-line-left-chevron"></use></svg>
+				{{ sl.back_link_label | e }}
+			</a>
+			{% endif %}
 
 			<section class="for-login">
 				<div class="login-content page-card sl-card">
@@ -384,6 +380,7 @@
 		btn.addEventListener("click", function (e) {
 			e.preventDefault();
 			var lang = this.getAttribute("data-lang");
+			document.cookie = "preferred_language=" + lang + "; path=/; max-age=31536000; SameSite=Lax";
 			document.cookie = "user_lang=" + lang + "; path=/; max-age=31536000; SameSite=Lax";
 			var url = new URL(window.location.href);
 			url.searchParams.set("lang", lang);
