@@ -98,7 +98,7 @@
 		<span></span>
 	</div>
 	<div class="form-group">
-		<label class="form-label" for="login_email">{{ login_label or _("Email") }}</label>
+		<label class="form-label" for="login_email">{{ login_label or _("Email or Username") }}</label>
 		<div class="email-field">
 			<input type="text" id="login_email" class="form-control"
 				placeholder="{% if login_name_placeholder %}{{ login_name_placeholder }}{% else %}{{ _('jane@example.com') }}{% endif %}"
@@ -218,12 +218,25 @@
 
 	<div class="sl-auth">
 		<div class="sl-auth-inner">
-			{% if sl.back_link_url %}
-			<a class="sl-back-link" href="{{ sl.back_link_url | e }}">
-				<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="#es-line-left-chevron"></use></svg>
-				{{ sl.back_link_label | e }}
-			</a>
-			{% endif %}
+			<div class="sl-auth-topbar">
+				{% if sl.back_link_url %}
+				<a class="sl-back-link" href="{{ sl.back_link_url | e }}">
+					<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="#es-line-left-chevron"></use></svg>
+					{{ sl.back_link_label | e }}
+				</a>
+				{% else %}
+				<div></div>
+				{% endif %}
+				<div class="sl-lang-switch" role="group" aria-label="{{ _('Change language') }}">
+					<button type="button" class="sl-lang-btn {% if frappe.local.lang == 'vi' %}active{% endif %}" data-lang="vi" title="Tiếng Việt">
+						<span class="sl-lang-flag">🇻🇳</span> Tiếng Việt
+					</button>
+					<span class="sl-lang-divider">/</span>
+					<button type="button" class="sl-lang-btn {% if frappe.local.lang != 'vi' %}active{% endif %}" data-lang="en" title="English">
+						<span class="sl-lang-flag">🇬🇧</span> English
+					</button>
+				</div>
+			</div>
 
 			<section class="for-login">
 				<div class="login-content page-card sl-card">
@@ -270,7 +283,7 @@
 					<form class="form-signin form-forgot hide" role="form" novalidate>
 						<div class="page-card-body">
 							<div class="form-group">
-								<label class="form-label" for="forgot_email">{{ _("Email") }}</label>
+								<label class="form-label" for="forgot_email">{{ _("Email Address") }}</label>
 								<div class="email-field">
 									<input type="email" id="forgot_email" class="form-control"
 										placeholder="{{ _('jane@example.com') }}" required autofocus autocomplete="username">
@@ -302,7 +315,7 @@
 								<span>{{ _("Please check your email.") }}</span>
 							</div>
 							<div class="form-group">
-								<label class="form-label" for="login_with_email_link_email">{{ _("Email") }}</label>
+								<label class="form-label" for="login_with_email_link_email">{{ _("Email Address") }}</label>
 								<div class="email-field">
 									<input type="email" id="login_with_email_link_email" class="form-control"
 										placeholder="{{ _('jane@example.com') }}" required autofocus autocomplete="username">
@@ -329,7 +342,7 @@
 			{% if not sl.hide_powered or sl.footer_text %}
 			<div class="sl-auth-footer">
 				{% if sl.footer_text %}<span>{{ sl.footer_text | e }}</span>{% endif %}
-				{% if not sl.hide_powered %}<span class="powered-by">Powered by Sanpra Softwares</span>{% endif %}
+				{% if not sl.hide_powered %}<span class="powered-by">{{ _("Powered by Sanpra Softwares") }}</span>{% endif %}
 			</div>
 			{% endif %}
 		</div>
@@ -365,6 +378,44 @@
 		if (img.complete && !img.naturalWidth) fallback();
 		else img.addEventListener("error", fallback, { once: true });
 	});
+
+	/* Language switcher click handler */
+	document.querySelectorAll(".sl-lang-btn").forEach(function (btn) {
+		btn.addEventListener("click", function (e) {
+			e.preventDefault();
+			var lang = this.getAttribute("data-lang");
+			document.cookie = "user_lang=" + lang + "; path=/; max-age=31536000; SameSite=Lax";
+			var url = new URL(window.location.href);
+			url.searchParams.set("lang", lang);
+			window.location.href = url.toString();
+		});
+	});
+
+	/* Fallback error message interceptor */
+	if (window.login && login.show_error_banner) {
+		var orig_show_error = login.show_error_banner;
+		login.show_error_banner = function (msg) {
+			if (!msg || msg === "Invalid credentials, try again.") {
+				msg = {{ _("Invalid credentials, try again.") | tojson }};
+			}
+			orig_show_error(msg);
+		};
+	}
+
+	/* Brand-aligned login success splash */
+	if (window.login && login.login_handlers && login.login_handlers[200]) {
+		var orig_200 = login.login_handlers[200];
+		login.login_handlers[200] = function (data) {
+			if (data.message === "Logged In" || data.message === "No App") {
+				login.set_status({{ _("Success") | tojson }}, "green");
+				var splashLogo = {{ (sl.hero_logo or sl.logo or "/assets/smart_edu_core/images/edusuccess.svg") | tojson }};
+				document.body.innerHTML = '<div class="centered splash" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:var(--sl-page-bg,#f8fafc);gap:16px;"><img src="' + splashLogo + '" style="width:auto;max-width:240px;max-height:90px;animation:sl-pulse 1.5s infinite ease-in-out;"><div style="color:var(--sl-brand,#1B3F7E);font-weight:600;font-size:15px;letter-spacing:0.02em;">' + {{ _("Signing In...") | tojson }} + '</div></div>';
+				window.location.href = frappe.utils.sanitise_redirect(frappe.utils.get_url_arg("redirect-to")) || data.home_page;
+				return;
+			}
+			orig_200(data);
+		};
+	}
 </script>
 {% endblock %}
 
