@@ -1,4 +1,4 @@
-import frappe
+﻿import frappe
 
 
 # ── INSTALL / MIGRATION DEFAULTS ───────────────────────────────────────────────
@@ -14,9 +14,9 @@ def _seed_defaults(login_layout):
             return
         defaults = {
             "brand_color":            "#1B3F7E",
-            "accent_color":           "#F57C00",
+            "accent_color":           "#B35200",  # D-ACCENT WCAG AA
             "enable_command_palette": 1,
-            "enable_smart_home":      1,
+            "enable_smart_home":      0,  # D-FORK preserve edusuccess route
             "default_theme_mode":     "Light",
             "base_font_size":         "Default",
             "default_density":        "Comfortable",
@@ -38,7 +38,7 @@ def _seed_defaults(login_layout):
                 frappe.db.set_single_value("Theme Settings", field, val)
         fill_brand_name()
         seed_login_page_settings(layout=login_layout)
-        frappe.db.commit()
+        # frappe.db.commit()  # S2 compliance: removed manual commit
         print("\n✅ Sanpra UI V16 installed!")
         print("→ Configure at /desk/theme-settings\n")
     except Exception as e:
@@ -101,7 +101,7 @@ def seed_login_page_settings(layout="Split Screen"):
     """
     if not frappe.db.exists("DocType", "Login Page Settings"):
         return
-    if frappe.db.sql("select 1 from `tabSingles` where doctype = 'Login Page Settings' limit 1"):
+    if frappe.db.get_single_value("Login Page Settings", "enabled") is not None:  # S1 compliance: use ORM instead of raw SQL
         return
     # Plain single values, not doc.save(): nothing here can fail validation,
     # and a skipped seed can no longer leave a half-configured page.

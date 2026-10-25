@@ -1,4 +1,4 @@
-import frappe
+﻿import frappe
 
 
 def add_boot_data(bootinfo):
