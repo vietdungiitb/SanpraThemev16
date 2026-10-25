@@ -1,7 +1,7 @@
 import frappe
 from frappe.www.login import get_context as _frappe_get_context
 
-from sanpra_uiv16.login_config import get_login_config
+from sanpra_uiv16.login_config import get_login_config, resolve_request_language
 
 no_cache = True
 
@@ -11,6 +11,9 @@ STOCK_TEMPLATE = "frappe/www/login.html"
 
 def get_context(context):
     """Frappe's login context, plus the Login Page Settings design."""
+    # Resolve language first so Frappe's own labels (Email or Username, etc.) translate properly
+    resolve_request_language()
+
     preview = is_preview()
     if preview:
         # Frappe redirects signed-in users away from /login; build the page as a guest would see it.

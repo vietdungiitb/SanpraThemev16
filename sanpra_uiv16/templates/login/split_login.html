@@ -13,7 +13,7 @@
 
 {% block head_include %}
 {{ include_style('login.bundle.css') }}
-<link rel="stylesheet" href="/assets/sanpra_uiv16/css/login_split.css?v=7">
+<link rel="stylesheet" href="/assets/sanpra_uiv16/css/login_split.css?v=8">
 <style>
 	body.sl-split {
 		--sl-brand: {{ sl.brand_color }};
@@ -335,12 +335,13 @@
 				</div>
 			</section>
 
-			{% if not sl.hide_powered or sl.footer_text %}
 			<div class="sl-auth-footer">
-				{% if sl.footer_text %}<span>{{ sl.footer_text | e }}</span>{% endif %}
-				{% if not sl.hide_powered %}<span class="powered-by">{{ _("Powered by Sanpra Softwares") }}</span>{% endif %}
+				{% if sl.footer_text %}
+				<span>{{ sl.footer_text | e }}</span>
+				{% else %}
+				<span>{{ _("© 2026 Edusuccess • Hệ thống Quản trị Giáo dục & Đào tạo Toàn diện") }}</span>
+				{% endif %}
 			</div>
-			{% endif %}
 		</div>
 	</div>
 </div>

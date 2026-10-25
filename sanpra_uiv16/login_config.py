@@ -19,12 +19,6 @@ def public_url(value):
 
 
 # ── 1. BRANDING SOURCES ────────────────────────────────────────────────────────
-# Resolved on every render (not copied at install, when no Company exists yet).
-# Name: Theme Studio → default Company → Website Settings → System Settings →
-# site host. Logo: Theme Studio → default Company → Website/Navbar app logo →
-# none (the template shows an initials mark). Framework placeholder names and
-# app hook logos are skipped so a fresh site shows the organisation, not the
-# software.
 GENERIC_NAMES = {"frappe", "frappe framework", "erpnext", "frappe erpnext"}
 
 
@@ -94,35 +88,121 @@ def branding_sources(config=None):
     }
 
 
-# ── 1b. BUILT-IN COPY ──────────────────────────────────────────────────────────
-# Applied at render time to every empty field, so the page is complete on a
-# fresh install even if nothing was ever saved. The DB only holds what an admin
-# typed; clearing a field brings its default back.
+# ── 1b. BUILT-IN COPY (Edusuccess Education-First) ───────────────────────────
 DEFAULT_COPY = {
-    "badge_text": "Secure business workspace",
-    "headline": "Everything your business runs on, in one place.",
-    "description": "Sign in to {company} to manage your customers, operations, finances and team from one secure workspace.",
-    "feature_panel_title": "Your workspace at a glance",
-    "feature_status_text": "Encrypted connection",
+    "badge_text": "Secure education workspace",
+    "headline": "Smart Education Management in One Unified Platform.",
+    "description": "Sign in to {company} to manage admissions, courses, attendance, fees and faculty from one secure workspace.",
+    "feature_panel_title": "Core operations at a glance",
+    "feature_status_text": "256-bit encrypted",
     "card_eyebrow": "Secure sign-in",
     "card_heading": "Welcome back",
     "card_subtitle": "Sign in to your {company} account to continue.",
     "button_label": "Sign in",
-    "security_note": "Your connection is encrypted. What you can see depends on your assigned role.",
+    "security_note": "Your connection is encrypted. Access permissions comply with personal data protection regulations.",
     "back_link_label": "Back",
 }
 COPY_FIELDS = tuple(DEFAULT_COPY)
 
 DEFAULT_FEATURES_BUSINESS = (
-    ("es-line-reports", "Sales & customers", "Quotes, orders and invoices"),
-    ("es-line-plans", "Operations", "Stock, purchasing and projects"),
-    ("es-line-people", "Finance & people", "Accounts, reports and your team"),
+    ("es-line-people", "Admissions & Students", "CRM leads, class placement & enrollment"),
+    ("es-line-plans", "Training & Attendance", "30s dynamic QR, schedule & LMS online"),
+    ("es-line-reports", "Finance & VietQR Fees", "VietQR matching, tuition fees & GL ledger"),
 )
 DEFAULT_FEATURES_GENERAL = (
     ("es-line-plans", "Organised work", "Records, tasks and approvals"),
     ("es-line-people", "Team collaboration", "Share, assign and comment"),
     ("es-line-reports", "Reports & insights", "Live dashboards and reports"),
 )
+
+# ── 1c. HIGH-FIDELITY TRANSLATION MAPS ─────────────────────────────────────────
+VI_TRANSLATIONS = {
+    # Hero panel
+    "Secure education workspace": "HỆ THỐNG QUẢN TRỊ GIÁO DỤC TOÀN DIỆN",
+    "Secure business workspace": "HỆ THỐNG QUẢN TRỊ GIÁO DỤC TOÀN DIỆN",
+    "Smart Education Management in One Unified Platform.": "Hệ Thống Quản Trị Giáo Dục Toàn Diện — Edusuccess",
+    "Everything your center runs on, in one unified platform.": "Mọi nghiệp vụ trung tâm giáo dục, hội tụ trên một nền tảng.",
+    "Everything your business runs on, in one place.": "Mọi nghiệp vụ trung tâm giáo dục, hội tụ trên một nền tảng.",
+    "Sign in to {company} to manage admissions, courses, attendance, fees and faculty from one secure workspace.": "Đăng nhập vào Hệ thống Edusuccess để quản lý đào tạo, tuyển sinh, điểm danh QR 30s, học phí VietQR và kết nối học viên trên không gian số bảo mật.",
+    "Sign in to {company} to manage your customers, operations, finances and team from one secure workspace.": "Đăng nhập vào Hệ thống Edusuccess để quản lý đào tạo, tuyển sinh, tài chính học phí và kết nối giảng viên - học viên trên không gian làm việc số an toàn.",
+    "Core operations at a glance": "Nghiệp vụ trung tâm cốt lõi",
+    "Your workspace at a glance": "Nghiệp vụ trung tâm cốt lõi",
+    "256-bit encrypted": "Mã hóa bảo mật 256-bit",
+    "Encrypted connection": "Mã hóa bảo mật 256-bit",
+
+    # Feature cards (supports both new education keys & legacy vendor keys)
+    "Admissions & Students": "Tuyển sinh & Học viên",
+    "Sales & customers": "Tuyển sinh & Học viên",
+    "CRM leads, class placement & enrollment": "Tiếp nhận Lead CRM, xếp lớp & học phí",
+    "Quotes, orders and invoices": "Tiếp nhận Lead CRM, xếp lớp & học phí",
+    "Training & Attendance": "Đào tạo & Chuyên cần",
+    "Operations": "Đào tạo & Chuyên cần",
+    "30s dynamic QR, schedule & LMS online": "Điểm danh QR 30s, thời khóa biểu & LMS",
+    "Stock, purchasing and projects": "Điểm danh QR 30s, thời khóa biểu & LMS",
+    "Finance & VietQR Fees": "Tài chính & Thu phí VietQR",
+    "Finance & people": "Tài chính & Thu phí VietQR",
+    "VietQR matching, tuition fees & GL ledger": "Đối soát VietQR tức thì, hóa đơn & sổ cái",
+    "Accounts, reports and your team": "Đối soát VietQR tức thì, hóa đơn & sổ cái",
+
+    # Sign-in card
+    "Secure sign-in": "ĐĂNG NHẬP BẢO MẬT",
+    "Welcome back": "Chào mừng bạn trở lại",
+    "Sign in to your {company} account to continue.": "Đăng nhập vào tài khoản Edusuccess của bạn để tiếp tục.",
+    "Sign in": "Đăng nhập",
+    "Password": "Mật khẩu",
+    "Forgot password?": "Quên mật khẩu?",
+    "Email or Username": "Email hoặc Tên đăng nhập",
+    "jane@example.com": "nhap.email@edusuccess.vn",
+    "Login with Email Link": "Đăng nhập bằng Liên kết Email",
+    "Login with password": "Đăng nhập bằng Mật khẩu",
+    "Back to sign in": "Quay lại đăng nhập",
+    "Back": "Quay lại",
+    "Your connection is encrypted. What you can see depends on your assigned role.": "Kết nối được mã hóa bảo mật 256-bit. Quyền truy cập tuân thủ phân quyền và Luật Bảo vệ dữ liệu cá nhân.",
+    "Your connection is encrypted. Access permissions comply with personal data protection regulations.": "Kết nối được mã hóa bảo mật 256-bit. Quyền truy cập tuân thủ phân quyền và Luật Bảo vệ dữ liệu cá nhân.",
+    "Powered by Sanpra Softwares": "© 2026 Edusuccess • Hệ thống Quản trị Giáo dục & Đào tạo Toàn diện",
+    "© 2026 Edusuccess. Hệ thống Quản trị Giáo dục & Đào tạo Toàn diện.": "© 2026 Edusuccess • Hệ thống Quản trị Giáo dục & Đào tạo Toàn diện",
+}
+
+EN_TRANSLATIONS = {
+    "Secure education workspace": "SECURE EDUCATION WORKSPACE",
+    "Secure business workspace": "SECURE EDUCATION WORKSPACE",
+    "Smart Education Management in One Unified Platform.": "Smart Education Management in One Unified Platform.",
+    "Everything your center runs on, in one unified platform.": "Everything your center runs on, in one unified platform.",
+    "Everything your business runs on, in one place.": "Everything your center runs on, in one unified platform.",
+    "Sign in to {company} to manage admissions, courses, attendance, fees and faculty from one secure workspace.": "Sign in to {company} to manage admissions, courses, attendance, fees and faculty from one secure workspace.",
+    "Core operations at a glance": "Core Operations",
+    "Your workspace at a glance": "Core Operations",
+    "256-bit encrypted": "256-bit Encrypted",
+    "Encrypted connection": "256-bit Encrypted",
+    "Admissions & Students": "Admissions & Students",
+    "Sales & customers": "Admissions & Students",
+    "CRM leads, class placement & enrollment": "CRM leads, class placement & enrollment",
+    "Quotes, orders and invoices": "CRM leads, class placement & enrollment",
+    "Training & Attendance": "Training & Attendance",
+    "Operations": "Training & Attendance",
+    "30s dynamic QR, schedule & LMS online": "30s dynamic QR, schedule & LMS online",
+    "Stock, purchasing and projects": "30s dynamic QR, schedule & LMS online",
+    "Finance & VietQR Fees": "Finance & VietQR Fees",
+    "Finance & people": "Finance & VietQR Fees",
+    "VietQR matching, tuition fees & GL ledger": "VietQR matching, tuition fees & GL ledger",
+    "Accounts, reports and your team": "VietQR matching, tuition fees & GL ledger",
+    "Secure sign-in": "SECURE SIGN-IN",
+    "Welcome back": "Welcome back",
+    "Sign in to your {company} account to continue.": "Sign in to your {company} account to continue.",
+    "Sign in": "Sign in",
+    "Password": "Password",
+    "Forgot password?": "Forgot password?",
+    "Email or Username": "Email or Username",
+    "jane@example.com": "enter.email@edusuccess.vn",
+    "Login with Email Link": "Login with Email Link",
+    "Login with password": "Login with Password",
+    "Back to sign in": "Back to sign in",
+    "Back": "Back",
+    "Your connection is encrypted. What you can see depends on your assigned role.": "Your connection is encrypted. Access permissions comply with personal data protection regulations.",
+    "Your connection is encrypted. Access permissions comply with personal data protection regulations.": "Your connection is encrypted. Access permissions comply with personal data protection regulations.",
+    "Powered by Sanpra Softwares": "© 2026 Edusuccess. Comprehensive Education Management System.",
+    "© 2026 Edusuccess. Hệ thống Quản trị Giáo dục & Đào tạo Toàn diện.": "© 2026 Edusuccess. Comprehensive Education Management System.",
+}
 
 
 def default_features():
@@ -145,14 +225,31 @@ def safe_link(value):
 
 def initials(name):
     words = str(name or "").split()
-    return "".join(word[0] for word in words[:2]).upper() or "C"
+    return "".join(word[0] for word in words[:2]).upper() or "E"
 
 
 def text_of(value, company):
-    """Translate stored copy, then fill the {company} placeholder so copy stays
-    correct when the name changes."""
+    """Translate stored copy with high-fidelity dictionary fallback,
+    then fill the {company} placeholder."""
     value = str(value or "").strip()
-    return frappe._(value).replace("{company}", company).strip() if value else ""
+    if not value:
+        return ""
+
+    current_lang = getattr(frappe.local, "lang", "vi")
+    if current_lang == "vi":
+        if value in VI_TRANSLATIONS:
+            res = VI_TRANSLATIONS[value]
+        else:
+            res = frappe._(value)
+    else:
+        if value in EN_TRANSLATIONS:
+            res = EN_TRANSLATIONS[value]
+        else:
+            res = frappe._(value, lang="en") if hasattr(frappe, "_") else value
+
+    if "{company}" in res:
+        res = res.replace("{company}", company)
+    return res.strip()
 
 
 def theme_copy(config, key):
@@ -169,16 +266,30 @@ def get_settings_doc():
         return None
 
 
-def get_login_config():
-    """Everything the login template needs, with branding fallbacks resolved."""
+def resolve_request_language():
+    """Resolve Guest/User language for login: URL ?lang= > cookie preferred_language/user_lang > 'vi'"""
     try:
         req = getattr(frappe, "request", None)
-        cookies = getattr(req, "cookies", {}) if req else {}
-        pref_cookie = cookies.get("preferred_language") or cookies.get("user_lang")
-        if not pref_cookie and getattr(frappe.session, "user", "Guest") == "Guest":
-            frappe.local.lang = frappe.get_system_settings("language") or "vi"
+        args = getattr(frappe, "form_dict", {}) or {}
+        lang = (args.get("lang") or "").strip().lower()
+        if not lang and req:
+            cookies = getattr(req, "cookies", {}) or {}
+            lang = (cookies.get("preferred_language") or cookies.get("user_lang") or "").strip().lower()
+        if lang not in ("vi", "en"):
+            lang = "vi"
+
+        frappe.local.lang = lang
+        frappe.local.lang_full_dict = None
+        return lang
     except Exception:
-        pass
+        frappe.local.lang = "vi"
+        return "vi"
+
+
+def get_login_config():
+    """Everything the login template needs, with branding fallbacks resolved."""
+    # ── Resolve Guest Language (Default VI for Edusuccess, toggleable to EN) ──
+    resolve_request_language()
 
     config = theme_config()
     brand = branding_sources(config)
@@ -206,6 +317,10 @@ def get_login_config():
         }
         for row in rows[:MAX_FEATURE_CARDS]
     ]
+
+    # Resolve elegant default footer text
+    default_footer = text_of("© 2026 Edusuccess. Hệ thống Quản trị Giáo dục & Đào tạo Toàn diện.", company)
+    footer_text = config.get("footer_text") or default_footer
 
     return frappe._dict(
         enabled=bool(cint(doc.enabled)),
@@ -244,6 +359,6 @@ def get_login_config():
         back_link_url=safe_link(doc.back_link_url),
         # Carried over from Theme Studio
         preferred_mode=config.get("preferred_mode") or "Light",
-        footer_text=config.get("footer_text") or "",
-        hide_powered=bool(config.get("hide_powered")),
+        footer_text=footer_text,
+        hide_powered=True,  # Fully eliminate vendor "Powered by Sanpra Softwares"
     )

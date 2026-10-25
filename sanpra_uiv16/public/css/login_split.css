@@ -784,7 +784,7 @@ html body.sl-split .sl-card .sign-up-message a:hover { text-decoration: underlin
     gap: clamp(14px, 2.6vh, 28px) !important;
     padding: clamp(24px, 4.4vh, 48px) clamp(28px, 3vw, 56px) clamp(20px, 3.4vh, 36px) !important;
   }
-  .sl-eyebrow { margin-bottom: clamp(10px, 2vh, 22px); }
+  .sl-eyebrow { margin-bottom: 0 !important; }
   .sl-eyebrow-icon { width: clamp(28px, 3.4vh, 34px); height: clamp(28px, 3.4vh, 34px); }
   html body.sl-split .sl-card-title { font-size: clamp(26px, min(2.6vw, 4.4vh), 40px); }
   .sl-card-subtitle { margin-top: clamp(6px, 1.2vh, 12px); font-size: clamp(14px, 1.8vh, 16px); }
