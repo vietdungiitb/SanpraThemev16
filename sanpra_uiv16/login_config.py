@@ -455,4 +455,5 @@ def get_login_config():
         preferred_mode=config.get("preferred_mode") or "Light",
         footer_text=footer_text,
         hide_powered=True,  # Fully eliminate vendor "Powered by Sanpra Softwares"
+        lang=current_lang,
     )

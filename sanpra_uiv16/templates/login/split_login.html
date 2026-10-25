@@ -64,12 +64,13 @@
 		{% else %}
 		<div></div>
 		{% endif %}
+		{% set current_lang = lang or (sl and sl.lang) or 'vi' %}
 		<div class="sl-lang-switch" role="group" aria-label="{{ _('Change language') }}">
-			<button type="button" class="sl-lang-btn {% if frappe.local.lang == 'vi' %}active{% endif %}" data-lang="vi" title="Tiếng Việt">
+			<button type="button" class="sl-lang-btn {% if current_lang == 'vi' %}active{% endif %}" data-lang="vi" title="Tiếng Việt">
 				<span class="sl-lang-flag">🇻🇳</span> VN
 			</button>
 			<span class="sl-lang-divider">/</span>
-			<button type="button" class="sl-lang-btn {% if frappe.local.lang != 'vi' %}active{% endif %}" data-lang="en" title="English">
+			<button type="button" class="sl-lang-btn {% if current_lang == 'en' %}active{% endif %}" data-lang="en" title="English">
 				<span class="sl-lang-flag">🇬🇧</span> EN
 			</button>
 		</div>

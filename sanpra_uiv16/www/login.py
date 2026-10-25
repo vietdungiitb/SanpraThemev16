@@ -41,6 +41,7 @@ def get_context(context):
         context.full_width = True
         context.body_class = f"{context.body_class or ''} sl-split".strip()
         context.title = sl.company_name
+    context.lang = lang
     return context
 
 
