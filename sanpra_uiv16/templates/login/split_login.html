@@ -6,6 +6,7 @@
 {% extends "templates/web.html" %}
 
 {% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
 
 {% block favicon %}
 <link rel="shortcut icon" href="{{ (sl.favicon or favicon or '/assets/frappe/images/frappe-favicon.svg') | abs_url | e }}" type="image/x-icon">
