@@ -12,7 +12,12 @@ STOCK_TEMPLATE = "frappe/www/login.html"
 def get_context(context):
     """Frappe's login context, plus the Login Page Settings design."""
     # Resolve language first so Frappe's own labels (Email or Username, etc.) translate properly
-    resolve_request_language()
+    lang = resolve_request_language()
+    try:
+        if hasattr(frappe.local, "cookie_manager") and frappe.local.cookie_manager:
+            frappe.local.cookie_manager.set_cookie("user_lang", lang)
+    except Exception:
+        pass
 
     preview = is_preview()
     if preview:

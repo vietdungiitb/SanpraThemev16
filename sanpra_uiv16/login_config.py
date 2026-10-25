@@ -90,14 +90,14 @@ def branding_sources(config=None):
 
 # ── 1b. BUILT-IN COPY (Edusuccess Education-First) ───────────────────────────
 DEFAULT_COPY = {
-    "badge_text": "Secure education workspace",
+    "badge_text": "SECURE EDUCATION WORKSPACE",
     "headline": "Smart Education Management in One Unified Platform.",
-    "description": "Sign in to {company} to manage admissions, courses, attendance, fees and faculty from one secure workspace.",
+    "description": "Sign in to Edusuccess to manage admissions, courses, attendance, fees and faculty from one secure workspace.",
     "feature_panel_title": "Core operations at a glance",
     "feature_status_text": "256-bit encrypted",
-    "card_eyebrow": "Secure sign-in",
+    "card_eyebrow": "SECURE SIGN-IN",
     "card_heading": "Welcome back",
-    "card_subtitle": "Sign in to your {company} account to continue.",
+    "card_subtitle": "Sign in to your Edusuccess account to continue.",
     "button_label": "Sign in",
     "security_note": "Your connection is encrypted. Access permissions comply with personal data protection regulations.",
     "back_link_label": "Back",
@@ -105,9 +105,9 @@ DEFAULT_COPY = {
 COPY_FIELDS = tuple(DEFAULT_COPY)
 
 DEFAULT_FEATURES_BUSINESS = (
-    ("es-line-people", "Admissions & Students", "CRM leads, class placement & enrollment"),
-    ("es-line-plans", "Training & Attendance", "30s dynamic QR, schedule & LMS online"),
-    ("es-line-reports", "Finance & VietQR Fees", "VietQR matching, tuition fees & GL ledger"),
+    ("es-line-people", "Admissions & Students", "Student admissions, class placement & enrollment"),
+    ("es-line-plans", "Training & Attendance", "30s dynamic QR attendance, schedules & online learning"),
+    ("es-line-reports", "Finance & Tuition Fees", "Automated fee matching, invoices & GL ledger"),
 )
 DEFAULT_FEATURES_GENERAL = (
     ("es-line-plans", "Organised work", "Records, tasks and approvals"),
@@ -119,40 +119,53 @@ DEFAULT_FEATURES_GENERAL = (
 VI_TRANSLATIONS = {
     # Hero panel
     "Secure education workspace": "HỆ THỐNG QUẢN TRỊ GIÁO DỤC TOÀN DIỆN",
+    "SECURE EDUCATION WORKSPACE": "HỆ THỐNG QUẢN TRỊ GIÁO DỤC TOÀN DIỆN",
     "Secure business workspace": "HỆ THỐNG QUẢN TRỊ GIÁO DỤC TOÀN DIỆN",
     "Smart Education Management in One Unified Platform.": "Hệ Thống Quản Trị Giáo Dục Toàn Diện — Edusuccess",
     "Everything your center runs on, in one unified platform.": "Mọi nghiệp vụ trung tâm giáo dục, hội tụ trên một nền tảng.",
     "Everything your business runs on, in one place.": "Mọi nghiệp vụ trung tâm giáo dục, hội tụ trên một nền tảng.",
+    "Sign in to Edusuccess to manage admissions, courses, attendance, fees and faculty from one secure workspace.": "Đăng nhập vào Hệ thống Edusuccess để quản lý đào tạo, tuyển sinh, điểm danh QR 30s, học phí VietQR và kết nối học viên trên không gian số bảo mật.",
     "Sign in to {company} to manage admissions, courses, attendance, fees and faculty from one secure workspace.": "Đăng nhập vào Hệ thống Edusuccess để quản lý đào tạo, tuyển sinh, điểm danh QR 30s, học phí VietQR và kết nối học viên trên không gian số bảo mật.",
     "Sign in to {company} to manage your customers, operations, finances and team from one secure workspace.": "Đăng nhập vào Hệ thống Edusuccess để quản lý đào tạo, tuyển sinh, tài chính học phí và kết nối giảng viên - học viên trên không gian làm việc số an toàn.",
     "Core operations at a glance": "Nghiệp vụ trung tâm cốt lõi",
+    "Core Operations": "Nghiệp vụ trung tâm cốt lõi",
     "Your workspace at a glance": "Nghiệp vụ trung tâm cốt lõi",
     "256-bit encrypted": "Mã hóa bảo mật 256-bit",
+    "256-bit Encrypted": "Mã hóa bảo mật 256-bit",
     "Encrypted connection": "Mã hóa bảo mật 256-bit",
 
-    # Feature cards (supports both new education keys & legacy vendor keys)
+    # Feature cards (supports education keys & legacy keys)
     "Admissions & Students": "Tuyển sinh & Học viên",
     "Sales & customers": "Tuyển sinh & Học viên",
+    "Student admissions, class placement & enrollment": "Tiếp nhận học viên, phân lớp & học phí",
     "CRM leads, class placement & enrollment": "Tiếp nhận Lead CRM, xếp lớp & học phí",
     "Quotes, orders and invoices": "Tiếp nhận Lead CRM, xếp lớp & học phí",
     "Training & Attendance": "Đào tạo & Chuyên cần",
     "Operations": "Đào tạo & Chuyên cần",
+    "30s dynamic QR attendance, schedules & online learning": "Điểm danh QR 30 giây, thời khóa biểu & học trực tuyến",
     "30s dynamic QR, schedule & LMS online": "Điểm danh QR 30s, thời khóa biểu & LMS",
     "Stock, purchasing and projects": "Điểm danh QR 30s, thời khóa biểu & LMS",
+    "Finance & Tuition Fees": "Tài chính & Thu phí VietQR",
     "Finance & VietQR Fees": "Tài chính & Thu phí VietQR",
     "Finance & people": "Tài chính & Thu phí VietQR",
+    "Automated fee matching, invoices & GL ledger": "Đối soát VietQR tức thì, hóa đơn & sổ cái",
+    "Automated fee reconciliation, invoices & GL ledger": "Đối soát VietQR tức thì, hóa đơn & sổ cái",
     "VietQR matching, tuition fees & GL ledger": "Đối soát VietQR tức thì, hóa đơn & sổ cái",
     "Accounts, reports and your team": "Đối soát VietQR tức thì, hóa đơn & sổ cái",
 
     # Sign-in card
+    "SECURE SIGN-IN": "ĐĂNG NHẬP BẢO MẬT",
     "Secure sign-in": "ĐĂNG NHẬP BẢO MẬT",
     "Welcome back": "Chào mừng bạn trở lại",
+    "Sign in to your Edusuccess account to continue.": "Đăng nhập vào tài khoản Edusuccess của bạn để tiếp tục.",
     "Sign in to your {company} account to continue.": "Đăng nhập vào tài khoản Edusuccess của bạn để tiếp tục.",
     "Sign in": "Đăng nhập",
     "Password": "Mật khẩu",
     "Forgot password?": "Quên mật khẩu?",
     "Email or Username": "Email hoặc Tên đăng nhập",
+    "Email": "Email",
     "jane@example.com": "nhap.email@edusuccess.vn",
+    "enter.email@edusuccess.vn": "nhap.email@edusuccess.vn",
     "Login with Email Link": "Đăng nhập bằng Liên kết Email",
     "Login with password": "Đăng nhập bằng Mật khẩu",
     "Back to sign in": "Quay lại đăng nhập",
@@ -161,47 +174,100 @@ VI_TRANSLATIONS = {
     "Your connection is encrypted. Access permissions comply with personal data protection regulations.": "Kết nối được mã hóa bảo mật 256-bit. Quyền truy cập tuân thủ phân quyền và Luật Bảo vệ dữ liệu cá nhân.",
     "Powered by Sanpra Softwares": "© 2026 Edusuccess • Hệ thống Quản trị Giáo dục & Đào tạo Toàn diện",
     "© 2026 Edusuccess. Hệ thống Quản trị Giáo dục & Đào tạo Toàn diện.": "© 2026 Edusuccess • Hệ thống Quản trị Giáo dục & Đào tạo Toàn diện",
+    "© 2026 Edusuccess • Hệ thống Quản trị Giáo dục & Đào tạo Toàn diện": "© 2026 Edusuccess • Hệ thống Quản trị Giáo dục & Đào tạo Toàn diện",
+    "© 2026 Edusuccess. Comprehensive Education Management System.": "© 2026 Edusuccess • Hệ thống Quản trị Giáo dục & Đào tạo Toàn diện",
 }
 
 EN_TRANSLATIONS = {
+    # Hero panel
     "Secure education workspace": "SECURE EDUCATION WORKSPACE",
+    "SECURE EDUCATION WORKSPACE": "SECURE EDUCATION WORKSPACE",
     "Secure business workspace": "SECURE EDUCATION WORKSPACE",
+    "HỆ THỐNG QUẢN TRỊ GIÁO DỤC TOÀN DIỆN": "SECURE EDUCATION WORKSPACE",
     "Smart Education Management in One Unified Platform.": "Smart Education Management in One Unified Platform.",
+    "Hệ Thống Quản Trị Giáo Dục Toàn Diện — Edusuccess": "Smart Education Management in One Unified Platform.",
     "Everything your center runs on, in one unified platform.": "Everything your center runs on, in one unified platform.",
     "Everything your business runs on, in one place.": "Everything your center runs on, in one unified platform.",
-    "Sign in to {company} to manage admissions, courses, attendance, fees and faculty from one secure workspace.": "Sign in to {company} to manage admissions, courses, attendance, fees and faculty from one secure workspace.",
+    "Mọi nghiệp vụ trung tâm giáo dục, hội tụ trên một nền tảng.": "Everything your center runs on, in one unified platform.",
+    "Sign in to Edusuccess to manage admissions, courses, attendance, fees and faculty from one secure workspace.": "Sign in to Edusuccess to manage admissions, courses, attendance, fees and faculty from one secure workspace.",
+    "Sign in to {company} to manage admissions, courses, attendance, fees and faculty from one secure workspace.": "Sign in to Edusuccess to manage admissions, courses, attendance, fees and faculty from one secure workspace.",
+    "Sign in to {company} to manage your customers, operations, finances and team from one secure workspace.": "Sign in to Edusuccess to manage admissions, courses, attendance, fees and faculty from one secure workspace.",
+    "Đăng nhập vào Hệ thống Edusuccess để quản lý đào tạo, tuyển sinh, điểm danh QR 30s, học phí VietQR và kết nối học viên trên không gian số bảo mật.": "Sign in to Edusuccess to manage admissions, courses, attendance, fees and faculty from one secure workspace.",
+    "Đăng nhập vào Hệ thống Edusuccess để quản lý đào tạo, tuyển sinh, tài chính học phí và kết nối giảng viên - học viên trên không gian làm việc số an toàn.": "Sign in to Edusuccess to manage admissions, courses, attendance, fees and faculty from one secure workspace.",
     "Core operations at a glance": "Core Operations",
+    "Core Operations": "Core Operations",
     "Your workspace at a glance": "Core Operations",
+    "Nghiệp vụ trung tâm cốt lõi": "Core Operations",
     "256-bit encrypted": "256-bit Encrypted",
+    "256-bit Encrypted": "256-bit Encrypted",
     "Encrypted connection": "256-bit Encrypted",
+    "Mã hóa bảo mật 256-bit": "256-bit Encrypted",
+
+    # Feature cards
     "Admissions & Students": "Admissions & Students",
+    "Tuyển sinh & Học viên": "Admissions & Students",
     "Sales & customers": "Admissions & Students",
-    "CRM leads, class placement & enrollment": "CRM leads, class placement & enrollment",
-    "Quotes, orders and invoices": "CRM leads, class placement & enrollment",
+    "Student admissions, class placement & enrollment": "Student admissions, class placement & enrollment",
+    "CRM leads, class placement & enrollment": "Student admissions, class placement & enrollment",
+    "Quotes, orders and invoices": "Student admissions, class placement & enrollment",
+    "Tiếp nhận học viên, phân lớp & học phí": "Student admissions, class placement & enrollment",
+    "Tiếp nhận Lead CRM, xếp lớp & học phí": "Student admissions, class placement & enrollment",
     "Training & Attendance": "Training & Attendance",
+    "Đào tạo & Chuyên cần": "Training & Attendance",
     "Operations": "Training & Attendance",
-    "30s dynamic QR, schedule & LMS online": "30s dynamic QR, schedule & LMS online",
-    "Stock, purchasing and projects": "30s dynamic QR, schedule & LMS online",
-    "Finance & VietQR Fees": "Finance & VietQR Fees",
-    "Finance & people": "Finance & VietQR Fees",
-    "VietQR matching, tuition fees & GL ledger": "VietQR matching, tuition fees & GL ledger",
-    "Accounts, reports and your team": "VietQR matching, tuition fees & GL ledger",
+    "30s dynamic QR attendance, schedules & online learning": "30s dynamic QR attendance, schedules & online learning",
+    "30s dynamic QR, schedule & LMS online": "30s dynamic QR attendance, schedules & online learning",
+    "Stock, purchasing and projects": "30s dynamic QR attendance, schedules & online learning",
+    "Điểm danh QR 30 giây, thời khóa biểu & học trực tuyến": "30s dynamic QR attendance, schedules & online learning",
+    "Điểm danh QR 30s, thời khóa biểu & LMS": "30s dynamic QR attendance, schedules & online learning",
+    "Finance & Tuition Fees": "Finance & Tuition Fees",
+    "Finance & VietQR Fees": "Finance & Tuition Fees",
+    "Tài chính & Thu phí VietQR": "Finance & Tuition Fees",
+    "Finance & people": "Finance & Tuition Fees",
+    "Automated fee matching, invoices & GL ledger": "Automated fee matching, invoices & GL ledger",
+    "Automated fee reconciliation, invoices & GL ledger": "Automated fee matching, invoices & GL ledger",
+    "VietQR matching, tuition fees & GL ledger": "Automated fee matching, invoices & GL ledger",
+    "Đối soát VietQR tức thì, hóa đơn & sổ cái": "Automated fee matching, invoices & GL ledger",
+    "Accounts, reports and your team": "Automated fee matching, invoices & GL ledger",
+
+    # Sign-in card
+    "SECURE SIGN-IN": "SECURE SIGN-IN",
     "Secure sign-in": "SECURE SIGN-IN",
+    "ĐĂNG NHẬP BẢO MẬT": "SECURE SIGN-IN",
     "Welcome back": "Welcome back",
-    "Sign in to your {company} account to continue.": "Sign in to your {company} account to continue.",
+    "Chào mừng bạn trở lại": "Welcome back",
+    "Sign in to your Edusuccess account to continue.": "Sign in to your Edusuccess account to continue.",
+    "Sign in to your {company} account to continue.": "Sign in to your Edusuccess account to continue.",
+    "Đăng nhập vào tài khoản Edusuccess của bạn để tiếp tục.": "Sign in to your Edusuccess account to continue.",
     "Sign in": "Sign in",
+    "Đăng nhập": "Sign in",
     "Password": "Password",
+    "Mật khẩu": "Password",
     "Forgot password?": "Forgot password?",
+    "Quên mật khẩu?": "Forgot password?",
     "Email or Username": "Email or Username",
+    "Email": "Email",
+    "Email hoặc Tên đăng nhập": "Email or Username",
     "jane@example.com": "enter.email@edusuccess.vn",
+    "nhap.email@edusuccess.vn": "enter.email@edusuccess.vn",
+    "enter.email@edusuccess.vn": "enter.email@edusuccess.vn",
     "Login with Email Link": "Login with Email Link",
+    "Đăng nhập bằng Liên kết Email": "Login with Email Link",
+    "Đăng nhập bằng liên kết Email": "Login with Email Link",
     "Login with password": "Login with Password",
+    "Đăng nhập bằng Mật khẩu": "Login with Password",
+    "Đăng nhập bằng mật khẩu": "Login with Password",
     "Back to sign in": "Back to sign in",
+    "Quay lại đăng nhập": "Back to sign in",
     "Back": "Back",
+    "Quay lại": "Back",
     "Your connection is encrypted. What you can see depends on your assigned role.": "Your connection is encrypted. Access permissions comply with personal data protection regulations.",
     "Your connection is encrypted. Access permissions comply with personal data protection regulations.": "Your connection is encrypted. Access permissions comply with personal data protection regulations.",
+    "Kết nối được mã hóa bảo mật 256-bit. Quyền truy cập tuân thủ phân quyền và Luật Bảo vệ dữ liệu cá nhân.": "Your connection is encrypted. Access permissions comply with personal data protection regulations.",
     "Powered by Sanpra Softwares": "© 2026 Edusuccess. Comprehensive Education Management System.",
     "© 2026 Edusuccess. Hệ thống Quản trị Giáo dục & Đào tạo Toàn diện.": "© 2026 Edusuccess. Comprehensive Education Management System.",
+    "© 2026 Edusuccess • Hệ thống Quản trị Giáo dục & Đào tạo Toàn diện": "© 2026 Edusuccess. Comprehensive Education Management System.",
+    "© 2026 Edusuccess. Comprehensive Education Management System.": "© 2026 Edusuccess. Comprehensive Education Management System.",
 }
 
 
@@ -228,14 +294,30 @@ def initials(name):
     return "".join(word[0] for word in words[:2]).upper() or "E"
 
 
+def normalize_brand_name(name, lang="vi"):
+    raw = str(name or "").strip()
+    if not raw or any(kw in raw.upper() for kw in ("CÔNG TY", "TNHH", "SUCCESS", "EDUSUCCESS", "WORKSPACE")):
+        return "Edusuccess"
+    return raw
+
+
 def text_of(value, company):
     """Translate stored copy with high-fidelity dictionary fallback,
-    then fill the {company} placeholder."""
+    ensuring 100% pure Vietnamese when lang=vi and 100% pure English when lang=en."""
     value = str(value or "").strip()
     if not value:
         return ""
 
     current_lang = getattr(frappe.local, "lang", "vi")
+
+    # Normalize any Vietnamese legal company entity string embedded in value back to {company}
+    for raw_legal in (
+        "CÔNG TY TNHH ĐẦU TƯ PHÁT TRIỂN GIÁO DỤC QUỐC TẾ SUCCESS",
+        company,
+    ):
+        if raw_legal and raw_legal in value:
+            value = value.replace(raw_legal, "{company}")
+
     if current_lang == "vi":
         if value in VI_TRANSLATIONS:
             res = VI_TRANSLATIONS[value]
@@ -247,8 +329,11 @@ def text_of(value, company):
         else:
             res = frappe._(value, lang="en") if hasattr(frappe, "_") else value
 
+    # Guarantee NO Vietnamese legal company entity string or placeholder leaks into final output
+    res = res.replace("CÔNG TY TNHH ĐẦU TƯ PHÁT TRIỂN GIÁO DỤC QUỐC TẾ SUCCESS", "Edusuccess")
     if "{company}" in res:
-        res = res.replace("{company}", company)
+        res = res.replace("{company}", "Edusuccess")
+
     return res.strip()
 
 
@@ -267,14 +352,17 @@ def get_settings_doc():
 
 
 def resolve_request_language():
-    """Resolve Guest/User language for login: URL ?lang= > cookie preferred_language/user_lang > 'vi'"""
+    """Resolve Guest/User language for login: URL ?lang= > explicit cookie preferred_language > 'vi'"""
     try:
         req = getattr(frappe, "request", None)
         args = getattr(frappe, "form_dict", {}) or {}
+        # 1. URL parameter ?lang= has highest priority
         lang = (args.get("lang") or "").strip().lower()
         if not lang and req:
+            # 2. Check explicit preferred_language cookie (set when user explicitly clicked switcher)
             cookies = getattr(req, "cookies", {}) or {}
-            lang = (cookies.get("preferred_language") or cookies.get("user_lang") or "").strip().lower()
+            lang = (cookies.get("preferred_language") or "").strip().lower()
+        # 3. Always default to "vi" for Edusuccess Vietnam
         if lang not in ("vi", "en"):
             lang = "vi"
 
@@ -302,7 +390,7 @@ def get_login_config():
     def pick(field):
         return brand[field] if auto else (doc.get(field) or brand[field])
 
-    company = pick("company_name")
+    company = normalize_brand_name(pick("company_name"), getattr(frappe.local, "lang", "vi"))
 
     def text(field, fallback=""):
         return text_of(doc.get(field) or fallback or DEFAULT_COPY.get(field, ""), company)
@@ -318,9 +406,15 @@ def get_login_config():
         for row in rows[:MAX_FEATURE_CARDS]
     ]
 
-    # Resolve elegant default footer text
-    default_footer = text_of("© 2026 Edusuccess. Hệ thống Quản trị Giáo dục & Đào tạo Toàn diện.", company)
+    # Resolve elegant default footer text aligned with current language
+    current_lang = getattr(frappe.local, "lang", "vi")
+    if current_lang == "en":
+        default_footer = "© 2026 Edusuccess. Comprehensive Education Management System."
+    else:
+        default_footer = "© 2026 Edusuccess • Hệ thống Quản trị Giáo dục & Đào tạo Toàn diện"
     footer_text = config.get("footer_text") or default_footer
+    if "Sanpra" in footer_text or "CÔNG TY" in footer_text:
+        footer_text = default_footer
 
     return frappe._dict(
         enabled=bool(cint(doc.enabled)),
