@@ -760,14 +760,36 @@
     /* ── Build toolbar ── */
     var $tb = $('<div id="st-top-toolbar"></div>');
 
-    /* Left: clock + Today's View (user moved to right avatar button) */
+    /* Left: App Switcher + clock + Desktop View */
+    var appsTitle = (window.frappe && frappe._) ? frappe._("Apps") : "Apps";
+    var deskTitle = (window.frappe && frappe._) ? frappe._("Desktop") : "Desktop";
     var $left = $(
       '<div class="st-tb-left">' +
+        '<button id="st-tb-app-switcher" class="st-tb-btn" title="' + appsTitle + '" aria-label="' + appsTitle + '">' +
+          '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+            '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>' +
+            '<polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>' +
+            '<line x1="12" y1="22.08" x2="12" y2="12"></line>' +
+          '</svg>' +
+        '</button>' +
+        '<span class="st-tb-sep"></span>' +
         '<span id="st-tb-clock"></span>' +
         '<span class="st-tb-sep"></span>' +
-        '<a id="st-sh-link" href="/desk/smart-home" title="Today\'s View">&#9732; Today\'s View</a>' +
+        '<a id="st-sh-link" href="/desk/desktop" title="' + deskTitle + '">&#9732; ' + deskTitle + '</a>' +
       "</div>"
     );
+
+    $left.find("#st-tb-app-switcher").on("click", function (e) {
+      e.preventDefault();
+      var $native = $(".app-switcher-dropdown, .app-switcher-menu, .navbar-brand");
+      if ($native.length && $native.is(":visible")) {
+        $native.first().click();
+      } else if (window.frappe && frappe.set_route) {
+        frappe.set_route("desktop");
+      } else {
+        window.location.href = "/desk/desktop";
+      }
+    });
 
     /* Clock ticker */
     function tickClock() {
@@ -887,10 +909,13 @@
     });
 
     /* Search bar — opens the command palette */
+    var isVi = (frappe.boot && frappe.boot.lang === "vi") || (currentLang === "vi");
+    var searchPlaceholder = isVi ? "Tìm kiếm..." : ((window.frappe && frappe._) ? frappe._("Search...") : "Search...");
+    var searchTitle = isVi ? "Tìm kiếm (Ctrl+K)" : ((window.frappe && frappe._) ? frappe._("Search (Ctrl+K)") : "Search (Ctrl+K)");
     var $searchBar = $(
-      '<button id="st-tb-search" title="Search (Ctrl+K)">' +
+      '<button id="st-tb-search" title="' + searchTitle + '">' +
         '<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="5.5" cy="5.5" r="4" stroke="currentColor" stroke-width="1.4"/><path d="M8.5 8.5L11 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>' +
-        '<span class="st-tb-search-text">Search...</span>' +
+        '<span class="st-tb-search-text">' + searchPlaceholder + '</span>' +
         '<span class="st-tb-search-kbd">Ctrl K</span>' +
       '</button>'
     );

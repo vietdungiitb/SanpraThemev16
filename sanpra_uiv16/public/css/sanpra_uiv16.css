@@ -1588,10 +1588,32 @@ body.st-has-toolbar .body-sidebar {
 body.st-has-toolbar .page-container {
   padding-top: 36px !important;
 }
-/* Legacy v15 selectors — kept for compatibility */
+/* Suppress redundant Frappe native navbar when Sanpra top toolbar is active */
 body.st-has-toolbar .navbar,
-body.st-has-toolbar header.navbar {
-  top: 36px !important;
+body.st-has-toolbar header.navbar,
+body.st-has-toolbar .navbar-default {
+  display: none !important;
+}
+
+/* App Switcher button in top toolbar */
+#st-top-toolbar #st-tb-app-switcher {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.08);
+  color: #fff !important;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+#st-top-toolbar #st-tb-app-switcher:hover {
+  background: rgba(255,255,255,0.18);
+  border-color: var(--st-accent, #B35200);
+  transform: translateY(-1px);
 }
 
 #st-top-toolbar .st-tb-left {
