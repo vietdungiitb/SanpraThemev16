@@ -434,9 +434,10 @@
           '<a class="st-rail-brand" href="/desk/home"></a>' +
           '<div class="st-rail-items">' +
             items.map(function (item) {
+              var label = __(item.title || "");
               var iconHtml = item.icon
                 ? frappe.utils.icon(item.icon, "md")
-                : '<span class="st-rail-app-fallback">' + esc(String(item.title).charAt(0)) + '</span>';
+                : '<span class="st-rail-app-fallback">' + esc(String(label).charAt(0)) + '</span>';
               var iconClass = "st-rail-app-icon";
               if (item.logo) {
                 iconClass += " has-logo";
@@ -444,9 +445,9 @@
                   '<span class="st-rail-app-glyph">' + iconHtml + '</span>';
               }
               return '<a class="st-rail-app" href="/desk/' + encodeURIComponent(item.route).replace(/%2F/gi, "/") + '" ' +
-                'data-route="' + esc(item.route) + '" data-app="' + esc(item.appKey) + '" title="' + esc(item.title) + '">' +
+                'data-route="' + esc(item.route) + '" data-app="' + esc(item.appKey) + '" title="' + esc(label) + '">' +
                 '<span class="' + iconClass + '">' + iconHtml + '</span>' +
-                '<span class="st-rail-app-label st-rail-label">' + esc(item.title) + '</span></a>';
+                '<span class="st-rail-app-label st-rail-label">' + esc(label) + '</span></a>';
             }).join("") +
           '</div>' +
           '<button type="button" class="st-rail-collapse" title="' + esc(__("Toggle sidebar")) + '">' +
