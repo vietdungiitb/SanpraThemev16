@@ -533,10 +533,11 @@ body.st-has-toolbar #st-icon-rail {
   text-align: center;
   max-width: 100%;
   overflow: hidden;
-  /* Two lines, so "Frappe HR" / "Frappe Framework" wrap instead of
-     truncating to "Frappe ..." in the 72px rail. */
+  /* Xuống dòng theo dấu cách, KHÔNG tách giữa từ: "Khung hệ thống" thành
+     2 dòng đẹp; từ đơn dài quá khổ mới ngắt (ellipsis) thay vì "Framewo rk". */
   white-space: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: keep-all;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -673,6 +674,7 @@ html[data-st-nav="dock"] {
    .collapse-sidebar-link (chevron icon, same interaction pattern). */
 #st-icon-rail .st-rail-collapse {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   gap: 8px;
   width: 100%;

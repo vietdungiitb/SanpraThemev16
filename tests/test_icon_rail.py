@@ -320,7 +320,8 @@ class IconRailTest(unittest.TestCase):
     def test_theme_engine_validates_and_emits_rail_variables(self):
         engine = THEME_ENGINE.read_text(encoding="utf-8")
 
-        self.assertIn('"sidebar_layout": "Icon Rail"', engine)
+        # Mặc định Tree (23369f1): Tree là layout khởi đầu an toàn, Icon Rail là opt-in.
+        self.assertIn('"sidebar_layout": "Tree"', engine)
         self.assertIn('"icon_rail_width": 72', engine)
         self.assertIn('"icon_rail_width": (60, 120)', engine)
         self.assertIn('"sidebar_layout": {"Tree", "Icon Rail"}', engine)
@@ -342,8 +343,8 @@ class IconRailTest(unittest.TestCase):
     def test_rail_assets_are_cache_busted(self):
         hooks = HOOKS.read_text(encoding="utf-8")
 
-        self.assertIn("/assets/sanpra_uiv16/css/sidebar.css?v=37", hooks)
-        self.assertIn("/assets/sanpra_uiv16/js/sanpra_uiv16.js?v=67", hooks)
+        self.assertIn("/assets/sanpra_uiv16/css/sidebar.css?v=38", hooks)
+        self.assertIn("/assets/sanpra_uiv16/js/sanpra_uiv16.js?v=69", hooks)
         self.assertIn("/assets/sanpra_uiv16/css/theme_studio.css?v=19", hooks)
 
     def test_legacy_config_treats_never_set_icon_rail_width_as_unset_not_zero(self):

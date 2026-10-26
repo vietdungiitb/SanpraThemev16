@@ -2692,3 +2692,26 @@ html[dir="rtl"] #st-lang-dropdown {
     max-width: 100%;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════════════
+   DESKTOP PAGE — one header + full tile labels (NAV-SANPRA-UI)
+   - The core desktop template (.desktop-navbar: brand cube + centered
+     search + bell + avatar) duplicates the main navbar (search + bell +
+     avatar). Hide the duplicate; navbar search/user stay functional.
+   - App tiles show translated titles (Education→Học vấn, CRM→Quản lý
+     tuyển sinh...); allow 2 lines so long names are never cut to "...".
+   Scoped to #page-desktop so no other Desk page is affected.
+   ═══════════════════════════════════════════════════════════════════════ */
+#page-desktop .desktop-navbar {
+  display: none !important;
+}
+#page-desktop .desktop-icon .icon-caption .icon-title {
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  min-height: 2.4em;
+  line-height: 1.2;
+}
