@@ -59,7 +59,7 @@ DEFAULT_CONFIG = {
     "sidebar_width": 240,
     "sidebar_mode": "Compact",
     "sidebar_auto_collapse": False,
-    "sidebar_layout": "Icon Rail",
+    "sidebar_layout": "Tree",
     "icon_rail_width": 72,
     "icon_rail_background": "",
     "icon_rail_active_color": "",

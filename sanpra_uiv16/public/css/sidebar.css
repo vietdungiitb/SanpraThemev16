@@ -215,8 +215,7 @@
 /* ---- Hide Frappe native search/notification from sidebar (handled by our custom toolbar) ---- */
 .body-sidebar .navbar-search-bar,
 .body-sidebar .sidebar-notification,
-.body-sidebar .dropdown-notifications,
-.body-sidebar .standard-items-sections {
+.body-sidebar .dropdown-notifications {
   display: none !important;
 }
 
