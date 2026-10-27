@@ -86,13 +86,13 @@ def studio_state(settings=None):
     }
 
 
-@frappe.whitelist()
+@frappe.whitelist(methods=["GET", "POST"])
 def get_theme_studio_state():
     manager_only()
     return studio_state()
 
 
-@frappe.whitelist()
+@frappe.whitelist(methods=["GET", "POST"])
 def get_chart_preview(chart_id):
     """Return permission-checked ERPNext values for one supported preview source."""
     manager_only()
@@ -101,7 +101,7 @@ def get_chart_preview(chart_id):
 
 # ── 2. LIVE PREVIEW / PRIVATE DRAFTS ──────────────────────────────────────────
 # Preview never publishes. Drafts persist separately from the active site theme.
-@frappe.whitelist()
+@frappe.whitelist(methods=["GET", "POST"])
 def preview_theme_css(config):
     manager_only()
     clean = theme_engine.sanitize_config(config, validate_contrast=False)
@@ -112,7 +112,7 @@ def preview_theme_css(config):
     }
 
 
-@frappe.whitelist()
+@frappe.whitelist(methods=["POST"])
 def save_theme_draft(config):
     manager_only()
     settings = frappe.get_single("Theme Settings")
@@ -155,7 +155,7 @@ def sync_legacy_fields(settings, config):
 
 # ── 3. ATOMIC PUBLISH ──────────────────────────────────────────────────────────
 # Back up the previous version before replacing the published configuration.
-@frappe.whitelist()
+@frappe.whitelist(methods=["POST"])
 def publish_theme_config(config, label=None, profile_id=None):
     manager_only()
     settings = frappe.get_single("Theme Settings")
@@ -185,7 +185,7 @@ def publish_theme_config(config, label=None, profile_id=None):
 
 # ── 4. PROFILE CRUD ────────────────────────────────────────────────────────────
 # Built-in profiles come from the engine; only custom JSON profiles are mutable.
-@frappe.whitelist()
+@frappe.whitelist(methods=["POST"])
 def manage_theme_profile(action, profile_id=None, name=None, config=None, description=None):
     manager_only()
     settings = frappe.get_single("Theme Settings")
@@ -261,7 +261,7 @@ def manage_theme_profile(action, profile_id=None, name=None, config=None, descri
 
 # ── 5. VERSION RESTORE / PORTABLE IMPORT ───────────────────────────────────────
 # Restores land in the draft slot, giving administrators a review step.
-@frappe.whitelist()
+@frappe.whitelist(methods=["POST"])
 def restore_theme_version(version_id):
     manager_only()
     settings = frappe.get_single("Theme Settings")
@@ -274,7 +274,7 @@ def restore_theme_version(version_id):
     return {"config": clean, "wcag_failures": theme_engine.wcag_failures(clean)}
 
 
-@frappe.whitelist()
+@frappe.whitelist(methods=["POST"])
 def import_theme_profile(payload, name=None):
     manager_only()
     data = theme_engine.parse_json(payload, {})
@@ -289,7 +289,7 @@ def import_theme_profile(payload, name=None):
 
 # ── 6. ASSIGNMENTS / SITE POLICY ───────────────────────────────────────────────
 # Validate every referenced profile before saving user, role, or company maps.
-@frappe.whitelist()
+@frappe.whitelist(methods=["POST"])
 def save_theme_assignments(data, flags=None):
     manager_only()
     settings = frappe.get_single("Theme Settings")
@@ -316,7 +316,7 @@ def save_theme_assignments(data, flags=None):
 
 
 # ── 7. SCHEDULED ACTIVATION ────────────────────────────────────────────────────
-@frappe.whitelist()
+@frappe.whitelist(methods=["POST"])
 def save_theme_schedule(data):
     manager_only()
     settings = frappe.get_single("Theme Settings")
@@ -344,7 +344,7 @@ def save_theme_schedule(data):
 
 # ── 8. PER-USER PROFILE PREFERENCE ─────────────────────────────────────────────
 # User choice is allowed only when site policy is unlocked and opt-in is enabled.
-@frappe.whitelist()
+@frappe.whitelist(methods=["POST"])
 def set_user_theme_profile(profile_id):
     user = frappe.session.user
     if not user or user == "Guest":
@@ -382,7 +382,7 @@ def set_user_theme_profile(profile_id):
 
 
 # ── 9. RESOLVED RUNTIME / CACHE CONTROL ────────────────────────────────────────
-@frappe.whitelist()
+@frappe.whitelist(methods=["GET", "POST"])
 def get_resolved_theme_runtime():
     """Return the currently resolved profile for live schedule/user updates."""
     settings = frappe.get_single("Theme Settings")
@@ -410,7 +410,7 @@ def get_resolved_theme_runtime():
     }
 
 
-@frappe.whitelist()
+@frappe.whitelist(methods=["POST"])
 def clear_theme_cache(reload_desk=0):
     manager_only()
     frappe.clear_cache()
