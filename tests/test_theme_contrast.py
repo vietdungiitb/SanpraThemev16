@@ -7,6 +7,7 @@ the old default so a regression back to #F57C00 is caught before deploy.
 
 import importlib.util
 import sys
+import re
 import types
 from pathlib import Path
 
@@ -59,3 +60,26 @@ def test_default_accent_contrast_against_white():
             f"DEFAULT_CONFIG[{key!r}] = {cfg[key]!r} has contrast {ratio:.2f}:1 "
             f"against white, below WCAG AA {MIN_CONTRAST}:1"
         )
+
+
+CSS_DIR = ROOT / "sanpra_uiv16" / "public" / "css"
+FALLBACK_RE = re.compile(r"var\(\s*--st-accent\s*,\s*#f57c00\s*\)", re.I)
+
+
+def test_no_accent_fallback_in_css():
+    hits = []
+    for pth in CSS_DIR.glob("*.css"):
+        for i, line in enumerate(pth.read_text(encoding="utf-8").splitlines(), 1):
+            if FALLBACK_RE.search(line):
+                hits.append(f"{pth.name}:{i}")
+    assert not hits, f"con fallback accent: {hits}"
+
+
+def test_login_css_no_override_cam():
+    text = (CSS_DIR / "login.css").read_text(encoding="utf-8")
+    assert not re.search(r"--st-accent\s*:\s*#F57C00", text, re.I)
+
+
+def test_boot_py_no_fallback_cam():
+    text = (ROOT / "sanpra_uiv16" / "boot.py").read_text(encoding="utf-8")
+    assert 'bootinfo.st_accent = "#F57C00"' not in text
