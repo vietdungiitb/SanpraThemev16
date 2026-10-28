@@ -148,8 +148,8 @@
 
 /* Create / action — orange */
 .st-cp-badge--create {
-  background: color-mix(in srgb, var(--st-accent, #f57c00) 12%, var(--fg-color, #fff)) !important;
-  color: var(--st-accent, #f57c00) !important;
+  background: color-mix(in srgb, var(--st-accent, #B35200) 12%, var(--fg-color, #fff)) !important;
+  color: var(--st-accent, #B35200) !important;
   font-size: 16px !important;
 }
 

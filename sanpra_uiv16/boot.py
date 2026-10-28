@@ -66,7 +66,7 @@ def add_boot_data(bootinfo):
         # Fail soft: Desk must remain usable even if settings are mid-migration.
         frappe.log_error("sanpra_uiv16: boot data failed")
         bootinfo.st_brand  = "#1B3F7E"
-        bootinfo.st_accent = "#F57C00"
+        bootinfo.st_accent = "#B35200"
         bootinfo.st_dark_mode_default = 0
         bootinfo.st_theme_mode_default = "light"
         bootinfo.st_density_default = "comfortable"
