@@ -124,7 +124,7 @@ class IconRailTest(unittest.TestCase):
     def test_rail_labels_wrap_to_two_lines_instead_of_truncating(self):
         css = CSS.read_text(encoding="utf-8")
         label = css[css.index("#st-icon-rail .st-rail-app-label {"):css.index("#st-icon-rail .st-rail-app.st-rail-active .st-rail-app-label")]
-        self.assertIn("-webkit-line-clamp: 2;", label)
+        self.assertIn("-webkit-line-clamp: 3;", label)
         self.assertNotIn("white-space: nowrap", label)
 
     def test_rail_icons_are_actually_visible_not_just_correctly_colored_in_theory(self):
@@ -343,8 +343,8 @@ class IconRailTest(unittest.TestCase):
     def test_rail_assets_are_cache_busted(self):
         hooks = HOOKS.read_text(encoding="utf-8")
 
-        self.assertIn("/assets/sanpra_uiv16/css/sidebar.css?v=38", hooks)
-        self.assertIn("/assets/sanpra_uiv16/js/sanpra_uiv16.js?v=69", hooks)
+        self.assertIn("/assets/sanpra_uiv16/css/sidebar.css?v=39", hooks)
+        self.assertIn("/assets/sanpra_uiv16/js/sanpra_uiv16.js?v=70", hooks)
         self.assertIn("/assets/sanpra_uiv16/css/theme_studio.css?v=19", hooks)
 
     def test_legacy_config_treats_never_set_icon_rail_width_as_unset_not_zero(self):
@@ -364,6 +364,21 @@ class IconRailTest(unittest.TestCase):
         config = ENGINE.legacy_config(settings)
         self.assertEqual(config["icon_rail_width"], 110)
 
+
+    def test_rail_respects_preferred_app_order(self):
+        """Khẳng định rail sắp xếp theo đúng thứ tự 8 app ưu tiên của Edusuccess:
+        smart_edu_core, crm, education, lms, frappe, erpnext, hrms, vietnam_compliance."""
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn("PREFERRED_APP_ORDER", js)
+        self.assertIn('"smart_edu_core"', js)
+        self.assertIn('"crm"', js)
+        self.assertIn('"education"', js)
+        self.assertIn('"lms"', js)
+        self.assertIn('"frappe"', js)
+        self.assertIn('"erpnext"', js)
+        self.assertIn('"hrms"', js)
+        self.assertIn('"vietnam_compliance"', js)
+        self.assertIn("st-rail-collapse-svg", js)
 
 if __name__ == "__main__":
     unittest.main()
