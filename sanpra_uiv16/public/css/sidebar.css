@@ -540,8 +540,8 @@ body.st-has-toolbar #st-icon-rail {
   word-break: keep-all;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
 }
 #st-icon-rail .st-rail-app.st-rail-active .st-rail-app-label {
   color: var(--st-rail-active, var(--st-accent));
@@ -676,17 +676,18 @@ html[data-st-nav="dock"] {
   display: flex;
   flex-shrink: 0;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 0;
   width: 100%;
-  min-height: 32px;
-  padding: 6px 12px;
+  height: 40px;
+  padding: 0;
   border: 0;
-  border-top: 1px solid var(--sidebar-border-color, #ededed);
+  border-top: 1px solid var(--st-sidebar-border, #e5e7eb);
   background: transparent;
   color: var(--st-sidebar-text-muted, #9ca3af);
-  font-size: 11px;
-  font-weight: 600;
   cursor: pointer;
+  font-size: 11px;
+  transition: background 0.15s ease, color 0.15s ease;
   /* See .st-rail-app-icon's --icon-stroke comment: frappe.utils.icon()'s
      svg reads --icon-stroke, not `color`, so the chevron needs its own
      explicit value to actually be visible. */
@@ -694,8 +695,27 @@ html[data-st-nav="dock"] {
 }
 #st-icon-rail .st-rail-collapse:hover {
   background: var(--sidebar-hover-color, #f3f3f3);
+  color: var(--st-sidebar-text, #111827);
+  --icon-stroke: var(--st-sidebar-text, #111827);
 }
-#st-icon-rail .st-rail-collapse-icon svg { width: 14px; height: 14px; }
+#st-icon-rail .st-rail-collapse-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+#st-icon-rail .st-rail-collapse-svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.25s ease;
+}
+#st-icon-rail.is-collapsed .st-rail-collapse-svg {
+  transform: rotate(180deg);
+}
+#st-icon-rail .st-rail-collapse .st-rail-label {
+  display: none !important;
+}
 
 /* Collapsed: icon tiles only, no labels, narrow fixed width — matching the
    classic sidebar's own icon-only collapsed state. */

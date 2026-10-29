@@ -390,6 +390,36 @@
         });
         ST._railTitleToApp = titleToApp;
 
+        /* Thứ tự 8 app tiêu chuẩn theo yêu cầu BGD Edusuccess */
+        var PREFERRED_APP_ORDER = [
+          "smart_edu_core",
+          "crm",
+          "education",
+          "lms",
+          "frappe",
+          "erpnext",
+          "hrms",
+          "vietnam_compliance"
+        ];
+        var APP_TITLE_MAP = {
+          "smart_edu_core": "Smart Edu Core",
+          "crm": "Quản lý tuyển sinh CRM",
+          "education": "Học vấn",
+          "lms": "Học tập",
+          "frappe": "Khung hệ thống",
+          "erpnext": "ERPNext",
+          "hrms": "Frappe HR",
+          "vietnam_compliance": "Tuân thủ VN"
+        };
+        appOrder.sort(function (a, b) {
+          var idxA = PREFERRED_APP_ORDER.indexOf(a);
+          var idxB = PREFERRED_APP_ORDER.indexOf(b);
+          if (idxA === -1) idxA = 999;
+          if (idxB === -1) idxB = 999;
+          if (idxA !== idxB) return idxA - idxB;
+          return a.localeCompare(b);
+        });
+
         var appMeta = {};
         ((frappe.boot && frappe.boot.app_data) || []).forEach(function (a) {
           appMeta[a.app_name] = a;
@@ -420,7 +450,7 @@
         var items = appOrder.map(function (appKey) {
           var rep = appReps[appKey];
           var meta = appMeta[appKey];
-          var title = (meta && meta.app_title) || rep.title || rep.name;
+          var title = APP_TITLE_MAP[appKey] || (meta && meta.app_title) || rep.title || rep.name;
           var route = routeFor(rep);
           return { appKey: appKey, title: title, route: route, icon: rep.icon, logo: logoFor(appKey) };
         }).filter(function (item) { return item.route; });
@@ -450,9 +480,12 @@
                 '<span class="st-rail-app-label st-rail-label">' + esc(label) + '</span></a>';
             }).join("") +
           '</div>' +
-          '<button type="button" class="st-rail-collapse" title="' + esc(__("Toggle sidebar")) + '">' +
-            '<span class="st-rail-collapse-icon">' + frappe.utils.icon(isCollapsed ? "chevron-right" : "chevron-left", "sm") + '</span>' +
-            '<span class="st-rail-label">' + esc(__("Collapse")) + '</span>' +
+          '<button type="button" class="st-rail-collapse" title="' + esc(isCollapsed ? __("Expand sidebar") : __("Collapse sidebar")) + '">' +
+            '<span class="st-rail-collapse-icon">' +
+              '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="st-rail-collapse-svg">' +
+                '<path d="m9 7-5 5 5 5"/><path d="m15 7 5 5-5 5"/>' +
+              '</svg>' +
+            '</span>' +
           '</button>' +
         '</nav>';
 
@@ -481,7 +514,7 @@
         $rail.on("click", ".st-rail-collapse", function () {
           var collapsed = $rail.toggleClass("is-collapsed").hasClass("is-collapsed");
           try { localStorage.setItem("st-rail-collapsed", collapsed ? "true" : "false"); } catch (err) {}
-          $(this).find(".st-rail-collapse-icon").html(frappe.utils.icon(collapsed ? "chevron-right" : "chevron-left", "sm"));
+          $(this).attr("title", esc(collapsed ? __("Expand sidebar") : __("Collapse sidebar")));
         });
 
         syncRailHighlight();
