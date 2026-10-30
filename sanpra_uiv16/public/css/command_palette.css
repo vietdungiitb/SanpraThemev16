@@ -240,3 +240,9 @@
   from { opacity: 0; transform: scale(0.96) translateY(-8px) }
   to   { opacity: 1; transform: scale(1) translateY(0) }
 }
+
+/* Frappe native search modal (awesomebar): Bootstrap margin (~28px) < toolbar
+   nen modal chui duoi header. Day xuong duoi toolbar, khong dung z-index/core. */
+body.st-has-toolbar .modal:has(.navbar-modal-wrapper) .modal-dialog {
+  margin-top: calc(var(--st-header-height, 36px) + 12px) !important;
+}
