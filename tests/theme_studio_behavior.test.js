@@ -8,7 +8,7 @@ const pagePath = path.join(
   __dirname,
   "..",
   "sanpra_uiv16",
-  "sanpra_uiv16",
+  "sanpra_ui_v16",
   "page",
   "theme_studio",
   "theme_studio.js"
