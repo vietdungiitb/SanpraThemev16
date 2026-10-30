@@ -130,6 +130,26 @@
   padding: 2px 4px !important;
 }
 
+/* P0 UI (30/10/2026): parent/child hierarchy — .indent (child) indents, runs
+   smaller and muted vs parent. Rail-scoped so default Tree layout is untouched. */
+body.st-sidebar-layout-rail .body-sidebar-container .body-sidebar .standard-sidebar-item.indent .item-anchor {
+  padding-left: 24px !important;
+  font-size: 13px !important;
+  color: var(--st-sidebar-text-muted, #6B7280) !important;
+}
+/* Active child stays readable: restore active pill text (light). */
+body.st-sidebar-layout-rail .body-sidebar-container .body-sidebar .standard-sidebar-item.indent.active-sidebar .item-anchor,
+body.st-sidebar-layout-rail .body-sidebar-container .body-sidebar .standard-sidebar-item.indent.active-sidebar .item-anchor .sidebar-item-label {
+  color: var(--st-sidebar-active-text, #ffffff) !important;
+}
+html[data-theme="dark"] body.st-sidebar-layout-rail .body-sidebar-container .body-sidebar .standard-sidebar-item.indent .item-anchor {
+  color: var(--st-sidebar-text-muted, rgba(255,255,255,0.55)) !important;
+}
+html[data-theme="dark"] body.st-sidebar-layout-rail .body-sidebar-container .body-sidebar .standard-sidebar-item.indent.active-sidebar .item-anchor,
+html[data-theme="dark"] body.st-sidebar-layout-rail .body-sidebar-container .body-sidebar .standard-sidebar-item.indent.active-sidebar .item-anchor .sidebar-item-label {
+  color: var(--st-sidebar-active-text, var(--st-accent)) !important;
+}
+
 .body-sidebar-container .body-sidebar .standard-sidebar-item:not(.active-sidebar) .item-anchor:hover,
 .body-sidebar-container .body-sidebar .standard-sidebar-item:not(.active-sidebar):has(a:not(.section-break)):hover,
 .body-sidebar-container .body-sidebar .nested-container .standard-sidebar-item:not(.active-sidebar) .item-anchor:hover {

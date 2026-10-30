@@ -1588,6 +1588,16 @@ body.st-has-toolbar .body-sidebar {
 body.st-has-toolbar .page-container {
   padding-top: 36px !important;
 }
+/* P0 UI (30/10/2026): balanced desktop gutters — 769px and up only, so the
+   mobile 12px rule (@media max-width:768px) is untouched. Targets
+   .page-container only: .layout-main (Workspaces full-bleed) and
+   .body-sidebar (collapsed/dark) are different elements, unaffected. */
+@media (min-width: 769px) {
+  body.st-has-toolbar .page-container {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
 /* Suppress redundant Frappe native navbar when Sanpra top toolbar is active */
 body.st-has-toolbar .navbar,
 body.st-has-toolbar header.navbar,
