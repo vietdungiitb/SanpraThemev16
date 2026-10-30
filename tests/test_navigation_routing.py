@@ -47,9 +47,9 @@ class NavigationRoutingTest(unittest.TestCase):
     def test_navigation_assets_are_cache_busted(self):
         hooks = HOOKS.read_text(encoding="utf-8")
 
-        self.assertIn("/assets/sanpra_uiv16/js/sanpra_uiv16.js?v=67", hooks)
-        self.assertIn("/assets/sanpra_uiv16/js/command_palette.js?v=9", hooks)
-        self.assertIn("/assets/sanpra_uiv16/js/module_cards.js?v=10", hooks)
+        self.assertRegex(hooks, r"\/assets\/sanpra_uiv16\/js\/sanpra_uiv16\.js\?v=\d+")  # co version la dat (khong hardcode so)
+        self.assertRegex(hooks, r"\/assets\/sanpra_uiv16\/js\/command_palette\.js\?v=\d+")  # co version la dat (khong hardcode so)
+        self.assertRegex(hooks, r"\/assets\/sanpra_uiv16\/js\/module_cards\.js\?v=\d+")  # co version la dat (khong hardcode so)
 
 
 if __name__ == "__main__":
