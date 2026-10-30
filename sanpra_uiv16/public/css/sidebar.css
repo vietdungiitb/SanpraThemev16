@@ -207,6 +207,18 @@
   font-weight: 700 !important;
 }
 
+/* Card Break headers trong workspace sidebar: vendor render <a> KHONG href
+   (sidebar_item.js chi sinh path cho type Link) nen phan biet duoc bang
+   :not([href]) — khong can doi fixture sang type khac (Workspace Link
+   validate chi cho Link/Card Break). Dinh dang giong section-break. */
+.body-sidebar .sidebar-item-container .item-anchor:not([href]) .sidebar-item-label {
+  color: var(--st-sidebar-text-muted, #9CA3AF) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+}
+
 /* ---- Dividers ---- */
 .body-sidebar .divider {
   border-color: rgba(0,0,0,0.06) !important;

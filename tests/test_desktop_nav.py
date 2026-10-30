@@ -32,6 +32,17 @@ class DesktopNavTest(unittest.TestCase):
             "nut collapse phai flex-shrink:0 trong rule co min-height (khong bi day mat)",
         )
 
+
+    def test_card_break_header_khac_biet_muc_con(self):
+        """F0 UAT mat nguoi: Card Break render <a> KHONG href (sidebar_item.js
+        chi sinh path cho type Link) nen CSS phan biet duoc bang :not([href]).
+        Workspace Link validate chi cho Link/Card Break — cam doi fixture
+        sang Section Break (migrate chet ValidationError)."""
+        css = SIDEBAR_CSS.read_text(encoding="utf-8")
+        self.assertIn(".item-anchor:not([href]) .sidebar-item-label", css)
+        rule = css.split(".item-anchor:not([href]) .sidebar-item-label {")[1].split("}")[0]
+        self.assertIn("text-transform", rule)
+        self.assertIn("uppercase", rule)
     def test_an_thanh_duoi_header_tren_trang_desktop(self):
         """Chỉ giữ navbar: ẩn .desktop-navbar (logo+search+bell+avatar trùng)."""
         css = DESK_CSS.read_text(encoding="utf-8")
