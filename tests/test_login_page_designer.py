@@ -83,7 +83,7 @@ BRAND = {
     "logo": "/files/site-logo.png",
     "favicon": "/files/site-favicon.png",
     "brand_color": "#1B3F7E",
-    "accent_color": "#F57C00",
+    "accent_color": "#2563EB",
 }
 THEME = {"login_heading": "Theme heading", "login_description": "Theme subtitle", "preferred_mode": "Dark"}
 
@@ -101,12 +101,6 @@ def resolve(doc):
          mock.patch.object(login_config, "get_settings_doc", return_value=doc), \
          mock.patch.object(login_config.frappe, "_", side_effect=lambda text: text):
         return login_config.get_login_config()
-
-
-def expect_vi(text):
-    """Ban dich TV mac dinh cua fork (lang=vi): DEFAULT_COPY tieng Anh duoc
-    text_of() dich qua VI_TRANSLATIONS. Test phai expect TV, khong phai EN."""
-    return login_config.VI_TRANSLATIONS.get(text, text)
 
 
 class LoginConfigTest(unittest.TestCase):
@@ -144,22 +138,36 @@ class LoginConfigTest(unittest.TestCase):
         self.assertEqual(config.hero_from, "")
         self.assertEqual(config.hero_bg_image, "")
 
+    # Ban dich TV mac dinh (lang=vi) da verify bang dump chay that 30/10/2026.
+    # Hardcode literal (khong tra VI_TRANSLATIONS — tra dict la tautology, mat
+    # kha nang bat regression gia tri dich). Doi TV trong code -> test nay do.
+    EXPECTED_VI_COPY = {
+        "badge_text": "HỆ THỐNG QUẢN TRỊ GIÁO DỤC TOÀN DIỆN",
+        "headline": "Hệ Thống Quản Trị Giáo Dục Toàn Diện — Edusuccess",
+        "description": "Đăng nhập vào Hệ thống Edusuccess để quản lý đào tạo, tuyển sinh, điểm danh QR 30s, học phí VietQR và kết nối học viên trên không gian số bảo mật.",
+        "feature_panel_title": "Nghiệp vụ trung tâm cốt lõi",
+        "feature_status_text": "Mã hóa bảo mật 256-bit",
+        "card_eyebrow": "ĐĂNG NHẬP BẢO MẬT",
+        "button_label": "Đăng nhập",
+        "security_note": "Kết nối được mã hóa bảo mật 256-bit. Quyền truy cập tuân thủ phân quyền và Luật Bảo vệ dữ liệu cá nhân.",
+        "back_link_label": "Quay lại",
+    }
+
     def test_empty_settings_render_full_default_copy(self):
         """A fresh install with nothing saved must still show a complete page."""
         with mock.patch.object(login_config.frappe, "get_installed_apps", return_value=["frappe"]):
             config = resolve(settings(show_feature_panel=1))
-        for field, text in login_config.DEFAULT_COPY.items():
-            if field in ("card_heading", "card_subtitle"):
-                continue  # THEME overrides these in this fixture
-            self.assertEqual(config[field], expect_vi(text.replace("{company}", "Site Name")), field)
+        for field, text in self.EXPECTED_VI_COPY.items():
+            self.assertEqual(config[field], text, field)
         self.assertIn("Edusuccess", config.description)
-        self.assertEqual([f["title"] for f in config.features], [expect_vi(r[1]) for r in login_config.DEFAULT_FEATURES_GENERAL])
+        # Titles GENERAL khong co trong VI dict -> giu EN (da verify dump).
+        self.assertEqual([f["title"] for f in config.features], [r[1] for r in login_config.DEFAULT_FEATURES_GENERAL])
         self.assertTrue(config.show_feature_panel)
 
     def test_default_cards_follow_installed_apps(self):
         with mock.patch.object(login_config.frappe, "get_installed_apps", return_value=["frappe", "erpnext"]):
             config = resolve(settings())
-        self.assertEqual(config.features[0]["title"], expect_vi(login_config.DEFAULT_FEATURES_BUSINESS[0][1]))
+        self.assertEqual(config.features[0]["title"], "Tuyển sinh & Học viên")
 
     def test_untouched_theme_login_text_does_not_hide_defaults(self):
         theme = dict(THEME, login_heading="Welcome back", login_description="Sign in to continue to your workspace.")
@@ -168,7 +176,7 @@ class LoginConfigTest(unittest.TestCase):
              mock.patch.object(login_config, "get_settings_doc", return_value=settings()), \
              mock.patch.object(login_config.frappe, "_", side_effect=lambda text: text):
             config = login_config.get_login_config()
-        self.assertEqual(config.card_subtitle, expect_vi("Sign in to your Edusuccess account to continue."))
+        self.assertEqual(config.card_subtitle, "Đăng nhập vào tài khoản Edusuccess của bạn để tiếp tục.")
 
     def test_admin_text_wins_over_defaults(self):
         config = resolve(settings(headline="Our own headline", button_label="Log in"))
