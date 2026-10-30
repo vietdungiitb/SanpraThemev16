@@ -70,7 +70,7 @@ DEFAULT_CONFIG = {
     "secondary_button_color": "#FFFFFF",
     "secondary_button_text": "#273142",
     "button_radius": 6,
-    "button_height": 32,
+    "button_height": 36,
     "button_padding": 14,
     "input_background": "#FFFFFF",
     "input_border_color": "#C9CDD4",
