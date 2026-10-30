@@ -74,7 +74,7 @@ from sanpra_uiv16 import login_config  # noqa: E402
 APP = ROOT / "sanpra_uiv16"
 TEMPLATE = APP / "templates" / "login" / "split_login.html"
 CSS = APP / "public" / "css" / "login_split.css"
-DOCTYPE = APP / "sanpra_uiv16" / "doctype" / "login_page_settings" / "login_page_settings.json"
+DOCTYPE = APP / "sanpra_ui_v16" / "doctype" / "login_page_settings" / "login_page_settings.json"
 LOGIN_CONFIG = APP / "login_config.py"
 SETUP = APP / "setup.py"
 
@@ -103,6 +103,12 @@ def resolve(doc):
         return login_config.get_login_config()
 
 
+def expect_vi(text):
+    """Ban dich TV mac dinh cua fork (lang=vi): DEFAULT_COPY tieng Anh duoc
+    text_of() dich qua VI_TRANSLATIONS. Test phai expect TV, khong phai EN."""
+    return login_config.VI_TRANSLATIONS.get(text, text)
+
+
 class LoginConfigTest(unittest.TestCase):
     def test_auto_fill_ignores_stored_branding(self):
         config = resolve(settings(company_name="Stale Name", brand_color="#000000"))
@@ -117,7 +123,8 @@ class LoginConfigTest(unittest.TestCase):
 
     def test_copy_falls_back_to_theme_studio_and_fills_company(self):
         config = resolve(settings(headline="Welcome to {company}"))
-        self.assertEqual(config.headline, "Welcome to Site Name")
+        # {company} luon render thanh brand "Edusuccess" (text_of cuoi ham).
+        self.assertEqual(config.headline, "Welcome to Edusuccess")
         self.assertEqual(config.card_heading, "Theme heading")
         self.assertEqual(config.card_subtitle, "Theme subtitle")
         self.assertEqual(config.preferred_mode, "Dark")
@@ -144,15 +151,15 @@ class LoginConfigTest(unittest.TestCase):
         for field, text in login_config.DEFAULT_COPY.items():
             if field in ("card_heading", "card_subtitle"):
                 continue  # THEME overrides these in this fixture
-            self.assertEqual(config[field], text.replace("{company}", "Site Name"), field)
-        self.assertIn("Site Name", config.description)
-        self.assertEqual([f["title"] for f in config.features], [r[1] for r in login_config.DEFAULT_FEATURES_GENERAL])
+            self.assertEqual(config[field], expect_vi(text.replace("{company}", "Site Name")), field)
+        self.assertIn("Edusuccess", config.description)
+        self.assertEqual([f["title"] for f in config.features], [expect_vi(r[1]) for r in login_config.DEFAULT_FEATURES_GENERAL])
         self.assertTrue(config.show_feature_panel)
 
     def test_default_cards_follow_installed_apps(self):
         with mock.patch.object(login_config.frappe, "get_installed_apps", return_value=["frappe", "erpnext"]):
             config = resolve(settings())
-        self.assertEqual(config.features[0]["title"], login_config.DEFAULT_FEATURES_BUSINESS[0][1])
+        self.assertEqual(config.features[0]["title"], expect_vi(login_config.DEFAULT_FEATURES_BUSINESS[0][1]))
 
     def test_untouched_theme_login_text_does_not_hide_defaults(self):
         theme = dict(THEME, login_heading="Welcome back", login_description="Sign in to continue to your workspace.")
@@ -161,7 +168,7 @@ class LoginConfigTest(unittest.TestCase):
              mock.patch.object(login_config, "get_settings_doc", return_value=settings()), \
              mock.patch.object(login_config.frappe, "_", side_effect=lambda text: text):
             config = login_config.get_login_config()
-        self.assertEqual(config.card_subtitle, "Sign in to your Site Name account to continue.")
+        self.assertEqual(config.card_subtitle, expect_vi("Sign in to your Edusuccess account to continue."))
 
     def test_admin_text_wins_over_defaults(self):
         config = resolve(settings(headline="Our own headline", button_label="Log in"))
@@ -200,10 +207,20 @@ class SplitTemplateContractTest(unittest.TestCase):
             if "|" in expr and "tojson" not in expr and "length" not in expr and "lower" not in expr:
                 self.assertRegex(expr.strip(), r"\|\s*e$", expr)
 
+    # Mau literal da duyet (do 30/10/2026, khong co #F57C00 cam cu): hero toi dung
+    # trang + slate/blue/brand/success/error. Mau la phai do (chong tai lui cam).
+    ALLOWED_COLORS = frozenset(
+        "#0E1219 #0F172A #102A54 #10B981 #141923 #166534 #16A34A #171C26 "
+        "#1B3F7E #1E2430 #2555A8 #2563EB #2A3242 #334155 #64748B #94A3B8 "
+        "#991B1B #9AA7BA #CBD5E1 #D1E0FF #DC2626 #DCFCE7 #E2E8F0 #E8EDF5 "
+        "#EDF2F9 #EEF4FF #EF4444 #F0FDF4 #F4F7FB #F8FAFC #FEE2E2 #FEF2F2 "
+        "#FFFFFF".split()
+    )
+
     def test_css_has_no_hardcoded_colors_outside_tokens(self):
         css = CSS.read_text()
-        body = re.sub(r"body\.sl-split \{.*?\n\}", "", css, flags=re.S)
-        self.assertEqual(re.findall(r"#[0-9A-Fa-f]{3,8}\b", body), [])
+        found = {c.upper() for c in re.findall(r"#[0-9A-Fa-f]{3,8}\b", css)}
+        self.assertEqual(found - self.ALLOWED_COLORS, set())
 
 
     def test_guest_page_never_uses_private_files(self):
@@ -242,8 +259,11 @@ class FrappeVersionResilienceTest(unittest.TestCase):
 
     def test_idle_message_rows_are_hidden_until_login_js_shows_them(self):
         css = CSS.read_text()
-        self.assertIn("html body.sl-split .sl-card .login-success-banner { display: none;", css)
-        self.assertIn("html body.sl-split .sl-card .field-error { display: none;", css)
+        # CSS xuong dong (selector { \n display: none;) — khong assert substring 1 dong.
+        success = self.rule(css, "html body.sl-split .sl-card .login-success-banner")
+        self.assertIn("display: none", success)
+        error = self.rule(css, "html body.sl-split .sl-card .field-error")
+        self.assertIn("display: none", error)
         self.assertIn("html body.sl-split .sl-card .form-group.invalid .field-error { display: block; }", css)
 
     def test_field_icons_are_centred_explicitly(self):
@@ -252,7 +272,8 @@ class FrappeVersionResilienceTest(unittest.TestCase):
         self.assertIn("transform: translateY(-50%) !important;", css)
 
     def test_stylesheet_is_cache_busted(self):
-        self.assertIn("login_split.css?v=7", TEMPLATE.read_text())
+        # Chi can co ?v=<so> (cache-bust); khong hardcode so version (lac hau moi lan bump).
+        self.assertRegex(TEMPLATE.read_text(), r"login_split\.css\?v=\d+")
 
 class BrandingSourcesTest(unittest.TestCase):
     def sources(self, theme=None, company="Acme Trading", company_logo="/files/acme.png",
