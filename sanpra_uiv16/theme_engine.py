@@ -29,6 +29,17 @@ MAX_VERSIONS = 25
 # from the base config instead.
 IDENTITY_FIELDS = ("company_logo", "app_title", "favicon", "tagline")
 
+# A profile is also a reusable VISUAL theme, not a site's navigation decision.
+# DEFAULT_CONFIG defaults sidebar_layout to "Tree" (theme_engine.py ~62), so
+# every profile that does not explicitly set it (i.e. all built-ins and most
+# custom ones) silently carries "Tree" and, once applied, switches the whole
+# rail off — even after the site was set to "Icon Rail". Measured on staging
+# 30/10/2026: a single Theme Preference (builtin-forest, created 12:38) did
+# exactly that for its account, with no error and no log. resolve_profile_config()
+# therefore always keeps the site's own layout. Colors/widths of the rail stay
+# profile-owned (they are cosmetic).
+SITE_NAVIGATION_FIELDS = ("sidebar_layout",)
+
 
 DEFAULT_CONFIG = {
     # Profile / mode
@@ -740,6 +751,10 @@ def resolve_profile_config(base, selected):
         for field in IDENTITY_FIELDS:
             if not resolved[field]:
                 resolved[field] = base.get(field, resolved[field])
+        # Site-owned navigation: a visual profile must never take the rail away
+        # from a site that chose it (see SITE_NAVIGATION_FIELDS).
+        for field in SITE_NAVIGATION_FIELDS:
+            resolved[field] = base.get(field, resolved[field])
     return resolved
 
 

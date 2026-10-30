@@ -318,6 +318,44 @@ class ThemeEngineTest(unittest.TestCase):
         # The profile's own visual theme still applies normally.
         self.assertEqual(resolved["brand_color"], "#2490EF")
 
+    def test_a_profile_never_switches_off_the_site_sidebar_layout(self):
+        """Regression test (30/10/2026): every profile's stored config carries
+        sidebar_layout == "Tree" because _profile() sanitizes against
+        DEFAULT_CONFIG, which defaults it to "Tree". Applying such a profile
+        silently turned the rail off for that account even when the site was set
+        to "Icon Rail" (no error, no log). resolve_profile_config() must always
+        keep the site's own layout."""
+        base = ENGINE.sanitize_config(
+            {"sidebar_layout": "Icon Rail"}, validate_contrast=False
+        )
+        builtin = next(
+            profile for profile in ENGINE.builtin_profiles() if profile["id"] == "builtin-forest"
+        )
+        self.assertEqual(builtin["config"]["sidebar_layout"], "Tree")
+
+        resolved = ENGINE.resolve_profile_config(base, builtin["config"])
+
+        self.assertEqual(resolved["sidebar_layout"], "Icon Rail")
+        # The profile's own visual theme still applies normally.
+        self.assertEqual(resolved["brand_color"], "#173F35")
+
+    def test_a_profile_cannot_force_the_rail_on_a_site_that_chose_tree(self):
+        """Symmetry: a profile is not allowed to override the site's layout in
+        either direction. A site that chose "Tree" stays "Tree" even if a profile
+        happens to store "Icon Rail"."""
+        base = ENGINE.sanitize_config(
+            {"sidebar_layout": "Tree"}, validate_contrast=False
+        )
+        selected = ENGINE.sanitize_config(
+            {"sidebar_layout": "Icon Rail", "brand_color": "#2490EF"},
+            validate_contrast=False,
+        )
+
+        resolved = ENGINE.resolve_profile_config(base, selected)
+
+        self.assertEqual(resolved["sidebar_layout"], "Tree")
+        self.assertEqual(resolved["brand_color"], "#2490EF")
+
     def test_a_profile_that_explicitly_sets_identity_is_still_honored(self):
         base = ENGINE.sanitize_config({"app_title": "Acme Inc"}, validate_contrast=False)
         selected = ENGINE.sanitize_config({"app_title": "New Brand"}, validate_contrast=False)
