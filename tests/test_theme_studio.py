@@ -279,7 +279,7 @@ class ThemeStudioTest(unittest.TestCase):
         self.assertIn("custom_js", engine)
         self.assertIn("scoped_rules", engine)
         self.assertIn("def resolve_profile_id(", engine)
-        self.assertIn('"preferred_mode", "Theme mode"', js)
+        self.assertIn('"preferred_mode", __("Theme mode")', js)
         self.assertIn("change.st_theme_mode_bridge", DESK_JS.read_text(encoding="utf-8"))
         self.assertIn("_sync_profile_actions()", js)
         self.assertIn('__("Current Theme Copy")', js)

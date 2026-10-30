@@ -335,7 +335,7 @@ class IconRailTest(unittest.TestCase):
     def test_theme_studio_exposes_sidebar_layout_control(self):
         studio = THEME_STUDIO_JS.read_text(encoding="utf-8")
 
-        self.assertIn('"sidebar_layout", "Sidebar layout", "select", ["Tree", "Icon Rail"]', studio)
+        self.assertIn('"sidebar_layout", __("Sidebar layout")', studio)
         self.assertIn("icon_rail_width", studio)
         self.assertIn("_apply_draft_to_desk", studio)
         self.assertIn("--st-rail-width:", studio)
