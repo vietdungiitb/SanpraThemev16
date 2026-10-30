@@ -364,7 +364,7 @@
         var pages = (message.pages || []).filter(function (page) {
           return !page.parent_page;
         });
-        if (!pages.length) return;
+        if (!pages.length) { console.warn("[st-rail] missing: no-pages"); return; }
 
         function esc(value) {
           return frappe.utils.escape_html(String(value || ""));
@@ -1649,6 +1649,38 @@
     requestAnimationFrame(check);
   }
 
+  /* Rail container may render after page-change fires (async sidebar).
+     Bounded rAF wait mirroring sidebarReady(), but for the container —
+     keeps the rail mechanism unchanged, only removes the one-shot race. */
+  function railContainerReady(cb) {
+    if ($(".body-sidebar-container").length) {
+      cb();
+      return;
+    }
+    var start = Date.now();
+    function check() {
+      if ($(".body-sidebar-container").length) {
+        cb();
+      } else if (Date.now() - start < 10000) {
+        requestAnimationFrame(check);
+      } else {
+        console.warn("[st-rail] missing: no-container");
+      }
+    }
+    requestAnimationFrame(check);
+  }
+
+  /* One-line rail diagnostics for future reports (no more screenshots). */
+  window.stRailDebug = function () {
+    return {
+      enabled: railEnabled(),
+      reason: !railEnabled() ? "off"
+        : document.getElementById("st-icon-rail") ? "ok"
+        : $(".body-sidebar-container").length ? "no-pages-or-pending" : "no-container",
+      hasContainer: !!$(".body-sidebar-container").length,
+      hasRail: !!document.getElementById("st-icon-rail")
+    };
+  };
   function onDeskReady() {
     /* Setup Wizard should stay Frappe's clean, standalone onboarding flow —
        no theme chrome (toolbar/branding/etc.) until setup actually completes. */
@@ -1677,7 +1709,9 @@
     /* Move Frappe's native notification bell into toolbar after desktop page renders */
     setTimeout(moveNativeBell, 800);
     $(document).on("page-change", function () {
-      injectIconRail();
+      railContainerReady(function () {
+        injectIconRail();
+      });
       patchNativeSidebar();
       injectPoweredBy();
       injectSetupGuide();
