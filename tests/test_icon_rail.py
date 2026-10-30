@@ -344,7 +344,7 @@ class IconRailTest(unittest.TestCase):
     def test_rail_assets_are_cache_busted(self):
         hooks = HOOKS.read_text(encoding="utf-8")
 
-        self.assertIn("/assets/sanpra_uiv16/css/sidebar.css?v=39", hooks)
+        self.assertIn("/assets/sanpra_uiv16/css/sidebar.css?v=40", hooks)
         self.assertIn("/assets/sanpra_uiv16/js/sanpra_uiv16.js?v=71", hooks)
         self.assertIn("/assets/sanpra_uiv16/css/theme_studio.css?v=19", hooks)
 
