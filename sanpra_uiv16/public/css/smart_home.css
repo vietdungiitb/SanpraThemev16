@@ -189,7 +189,7 @@
 }
 
 .st-sh-dragging {
-  z-index: 3;
+  z-index: var(--zi-base);
   opacity: 0.38;
   transform: scale(0.985);
 }
@@ -197,7 +197,7 @@
 .st-sh-drop-before::before,
 .st-sh-drop-after::after {
   position: absolute;
-  z-index: 5;
+  z-index: var(--zi-base);
   right: 0;
   left: 0;
   height: 3px;
@@ -213,7 +213,7 @@
 /* Drag controls remain out of the interaction flow until edit mode is active. */
 .st-sh-drag-tools {
   position: absolute;
-  z-index: 4;
+  z-index: var(--zi-base);
   top: 8px;
   right: 8px;
   display: flex;
@@ -309,7 +309,7 @@
 
 .st-sh-kpi-link {
   position: relative;
-  z-index: 1;
+  z-index: var(--zi-base);
   display: block;
   min-height: 150px;
   padding: 18px 19px 17px;
@@ -769,14 +769,14 @@ html[data-theme="dark"] .st-sh-qc-item {
 .st-sh-builder-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 1040;
+  z-index: var(--zi-overlay);
   background: rgba(12, 17, 27, .38);
   backdrop-filter: blur(3px);
 }
 
 .st-sh-library {
   position: fixed;
-  z-index: 1041;
+  z-index: var(--zi-overlay);
   top: 0;
   right: 0;
   width: min(420px, calc(100vw - 20px));
@@ -912,7 +912,7 @@ html[data-theme="dark"] .st-sh-qc-item {
   display: grid;
   place-items: center;
   padding: 20px;
-  z-index: 1050;
+  z-index: var(--zi-overlay);
 }
 
 .st-sh-builder-backdrop[hidden],

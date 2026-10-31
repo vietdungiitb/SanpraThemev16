@@ -28,7 +28,7 @@ body.st-grid-slide-panel-enabled .form-in-grid {
   border: none !important;
   border-left: 1px solid var(--st-border) !important;
   box-shadow: -8px 0 24px rgba(0, 0, 0, 0.18) !important;
-  z-index: 1050;
+  z-index: var(--zi-overlay);
   overflow-y: auto;
   transform: translateX(0);
   transition:
@@ -49,7 +49,7 @@ body.st-grid-slide-panel-enabled .form-in-grid {
 body.st-grid-slide-panel-enabled .form-in-grid .grid-form-heading {
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: var(--zi-base);
   background: var(--st-card-bg);
   border-bottom: 1px solid var(--st-border);
   padding: 12px 16px;
@@ -78,7 +78,7 @@ body.st-grid-slide-panel-enabled .form-in-grid .grid-footer-toolbar {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.35);
-  z-index: 1040;
+  z-index: var(--zi-overlay);
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--st-transition);

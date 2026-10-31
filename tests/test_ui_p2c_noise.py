@@ -69,7 +69,7 @@ class NoiseReductionP2cTest(unittest.TestCase):
 
     def test_p2c_bump_v(self):
         hooks = HOOKS.read_text(encoding="utf-8")
-        self.assertIn("sanpra_uiv16.css?v=75", hooks)
+        self.assertIn("sanpra_uiv16.css?v=76", hooks)
 
 
 if __name__ == "__main__":

@@ -40,7 +40,7 @@
 
 .st-login-custom-footer {
   position: fixed;
-  z-index: 5;
+  z-index: var(--zi-base);
   bottom: 18px;
   left: 50%;
   transform: translateX(-50%);
@@ -116,7 +116,7 @@
     content: "";
     position: fixed;
     inset: -20%;
-    z-index: 0;
+    z-index: var(--zi-base);
     pointer-events: none;
     filter: blur(80px) saturate(140%);
     background:
@@ -236,7 +236,7 @@ body:has(.for-forgot) .page-header-wrapper {
 .for-signup .page-card-head,
 .for-signup .page-card {
   position: relative;
-  z-index: 1;
+  z-index: var(--zi-base);
   animation: st-card-in 400ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 

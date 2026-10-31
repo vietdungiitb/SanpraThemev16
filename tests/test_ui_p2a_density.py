@@ -73,7 +73,7 @@ class DensityListP2aTest(unittest.TestCase):
 
     def test_p2a_bump_v(self):
         hooks = HOOKS.read_text(encoding="utf-8")
-        self.assertIn("sanpra_uiv16.css?v=75", hooks)
+        self.assertIn("sanpra_uiv16.css?v=76", hooks)
 
 
 if __name__ == "__main__":
