@@ -9,11 +9,11 @@
 
 /* ── FALLBACK VARIABLES ─────────────────────────────────────────────────── */
 :root {
-  --st-brand:        #1B3F7E;
-  --st-accent:       #B35200;
-  --st-text:         #1A1A2E;
-  --st-text-muted:   #6B7280;
-  --st-card-bg:      #FFFFFF;
+  --st-brand:        var(--sanpra-c-1b3f7e);
+  --st-accent:       var(--sanpra-c-b35200);
+  --st-text:         var(--sanpra-c-1a1a2e);
+  --st-text-muted:   var(--sanpra-c-6b7280);
+  --st-card-bg:      var(--sanpra-c-ffffff);
 }
 
 .st-login-company-logo {
@@ -32,7 +32,7 @@
   margin: 0 auto 18px;
   border-radius: 14px;
   background: var(--st-brand);
-  color: #FFFFFF;
+  color: var(--sanpra-c-ffffff);
   font-size: 18px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -97,7 +97,7 @@
     background: linear-gradient(
       135deg,
       var(--st-brand) 0%,
-      color-mix(in srgb, var(--st-brand) 45%, #000) 100%
+      color-mix(in srgb, var(--st-brand) 45%, var(--sanpra-c-000)) 100%
     ) !important;
     background-size: 200% 200% !important;
     animation: st-login-gradient 10s ease infinite alternate !important;
@@ -295,7 +295,7 @@ body:has(.for-forgot) .page-header-wrapper {
 .for-email-login .page-card-head h4 {
   font-size: 20px !important;
   font-weight: 700 !important;
-  color: var(--st-text, #1A1A2E) !important;
+  color: var(--st-text, var(--sanpra-c-1a1a2e)) !important;
   margin: 0 !important;
 }
 
@@ -317,7 +317,7 @@ body:has(.for-forgot) .page-header-wrapper {
   overflow: hidden !important;
   border-radius: 16px !important;
   padding: 0 48px 40px !important;
-  background: var(--st-card-bg, #FFFFFF) !important;
+  background: var(--st-card-bg, var(--sanpra-c-ffffff)) !important;
   box-shadow: 0 32px 80px rgba(0,0,0,0.35) !important;
   border: none !important;
   margin: 0 auto !important;
@@ -342,8 +342,8 @@ body:has(.for-forgot) .page-header-wrapper {
   border: 1.5px solid rgba(0,0,0,0.15) !important;
   padding: 0 40px 0 35px !important;
   font-size: 14px !important;
-  background: #F9FAFB !important;
-  color: var(--st-text, #1A1A2E) !important;
+  background: var(--sanpra-c-f9fafb) !important;
+  color: var(--st-text, var(--sanpra-c-1a1a2e)) !important;
   width: 100% !important;
   box-shadow: none !important;
   margin-bottom: 0 !important;
@@ -352,7 +352,7 @@ body:has(.for-forgot) .page-header-wrapper {
 .for-login .page-card .form-control:focus,
 .for-forgot .page-card .form-control:focus {
   border-color: var(--st-brand) !important;
-  background: #FFFFFF !important;
+  background: var(--sanpra-c-ffffff) !important;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--st-brand) 14%, transparent) !important;
   outline: none !important;
 }
@@ -371,7 +371,7 @@ body:has(.for-forgot) .page-header-wrapper {
   border-radius: 8px !important;
   font-weight: 600 !important;
   font-size: 15px !important;
-  color: #FFFFFF !important;
+  color: var(--sanpra-c-ffffff) !important;
   letter-spacing: 0.02em !important;
   box-shadow: 0 4px 14px color-mix(in srgb, var(--st-accent) 40%, transparent) !important;
   transition: transform 180ms, box-shadow 180ms !important;
@@ -387,7 +387,7 @@ body:has(.for-forgot) .page-header-wrapper {
   transform: translateY(-1px) !important;
   box-shadow: 0 8px 22px color-mix(in srgb, var(--st-accent) 55%, transparent) !important;
   background: color-mix(in srgb, var(--st-accent) 90%, white) !important;
-  color: #FFFFFF !important;
+  color: var(--sanpra-c-ffffff) !important;
 }
 .for-login .page-card .btn,
 .for-forgot .page-card .btn {
@@ -413,7 +413,7 @@ body:has(.for-forgot) .page-header-wrapper {
 }
 .for-login .sign-up-message a,
 .for-forgot .sign-up-message a {
-  color: #FFFFFF !important;
+  color: var(--sanpra-c-ffffff) !important;
   font-weight: 600 !important;
   text-decoration: underline !important;
 }
@@ -425,7 +425,7 @@ body:has(.for-forgot) .page-header-wrapper {
   display: block;
   text-align: center;
   font-size: 11px;
-  color: var(--st-text-muted, #9CA3AF);
+  color: var(--st-text-muted, var(--sanpra-c-9ca3af));
   margin-top: 22px;
   letter-spacing: 0.04em;
   opacity: 0.65;
@@ -442,23 +442,23 @@ body:has(.for-forgot) .page-header-wrapper {
 /* ── DARK MODE ───────────────────────────────────────────────────────────── */
 [data-theme="dark"] .for-login .page-card-head,
 [data-theme="dark"] .for-forgot .page-card-head {
-  background: #1A1D27 !important;
+  background: var(--sanpra-c-1a1d27) !important;
 }
 [data-theme="dark"] .for-login .login-content.page-card,
 [data-theme="dark"] .for-login .page-card,
 [data-theme="dark"] .for-forgot .login-content.page-card,
 [data-theme="dark"] .for-forgot .page-card {
-  background: #1A1D27 !important;
+  background: var(--sanpra-c-1a1d27) !important;
 }
 [data-theme="dark"] .for-login .page-card-head h4,
 [data-theme="dark"] .for-forgot .page-card-head h4 {
-  color: #E2E8F0 !important;
+  color: var(--sanpra-c-e2e8f0) !important;
 }
 [data-theme="dark"] .for-login .page-card .form-control,
 [data-theme="dark"] .for-forgot .page-card .form-control {
-  background: #252836 !important;
+  background: var(--sanpra-c-252836) !important;
   border-color: rgba(255,255,255,0.10) !important;
-  color: #E2E8F0 !important;
+  color: var(--sanpra-c-e2e8f0) !important;
 }
 
 /* ── RESPONSIVE ──────────────────────────────────────────────────────────── */
@@ -484,8 +484,8 @@ body:has(.for-forgot) .page-header-wrapper {
   .for-login-with-email-link {
     background: linear-gradient(
       135deg,
-      var(--st-brand, #1B3F7E) 0%,
-      color-mix(in srgb, var(--st-brand, #1B3F7E) 45%, #000) 100%
+      var(--st-brand, var(--sanpra-c-1b3f7e)) 0%,
+      color-mix(in srgb, var(--st-brand, var(--sanpra-c-1b3f7e)) 45%, var(--sanpra-c-000)) 100%
     ) !important;
     background-size: 200% 200% !important;
     animation: st-login-gradient 10s ease infinite alternate !important;

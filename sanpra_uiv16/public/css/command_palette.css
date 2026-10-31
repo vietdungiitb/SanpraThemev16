@@ -22,8 +22,8 @@
 }
 
 .st-cp-modal {
-  background: var(--fg-color, #fff) !important;
-  border: 1px solid var(--border-color, #e2e8f0) !important;
+  background: var(--fg-color, var(--sanpra-c-fff)) !important;
+  border: 1px solid var(--border-color, var(--sanpra-c-e2e8f0)) !important;
   border-radius: 14px !important;
   width: 620px !important;
   max-width: 94vw !important;
@@ -38,11 +38,11 @@
   align-items: center !important;
   gap: 10px !important;
   padding: 14px 16px !important;
-  border-bottom: 1px solid var(--border-color, #f1f5f9) !important;
+  border-bottom: 1px solid var(--border-color, var(--sanpra-c-f1f5f9)) !important;
 }
 
 .st-cp-search-icon {
-  color: var(--text-muted, #94a3b8) !important;
+  color: var(--text-muted, var(--sanpra-c-94a3b8)) !important;
   flex-shrink: 0 !important;
 }
 
@@ -51,21 +51,21 @@
   border: none !important;
   outline: none !important;
   font-size: 15px !important;
-  color: var(--text-color, #0f172a) !important;
+  color: var(--text-color, var(--sanpra-c-0f172a)) !important;
   background: transparent !important;
   font-family: inherit !important;
   caret-color: var(--st-accent) !important;
 }
 
 .st-cp-input::placeholder {
-  color: var(--text-muted, #94a3b8) !important;
+  color: var(--text-muted, var(--sanpra-c-94a3b8)) !important;
 }
 
 .st-cp-kbd-hint {
   font-size: 11px !important;
-  color: var(--text-muted, #94a3b8) !important;
-  background: var(--control-bg, #f8fafc) !important;
-  border: 1px solid var(--border-color, #e2e8f0) !important;
+  color: var(--text-muted, var(--sanpra-c-94a3b8)) !important;
+  background: var(--control-bg, var(--sanpra-c-f8fafc)) !important;
+  border: 1px solid var(--border-color, var(--sanpra-c-e2e8f0)) !important;
   border-radius: 4px !important;
   padding: 2px 6px !important;
   font-family: inherit !important;
@@ -81,7 +81,7 @@
 
 .st-cp-results::-webkit-scrollbar { width: 4px; }
 .st-cp-results::-webkit-scrollbar-thumb {
-  background: var(--border-color, #e2e8f0);
+  background: var(--border-color, var(--sanpra-c-e2e8f0));
   border-radius: 2px;
 }
 
@@ -91,7 +91,7 @@
   font-weight: 700 !important;
   letter-spacing: 0.8px !important;
   text-transform: uppercase !important;
-  color: var(--text-muted, #94a3b8) !important;
+  color: var(--text-muted, var(--sanpra-c-94a3b8)) !important;
   padding: 8px 8px 3px !important;
 }
 
@@ -107,7 +107,7 @@
 }
 
 .st-cp-item:hover {
-  background: var(--control-bg, #f8fafc) !important;
+  background: var(--control-bg, var(--sanpra-c-f8fafc)) !important;
 }
 
 .st-cp-item.st-selected {
@@ -130,33 +130,33 @@
   font-family: inherit !important;
 
   /* default: DocType — neutral gray */
-  background: var(--control-bg, #f1f5f9) !important;
-  color: var(--text-muted, #64748b) !important;
+  background: var(--control-bg, var(--sanpra-c-f1f5f9)) !important;
+  color: var(--text-muted, var(--sanpra-c-64748b)) !important;
 }
 
 /* Report — blue */
 .st-cp-badge--report {
-  background: color-mix(in srgb, #3b82f6 12%, var(--fg-color, #fff)) !important;
-  color: #2563eb !important;
+  background: color-mix(in srgb, var(--sanpra-c-3b82f6) 12%, var(--fg-color, var(--sanpra-c-fff))) !important;
+  color: var(--sanpra-c-2563eb) !important;
 }
 
 /* Workspace — purple */
 .st-cp-badge--workspace {
-  background: color-mix(in srgb, #8b5cf6 12%, var(--fg-color, #fff)) !important;
-  color: #7c3aed !important;
+  background: color-mix(in srgb, var(--sanpra-c-8b5cf6) 12%, var(--fg-color, var(--sanpra-c-fff))) !important;
+  color: var(--sanpra-c-7c3aed) !important;
 }
 
 /* Create / action — orange */
 .st-cp-badge--create {
-  background: color-mix(in srgb, var(--st-accent, #B35200) 12%, var(--fg-color, #fff)) !important;
-  color: var(--st-accent, #B35200) !important;
+  background: color-mix(in srgb, var(--st-accent, var(--sanpra-c-b35200)) 12%, var(--fg-color, var(--sanpra-c-fff))) !important;
+  color: var(--st-accent, var(--sanpra-c-b35200)) !important;
   font-size: 16px !important;
 }
 
 /* Generic action — brand primary */
 .st-cp-badge--action {
-  background: color-mix(in srgb, var(--st-primary, #1B3F7E) 10%, var(--fg-color, #fff)) !important;
-  color: var(--st-primary, #1B3F7E) !important;
+  background: color-mix(in srgb, var(--st-primary, var(--sanpra-c-1b3f7e)) 10%, var(--fg-color, var(--sanpra-c-fff))) !important;
+  color: var(--st-primary, var(--sanpra-c-1b3f7e)) !important;
   font-size: 12px !important;
 }
 
@@ -165,7 +165,7 @@
 .st-cp-item-name {
   font-size: 13px !important;
   font-weight: 500 !important;
-  color: var(--text-color, #0f172a) !important;
+  color: var(--text-color, var(--sanpra-c-0f172a)) !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
@@ -173,7 +173,7 @@
 
 .st-cp-item-sub {
   font-size: 11px !important;
-  color: var(--text-muted, #64748b) !important;
+  color: var(--text-muted, var(--sanpra-c-64748b)) !important;
   margin-top: 1px !important;
   white-space: nowrap !important;
   overflow: hidden !important;
@@ -184,7 +184,7 @@
 .st-cp-empty {
   text-align: center !important;
   padding: 32px 20px !important;
-  color: var(--text-muted, #94a3b8) !important;
+  color: var(--text-muted, var(--sanpra-c-94a3b8)) !important;
   font-size: 13px !important;
 }
 
@@ -196,17 +196,17 @@
 
 /* ── Footer ── */
 .st-cp-footer {
-  border-top: 1px solid var(--border-color, #f1f5f9) !important;
+  border-top: 1px solid var(--border-color, var(--sanpra-c-f1f5f9)) !important;
   padding: 7px 14px !important;
   display: flex !important;
   gap: 14px !important;
   align-items: center !important;
-  background: var(--control-bg, #f8fafc) !important;
+  background: var(--control-bg, var(--sanpra-c-f8fafc)) !important;
 }
 
 .st-cp-hint {
   font-size: 11px !important;
-  color: var(--text-muted, #94a3b8) !important;
+  color: var(--text-muted, var(--sanpra-c-94a3b8)) !important;
   display: flex !important;
   align-items: center !important;
   gap: 3px !important;
@@ -218,13 +218,13 @@
 }
 
 .st-cp-hint kbd {
-  background: var(--fg-color, #f1f5f9) !important;
-  border: 1px solid var(--border-color, #e2e8f0) !important;
+  background: var(--fg-color, var(--sanpra-c-f1f5f9)) !important;
+  border: 1px solid var(--border-color, var(--sanpra-c-e2e8f0)) !important;
   border-radius: 3px !important;
   padding: 1px 4px !important;
   font-size: 11px !important;
   font-family: inherit !important;
-  color: var(--text-color, #475569) !important;
+  color: var(--text-color, var(--sanpra-c-475569)) !important;
 }
 
 /* ── Animations ── */

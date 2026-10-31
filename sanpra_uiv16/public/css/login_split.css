@@ -8,22 +8,22 @@
 
 /* ── TOKENS ─────────────────────────────────────────────────────────────── */
 body.sl-split {
-  --sl-brand: #1B3F7E;
-  --sl-accent: #2563EB;
-  --sl-success: #10B981;
-  --sl-on-hero: #FFFFFF;
-  --sl-page-bg: #F4F7FB;
-  --sl-page-bg-2: #FFFFFF;
-  --sl-surface: #FFFFFF;
-  --sl-text: #0F172A;
-  --sl-muted: #64748B;
-  --sl-border: #E2E8F0;
-  --sl-input-bg: #F8FAFC;
+  --sl-brand: var(--sanpra-c-1b3f7e);
+  --sl-accent: var(--sanpra-c-2563eb);
+  --sl-success: var(--sanpra-c-10b981);
+  --sl-on-hero: var(--sanpra-c-ffffff);
+  --sl-page-bg: var(--sanpra-c-f4f7fb);
+  --sl-page-bg-2: var(--sanpra-c-ffffff);
+  --sl-surface: var(--sanpra-c-ffffff);
+  --sl-text: var(--sanpra-c-0f172a);
+  --sl-muted: var(--sanpra-c-64748b);
+  --sl-border: var(--sanpra-c-e2e8f0);
+  --sl-input-bg: var(--sanpra-c-f8fafc);
   --sl-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.08), 0 0 1px 1px rgba(15, 23, 42, 0.04);
-  --sl-hero-from: #102A54;
-  --sl-hero-to: #1B3F7E;
+  --sl-hero-from: var(--sanpra-c-102a54);
+  --sl-hero-to: var(--sanpra-c-1b3f7e);
   --sl-hero-image: none;
-  --sl-brand-text: #1B3F7E;
+  --sl-brand-text: var(--sanpra-c-1b3f7e);
   --sl-radius-card: 22px;
   --sl-radius-control: 12px;
 }
@@ -33,13 +33,13 @@ body.sl-split {
 }
 
 html[data-theme="dark"] body.sl-split {
-  --sl-page-bg: #0E1219;
-  --sl-page-bg-2: #141923;
-  --sl-surface: #171C26;
-  --sl-text: #E8EDF5;
-  --sl-muted: #9AA7BA;
-  --sl-border: #2A3242;
-  --sl-input-bg: #1E2430;
+  --sl-page-bg: var(--sanpra-c-0e1219);
+  --sl-page-bg-2: var(--sanpra-c-141923);
+  --sl-surface: var(--sanpra-c-171c26);
+  --sl-text: var(--sanpra-c-e8edf5);
+  --sl-muted: var(--sanpra-c-9aa7ba);
+  --sl-border: var(--sanpra-c-2a3242);
+  --sl-input-bg: var(--sanpra-c-1e2430);
   --sl-shadow: 0 30px 80px color-mix(in srgb, black 45%, transparent);
   --sl-brand-text: color-mix(in oklch, var(--sl-brand) 45%, var(--sl-text));
 }
@@ -171,7 +171,7 @@ html body.sl-split section::before { display: none !important; }
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #FFFFFF;
+  color: var(--sanpra-c-ffffff);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 .sl-dot {
@@ -190,7 +190,7 @@ html body.sl-split section::before { display: none !important; }
 
 .sl-headline {
   margin: 26px 0 0;
-  color: #FFFFFF;
+  color: var(--sanpra-c-ffffff);
   font-size: clamp(32px, 3.5vw, 56px);
   font-weight: 800;
   line-height: 1.14;
@@ -230,7 +230,7 @@ html body.sl-split section::before { display: none !important; }
   align-items: center;
   gap: 10px;
   font-weight: 700;
-  color: #FFFFFF;
+  color: var(--sanpra-c-ffffff);
 }
 .sl-feature-panel-title svg,
 .sl-feature-icon svg { fill: currentColor; }
@@ -270,9 +270,9 @@ html body.sl-split section::before { display: none !important; }
   border: 1px solid rgba(255, 255, 255, 0.25);
   background: rgba(255, 255, 255, 0.16);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  color: #FFFFFF;
+  color: var(--sanpra-c-ffffff);
 }
-.sl-feature-title { font-size: 14px; font-weight: 700; color: #FFFFFF; }
+.sl-feature-title { font-size: 14px; font-weight: 700; color: var(--sanpra-c-ffffff); }
 .sl-feature-subtitle {
   margin-top: 4px;
   font-size: 12.5px;
@@ -286,7 +286,7 @@ html body.sl-split section::before { display: none !important; }
   align-items: center;
   justify-content: center;
   padding: 40px clamp(20px, 4vw, 56px);
-  background: linear-gradient(165deg, #F8FAFC 0%, #EDF2F9 100%);
+  background: linear-gradient(165deg, var(--sanpra-c-f8fafc) 0%, var(--sanpra-c-edf2f9) 100%);
 }
 .sl-auth-inner { width: min(100%, 540px); }
 
@@ -305,7 +305,7 @@ html body.sl-split section::before { display: none !important; }
   padding: 3px 8px;
   border-radius: 9999px;
   background: rgba(255, 255, 255, 0.85);
-  border: 1px solid #E2E8F0;
+  border: 1px solid var(--sanpra-c-e2e8f0);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -317,7 +317,7 @@ html body.sl-split section::before { display: none !important; }
   border-radius: 9999px;
   font-size: 12px;
   font-weight: 500;
-  color: #64748B;
+  color: var(--sanpra-c-64748b);
   cursor: pointer;
   transition: all 0.15s ease;
   display: inline-flex;
@@ -325,16 +325,16 @@ html body.sl-split section::before { display: none !important; }
   gap: 5px;
 }
 .sl-lang-btn:hover {
-  color: #1B3F7E;
+  color: var(--sanpra-c-1b3f7e);
 }
 .sl-lang-btn.active {
-  background: #1B3F7E;
-  color: #FFFFFF;
+  background: var(--sanpra-c-1b3f7e);
+  color: var(--sanpra-c-ffffff);
   font-weight: 600;
   box-shadow: 0 2px 6px rgba(27, 63, 126, 0.25);
 }
 .sl-lang-flag { font-size: 13px; line-height: 1; }
-.sl-lang-divider { color: #CBD5E1; font-size: 11px; margin: 0 1px; }
+.sl-lang-divider { color: var(--sanpra-c-cbd5e1); font-size: 11px; margin: 0 1px; }
 
 .sl-back-link {
   display: inline-flex;
@@ -361,9 +361,9 @@ html body.sl-split .sl-card.page-card {
   margin: 0 !important;
   padding: 42px 48px 32px !important;
   overflow: visible !important;
-  border: 1px solid #E2E8F0 !important;
+  border: 1px solid var(--sanpra-c-e2e8f0) !important;
   border-radius: 22px !important;
-  background: #FFFFFF !important;
+  background: var(--sanpra-c-ffffff) !important;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 20px 45px -10px rgba(15, 23, 42, 0.08), 0 0 1px 1px rgba(15, 23, 42, 0.03) !important;
   backdrop-filter: none !important;
   animation: sl-card-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -390,9 +390,9 @@ html body.sl-split .sl-card.page-card {
   margin-bottom: 0 !important;
   padding: 4px 12px;
   border-radius: 9999px;
-  background: #EEF4FF;
-  border: 1px solid #D1E0FF;
-  color: #1B3F7E;
+  background: var(--sanpra-c-eef4ff);
+  border: 1px solid var(--sanpra-c-d1e0ff);
+  color: var(--sanpra-c-1b3f7e);
   font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -404,13 +404,13 @@ html body.sl-split .sl-card.page-card {
   place-items: center;
   width: 16px;
   height: 16px;
-  color: #2563EB;
+  color: var(--sanpra-c-2563eb);
 }
 .sl-eyebrow-icon svg,
 .sl-security-note svg { fill: currentColor; }
 html body.sl-split .sl-card-title {
   margin: 0;
-  color: #0F172A;
+  color: var(--sanpra-c-0f172a);
   font-size: clamp(26px, 2.4vw, 32px);
   font-weight: 800;
   line-height: 1.2;
@@ -418,7 +418,7 @@ html body.sl-split .sl-card-title {
 }
 .sl-card-subtitle {
   margin: 8px 0 0;
-  color: #64748B;
+  color: var(--sanpra-c-64748b);
   font-size: 14px;
   line-height: 1.5;
 }
@@ -466,9 +466,9 @@ html body.sl-split .sl-card .login-error-banner {
   gap: 12px;
   padding: 12px 16px !important;
   border-radius: 12px !important;
-  background: #FEF2F2 !important;
-  border: 1px solid #FEE2E2 !important;
-  color: #991B1B !important;
+  background: var(--sanpra-c-fef2f2) !important;
+  border: 1px solid var(--sanpra-c-fee2e2) !important;
+  color: var(--sanpra-c-991b1b) !important;
   font-size: 13.5px !important;
   font-weight: 500 !important;
   line-height: 1.4 !important;
@@ -480,7 +480,7 @@ html body.sl-split .sl-card .login-error-banner svg {
   width: 18px !important;
   height: 18px !important;
   flex: none;
-  fill: #DC2626 !important;
+  fill: var(--sanpra-c-dc2626) !important;
 }
 html body.sl-split .sl-card .login-success-banner {
   display: none;
@@ -488,9 +488,9 @@ html body.sl-split .sl-card .login-success-banner {
   gap: 12px;
   padding: 12px 16px !important;
   border-radius: 12px !important;
-  background: #F0FDF4 !important;
-  border: 1px solid #DCFCE7 !important;
-  color: #166534 !important;
+  background: var(--sanpra-c-f0fdf4) !important;
+  border: 1px solid var(--sanpra-c-dcfce7) !important;
+  color: var(--sanpra-c-166534) !important;
   font-size: 13.5px !important;
   font-weight: 500 !important;
   margin: 0 0 16px 0 !important;
@@ -499,7 +499,7 @@ html body.sl-split .sl-card .login-success-banner svg {
   width: 18px !important;
   height: 18px !important;
   flex: none;
-  fill: #16A34A !important;
+  fill: var(--sanpra-c-16a34a) !important;
 }
 @keyframes sl-shake {
   0%, 100% { transform: translateX(0); }
@@ -507,7 +507,7 @@ html body.sl-split .sl-card .login-success-banner svg {
   40%, 80% { transform: translateX(4px); }
 }
 
-html body.sl-split .sl-card .field-error { display: none; margin: 0 !important; color: #DC2626 !important; font-size: 13px !important; }
+html body.sl-split .sl-card .field-error { display: none; margin: 0 !important; color: var(--sanpra-c-dc2626) !important; font-size: 13px !important; }
 html body.sl-split .sl-card .form-group.invalid .field-error { display: block; }
 .sl-label-row {
   display: flex;
@@ -540,14 +540,14 @@ html body.sl-split .sl-card .form-control {
 html body.sl-split .sl-card #login_token { padding: 0 18px !important; }
 html body.sl-split .sl-card .form-control:focus {
   border-color: var(--sl-brand) !important;
-  background: #FFFFFF !important;
+  background: var(--sanpra-c-ffffff) !important;
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--sl-brand) 12%, transparent) !important;
   outline: none !important;
 }
 html body.sl-split .sl-card .page-card-body.invalid .form-control,
 html body.sl-split .sl-card .form-group.invalid .form-control {
-  border-color: #EF4444 !important;
-  background: #FFFFFF !important;
+  border-color: var(--sanpra-c-ef4444) !important;
+  background: var(--sanpra-c-ffffff) !important;
   box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12) !important;
 }
 html body.sl-split .sl-card .email-field,
@@ -562,7 +562,7 @@ html body.sl-split .sl-card .toggle-password {
 }
 html body.sl-split .sl-card .field-icon {
   left: 16px !important;
-  fill: #94A3B8 !important;
+  fill: var(--sanpra-c-94a3b8) !important;
   transition: fill 0.15s ease;
 }
 html body.sl-split .sl-card .form-group:focus-within .field-icon {
@@ -571,7 +571,7 @@ html body.sl-split .sl-card .form-group:focus-within .field-icon {
 html body.sl-split .sl-card .toggle-password {
   right: 16px !important;
   font-size: inherit !important;
-  fill: #94A3B8 !important;
+  fill: var(--sanpra-c-94a3b8) !important;
   cursor: pointer;
   transition: fill 0.15s ease;
 }
@@ -591,7 +591,7 @@ html body.sl-split .sl-card .btn-primary {
   padding: 0 20px !important;
   border: none !important;
   border-radius: var(--sl-radius-control) !important;
-  background: linear-gradient(135deg, var(--sl-brand) 0%, #2555A8 100%) !important;
+  background: linear-gradient(135deg, var(--sl-brand) 0%, var(--sanpra-c-2555a8) 100%) !important;
   color: var(--sl-on-hero) !important;
   font-size: 15.5px !important;
   font-weight: 600 !important;
@@ -621,7 +621,7 @@ html body.sl-split .sl-card .sl-btn-secondary {
   border: 1.5px solid var(--sl-border) !important;
   border-radius: var(--sl-radius-control) !important;
   background: var(--sl-surface) !important;
-  color: #334155 !important;
+  color: var(--sanpra-c-334155) !important;
   font-size: 14px !important;
   font-weight: 600 !important;
   box-shadow: none !important;
@@ -629,8 +629,8 @@ html body.sl-split .sl-card .sl-btn-secondary {
 }
 html body.sl-split .sl-card .sl-btn-secondary:hover {
   background: var(--sl-input-bg) !important;
-  border-color: #CBD5E1 !important;
-  color: #0F172A !important;
+  border-color: var(--sanpra-c-cbd5e1) !important;
+  color: var(--sanpra-c-0f172a) !important;
   transform: translateY(-1px) !important;
 }
 html body.sl-split .sl-card .page-card-actions { gap: 14px !important; }

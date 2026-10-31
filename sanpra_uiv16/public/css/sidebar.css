@@ -43,7 +43,7 @@
 .st-company-name {
   font-size: 14px;
   font-weight: 600;
-  color: #1C2333;
+  color: var(--sanpra-c-1c2333);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -125,7 +125,7 @@
 .body-sidebar-container .body-sidebar .standard-sidebar-item .item-anchor,
 .body-sidebar-container .body-sidebar .nested-container .standard-sidebar-item .item-anchor,
 .body-sidebar-container .body-sidebar .standard-sidebar-item.indent .item-anchor {
-  color: var(--st-sidebar-text, #374151) !important;
+  color: var(--st-sidebar-text, var(--sanpra-c-374151)) !important;
   border-radius: 8px !important;
   padding: 2px 4px !important;
 }
@@ -135,12 +135,12 @@
 body.st-sidebar-layout-rail .body-sidebar-container .body-sidebar .standard-sidebar-item.indent .item-anchor {
   padding-left: 24px !important;
   font-size: 13px !important;
-  color: var(--st-sidebar-text-muted, #6B7280) !important;
+  color: var(--st-sidebar-text-muted, var(--sanpra-c-6b7280)) !important;
 }
 /* Active child stays readable: restore active pill text (light). */
 body.st-sidebar-layout-rail .body-sidebar-container .body-sidebar .standard-sidebar-item.indent.active-sidebar .item-anchor,
 body.st-sidebar-layout-rail .body-sidebar-container .body-sidebar .standard-sidebar-item.indent.active-sidebar .item-anchor .sidebar-item-label {
-  color: var(--st-sidebar-active-text, #ffffff) !important;
+  color: var(--st-sidebar-active-text, var(--sanpra-c-ffffff)) !important;
 }
 html[data-theme="dark"] body.st-sidebar-layout-rail .body-sidebar-container .body-sidebar .standard-sidebar-item.indent .item-anchor {
   color: var(--st-sidebar-text-muted, rgba(255,255,255,0.55)) !important;
@@ -154,7 +154,7 @@ html[data-theme="dark"] body.st-sidebar-layout-rail .body-sidebar-container .bod
 .body-sidebar-container .body-sidebar .standard-sidebar-item:not(.active-sidebar):has(a:not(.section-break)):hover,
 .body-sidebar-container .body-sidebar .nested-container .standard-sidebar-item:not(.active-sidebar) .item-anchor:hover {
   background-color: var(--st-sidebar-hover, rgba(0,0,0,0.05)) !important;
-  color: var(--st-sidebar-hover-text, var(--st-sidebar-text, #111827)) !important;
+  color: var(--st-sidebar-hover-text, var(--st-sidebar-text, var(--sanpra-c-111827))) !important;
   border-radius: 8px !important;
   text-decoration: none !important;
 }
@@ -163,7 +163,7 @@ html[data-theme="dark"] body.st-sidebar-layout-rail .body-sidebar-container .bod
 .body-sidebar-container .body-sidebar .standard-sidebar-item.active-sidebar .item-anchor,
 .body-sidebar-container .body-sidebar .nested-container .standard-sidebar-item.active-sidebar .item-anchor {
   background: var(--st-sidebar-active, var(--st-accent)) !important;
-  color: var(--st-sidebar-active-text, #ffffff) !important;
+  color: var(--st-sidebar-active-text, var(--sanpra-c-ffffff)) !important;
   font-weight: 600 !important;
   border-radius: 8px !important;
   border-left: none !important;
@@ -175,31 +175,31 @@ html[data-theme="dark"] body.st-sidebar-layout-rail .body-sidebar-container .bod
 .body-sidebar-container .body-sidebar .standard-sidebar-item.active-sidebar .item-anchor a,
 .body-sidebar-container .body-sidebar .nested-container .standard-sidebar-item.active-sidebar .item-anchor .sidebar-item-label,
 .body-sidebar-container .body-sidebar .nested-container .standard-sidebar-item.active-sidebar .item-anchor span {
-  color: var(--st-sidebar-active-text, #ffffff) !important;
+  color: var(--st-sidebar-active-text, var(--sanpra-c-ffffff)) !important;
 }
 
 /* ---- Icons ---- */
 .body-sidebar-container .body-sidebar .standard-sidebar-item .sidebar-item-icon,
 .body-sidebar-container .body-sidebar .standard-sidebar-item .sidebar-item-icon.text-ink-gray-7 {
-  color: var(--st-sidebar-icon, var(--st-sidebar-text-muted, #6B7280)) !important;
+  color: var(--st-sidebar-icon, var(--st-sidebar-text-muted, var(--sanpra-c-6b7280))) !important;
 }
 
 .body-sidebar-container .body-sidebar .standard-sidebar-item .sidebar-item-icon svg use,
 .body-sidebar-container .body-sidebar .standard-sidebar-item .sidebar-item-icon svg {
-  color: var(--st-sidebar-icon, var(--st-sidebar-text-muted, #6B7280)) !important;
+  color: var(--st-sidebar-icon, var(--st-sidebar-text-muted, var(--sanpra-c-6b7280))) !important;
   stroke: currentColor !important;
 }
 
 .body-sidebar-container .body-sidebar .standard-sidebar-item.active-sidebar .sidebar-item-icon,
 .body-sidebar-container .body-sidebar .standard-sidebar-item.active-sidebar .sidebar-item-icon.text-ink-gray-7,
 .body-sidebar-container .body-sidebar .nested-container .standard-sidebar-item.active-sidebar .sidebar-item-icon {
-  color: var(--st-sidebar-active-text, #ffffff) !important;
+  color: var(--st-sidebar-active-text, var(--sanpra-c-ffffff)) !important;
 }
 
 .body-sidebar-container .body-sidebar .standard-sidebar-item.active-sidebar .sidebar-item-icon svg use,
 .body-sidebar-container .body-sidebar .standard-sidebar-item.active-sidebar .sidebar-item-icon svg,
 .body-sidebar-container .body-sidebar .nested-container .standard-sidebar-item.active-sidebar .sidebar-item-icon svg {
-  color: var(--st-sidebar-active-text, #ffffff) !important;
+  color: var(--st-sidebar-active-text, var(--sanpra-c-ffffff)) !important;
   stroke: currentColor !important;
 }
 
@@ -207,7 +207,7 @@ html[data-theme="dark"] body.st-sidebar-layout-rail .body-sidebar-container .bod
 .body-sidebar-container .body-sidebar .standard-sidebar-item.active-sidebar .sidebar-item-icon .icon,
 .body-sidebar-container .body-sidebar .nested-container .standard-sidebar-item.active-sidebar .sidebar-item-icon .es-icon,
 .body-sidebar-container .body-sidebar .nested-container .standard-sidebar-item.active-sidebar .sidebar-item-icon .icon {
-  color: var(--st-sidebar-active-text, #ffffff) !important;
+  color: var(--st-sidebar-active-text, var(--sanpra-c-ffffff)) !important;
   fill: currentColor !important;
   stroke: currentColor !important;
 }
@@ -220,7 +220,7 @@ html[data-theme="dark"] body.st-sidebar-layout-rail .body-sidebar-container .bod
 /* Section break / group labels */
 .body-sidebar .sidebar-item-container.section-item .item-anchor .sidebar-item-label,
 .body-sidebar .section-break .sidebar-item-label {
-  color: var(--st-sidebar-text-muted, #9CA3AF) !important;
+  color: var(--st-sidebar-text-muted, var(--sanpra-c-9ca3af)) !important;
   font-size: 11px !important;
   letter-spacing: 0.06em !important;
   text-transform: uppercase !important;
@@ -232,7 +232,7 @@ html[data-theme="dark"] body.st-sidebar-layout-rail .body-sidebar-container .bod
    :not([href]) — khong can doi fixture sang type khac (Workspace Link
    validate chi cho Link/Card Break). Dinh dang giong section-break. */
 .body-sidebar .sidebar-item-container .item-anchor:not([href]) .sidebar-item-label {
-  color: var(--st-sidebar-text-muted, #9CA3AF) !important;
+  color: var(--st-sidebar-text-muted, var(--sanpra-c-9ca3af)) !important;
   font-size: 11px !important;
   letter-spacing: 0.06em !important;
   text-transform: uppercase !important;
@@ -260,22 +260,22 @@ html[data-theme="dark"] body.st-sidebar-layout-rail .body-sidebar-container .bod
 
 /* ---- Onboarding / Getting Started link ---- */
 .body-sidebar .onboarding-sidebar {
-  color: #6B7280 !important;
+  color: var(--sanpra-c-6b7280) !important;
 }
 
 .body-sidebar .onboarding-sidebar:hover {
-  color: #111827 !important;
+  color: var(--sanpra-c-111827) !important;
 }
 
 /* ---- Collapse sidebar link ---- */
 .body-sidebar .collapse-sidebar-link,
 .body-sidebar .collapse-sidebar-link span {
-  color: #6B7280 !important;
+  color: var(--sanpra-c-6b7280) !important;
 }
 
 .body-sidebar .collapse-sidebar-link:hover,
 .body-sidebar .collapse-sidebar-link:hover span {
-  color: #111827 !important;
+  color: var(--sanpra-c-111827) !important;
   text-decoration: none !important;
 }
 
@@ -291,14 +291,14 @@ html[data-theme="dark"] body.st-sidebar-layout-rail .body-sidebar-container .bod
 /* ---- Sidebar icons for svg .es-icon ---- */
 .body-sidebar .sidebar-item-icon .es-icon,
 .body-sidebar .sidebar-item-icon .icon {
-  color: #6B7280 !important;
-  fill: #6B7280 !important;
+  color: var(--sanpra-c-6b7280) !important;
+  fill: var(--sanpra-c-6b7280) !important;
 }
 
 .body-sidebar .standard-sidebar-item.active-sidebar .sidebar-item-icon .es-icon,
 .body-sidebar .standard-sidebar-item.active-sidebar .sidebar-item-icon .icon {
-  color: #ffffff !important;
-  fill: #ffffff !important;
+  color: var(--sanpra-c-ffffff) !important;
+  fill: var(--sanpra-c-ffffff) !important;
 }
 
 /* ---- Custom scrollbar inside sidebar ---- */
@@ -318,7 +318,7 @@ html[data-theme="dark"] body.st-sidebar-layout-rail .body-sidebar-container .bod
 .st-sidebar-tooltip {
   position: fixed;
   left: 72px;
-  background: #1e1e2e;
+  background: var(--sanpra-c-1e1e2e);
   color: rgba(255,255,255,0.9);
   font-size: 12px;
   font-weight: 500;
@@ -365,7 +365,7 @@ html[data-theme="dark"] .body-sidebar .standard-sidebar-item .item-anchor {
 }
 html[data-theme="dark"] .body-sidebar .standard-sidebar-item:not(.active-sidebar) .item-anchor:hover {
   background-color: var(--st-sidebar-hover, rgba(255,255,255,0.1)) !important;
-  color: var(--st-sidebar-hover-text, #fff) !important;
+  color: var(--st-sidebar-hover-text, var(--sanpra-c-fff)) !important;
 }
 html[data-theme="dark"] .body-sidebar .standard-sidebar-item.active-sidebar .item-anchor {
   background: var(--st-sidebar-active, color-mix(in srgb, var(--st-accent) 15%, transparent)) !important;
@@ -437,8 +437,8 @@ html[data-theme="dark"] .body-sidebar .standard-sidebar-item.active-sidebar .sid
   flex-direction: column;
   width: var(--st-rail-width, 72px);
   height: 100vh;
-  background: var(--st-sidebar-bg, #FFFFFF);
-  border-right: 1px solid var(--sidebar-border-color, #ededed);
+  background: var(--st-sidebar-bg, var(--sanpra-c-ffffff));
+  border-right: 1px solid var(--sidebar-border-color, var(--sanpra-c-ededed));
   flex-shrink: 0;
   transition: width 0.2s ease;
 }
@@ -458,7 +458,7 @@ body.st-has-toolbar #st-icon-rail {
   flex-shrink: 0;
   width: 100%;
   height: 52px;
-  border-bottom: 1px solid var(--sidebar-border-color, #ededed);
+  border-bottom: 1px solid var(--sidebar-border-color, var(--sanpra-c-ededed));
 }
 #st-icon-rail .st-rail-brand img {
   width: 28px;
@@ -474,7 +474,7 @@ body.st-has-toolbar #st-icon-rail {
   justify-content: center;
   border-radius: 6px;
   background: var(--st-rail-bg, var(--st-accent));
-  color: var(--st-rail-icon-color, #FFFFFF);
+  color: var(--st-rail-icon-color, var(--sanpra-c-ffffff));
   font-size: 13px;
   font-weight: 700;
 }
@@ -514,7 +514,7 @@ body.st-has-toolbar #st-icon-rail {
   cursor: pointer;
 }
 #st-icon-rail .st-rail-app:hover {
-  background: var(--sidebar-hover-color, #f3f3f3);
+  background: var(--sidebar-hover-color, var(--sanpra-c-f3f3f3));
   text-decoration: none !important;
 }
 #st-icon-rail .st-rail-app-icon {
@@ -526,7 +526,7 @@ body.st-has-toolbar #st-icon-rail {
   align-items: center;
   justify-content: center;
   background: var(--st-rail-bg, var(--st-accent));
-  color: var(--st-rail-icon-color, #FFFFFF);
+  color: var(--st-rail-icon-color, var(--sanpra-c-ffffff));
   /* frappe.utils.icon()'s <svg class="icon"> renders via the fill/stroke
      custom properties Frappe's own icons.scss declares (--icon-fill/
      --icon-stroke) — NOT via `color`/currentColor. Without this override
@@ -536,7 +536,7 @@ body.st-has-toolbar #st-icon-rail {
      accent-colored background, making icons vanish rather than merely
      look off. --icon-fill stays untouched: Frappe's icon set is already
      transparent-fill/stroke-only in both light and dark mode. */
-  --icon-stroke: var(--st-rail-icon-color, #FFFFFF);
+  --icon-stroke: var(--st-rail-icon-color, var(--sanpra-c-ffffff));
 }
 #st-icon-rail .st-rail-app-icon svg { width: 16px; height: 16px; }
 #st-icon-rail .st-rail-app-fallback { font-size: 13px; font-weight: 700; }
@@ -555,13 +555,13 @@ body.st-has-toolbar #st-icon-rail {
   border-radius: inherit;
 }
 #st-icon-rail .st-rail-app.st-rail-active .st-rail-app-icon {
-  box-shadow: 0 0 0 2px var(--st-sidebar-bg, #FFFFFF), 0 0 0 3px var(--st-rail-active, var(--st-accent));
+  box-shadow: 0 0 0 2px var(--st-sidebar-bg, var(--sanpra-c-ffffff)), 0 0 0 3px var(--st-rail-active, var(--st-accent));
 }
 #st-icon-rail .st-rail-app-label {
   font-size: 11px;
   font-weight: 600;
   line-height: 1.2;
-  color: var(--st-sidebar-text, #374151);
+  color: var(--st-sidebar-text, var(--sanpra-c-374151));
   text-align: center;
   max-width: 100%;
   overflow: hidden;
@@ -715,21 +715,21 @@ html[data-st-nav="dock"] {
   height: 40px;
   padding: 0;
   border: 0;
-  border-top: 1px solid var(--st-sidebar-border, #e5e7eb);
+  border-top: 1px solid var(--st-sidebar-border, var(--sanpra-c-e5e7eb));
   background: transparent;
-  color: var(--st-sidebar-text-muted, #9ca3af);
+  color: var(--st-sidebar-text-muted, var(--sanpra-c-9ca3af));
   cursor: pointer;
   font-size: 11px;
   transition: background 0.15s ease, color 0.15s ease;
   /* See .st-rail-app-icon's --icon-stroke comment: frappe.utils.icon()'s
      svg reads --icon-stroke, not `color`, so the chevron needs its own
      explicit value to actually be visible. */
-  --icon-stroke: var(--st-sidebar-text-muted, #9ca3af);
+  --icon-stroke: var(--st-sidebar-text-muted, var(--sanpra-c-9ca3af));
 }
 #st-icon-rail .st-rail-collapse:hover {
-  background: var(--sidebar-hover-color, #f3f3f3);
-  color: var(--st-sidebar-text, #111827);
-  --icon-stroke: var(--st-sidebar-text, #111827);
+  background: var(--sidebar-hover-color, var(--sanpra-c-f3f3f3));
+  color: var(--st-sidebar-text, var(--sanpra-c-111827));
+  --icon-stroke: var(--st-sidebar-text, var(--sanpra-c-111827));
 }
 #st-icon-rail .st-rail-collapse-icon {
   display: inline-flex;
