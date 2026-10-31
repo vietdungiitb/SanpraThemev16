@@ -5,6 +5,248 @@
     --zi-editor: 1200;
     --zi-modal: 2000;
     --zi-top: 99999;
+    --sanpra-c-1c2333: var(--sanpra-c-1c2333);
+    --sanpra-c-374151: var(--sanpra-c-374151);
+    --sanpra-c-6b7280: var(--sanpra-c-6b7280);
+    --sanpra-c-ffffff: var(--sanpra-c-ffffff);
+    --sanpra-c-111827: var(--sanpra-c-111827);
+    --sanpra-c-9ca3af: var(--sanpra-c-9ca3af);
+    --sanpra-c-1e1e2e: var(--sanpra-c-1e1e2e);
+    --sanpra-c-fff: var(--sanpra-c-fff);
+    --sanpra-c-ededed: var(--sanpra-c-ededed);
+    --sanpra-c-f3f3f3: var(--sanpra-c-f3f3f3);
+    --sanpra-c-e5e7eb: var(--sanpra-c-e5e7eb);
+    --sanpra-c-e2e8f0: var(--sanpra-c-e2e8f0);
+    --sanpra-c-f1f5f9: var(--sanpra-c-f1f5f9);
+    --sanpra-c-94a3b8: var(--sanpra-c-94a3b8);
+    --sanpra-c-0f172a: var(--sanpra-c-0f172a);
+    --sanpra-c-f8fafc: var(--sanpra-c-f8fafc);
+    --sanpra-c-64748b: var(--sanpra-c-64748b);
+    --sanpra-c-3b82f6: var(--sanpra-c-3b82f6);
+    --sanpra-c-2563eb: var(--sanpra-c-2563eb);
+    --sanpra-c-8b5cf6: var(--sanpra-c-8b5cf6);
+    --sanpra-c-7c3aed: var(--sanpra-c-7c3aed);
+    --sanpra-c-b35200: var(--sanpra-c-b35200);
+    --sanpra-c-1b3f7e: var(--sanpra-c-1b3f7e);
+    --sanpra-c-475569: var(--sanpra-c-475569);
+    --sanpra-c-cbd5e1: var(--sanpra-c-cbd5e1);
+    --sanpra-c-86efac: var(--sanpra-c-86efac);
+    --sanpra-c-fca5a5: var(--sanpra-c-fca5a5);
+    --sanpra-c-fde68a: var(--sanpra-c-fde68a);
+    --sanpra-c-f59e0b: var(--sanpra-c-f59e0b);
+    --sanpra-c-fbb040: var(--sanpra-c-fbb040);
+    --sanpra-c-1a1a2e: var(--sanpra-c-1a1a2e);
+    --sanpra-c-333: var(--sanpra-c-333);
+    --sanpra-c-000: var(--sanpra-c-000);
+    --sanpra-c-f9fafb: var(--sanpra-c-f9fafb);
+    --sanpra-c-1a1d27: var(--sanpra-c-1a1d27);
+    --sanpra-c-252836: var(--sanpra-c-252836);
+    --sanpra-c-10b981: var(--sanpra-c-10b981);
+    --sanpra-c-f4f7fb: var(--sanpra-c-f4f7fb);
+    --sanpra-c-102a54: var(--sanpra-c-102a54);
+    --sanpra-c-0e1219: var(--sanpra-c-0e1219);
+    --sanpra-c-141923: var(--sanpra-c-141923);
+    --sanpra-c-171c26: var(--sanpra-c-171c26);
+    --sanpra-c-e8edf5: var(--sanpra-c-e8edf5);
+    --sanpra-c-9aa7ba: var(--sanpra-c-9aa7ba);
+    --sanpra-c-2a3242: var(--sanpra-c-2a3242);
+    --sanpra-c-1e2430: var(--sanpra-c-1e2430);
+    --sanpra-c-edf2f9: var(--sanpra-c-edf2f9);
+    --sanpra-c-eef4ff: var(--sanpra-c-eef4ff);
+    --sanpra-c-d1e0ff: var(--sanpra-c-d1e0ff);
+    --sanpra-c-fef2f2: var(--sanpra-c-fef2f2);
+    --sanpra-c-fee2e2: var(--sanpra-c-fee2e2);
+    --sanpra-c-991b1b: var(--sanpra-c-991b1b);
+    --sanpra-c-dc2626: var(--sanpra-c-dc2626);
+    --sanpra-c-f0fdf4: var(--sanpra-c-f0fdf4);
+    --sanpra-c-dcfce7: var(--sanpra-c-dcfce7);
+    --sanpra-c-166534: var(--sanpra-c-166534);
+    --sanpra-c-16a34a: var(--sanpra-c-16a34a);
+    --sanpra-c-ef4444: var(--sanpra-c-ef4444);
+    --sanpra-c-2555a8: var(--sanpra-c-2555a8);
+    --sanpra-c-334155: var(--sanpra-c-334155);
+    --sanpra-c-1f272e: var(--sanpra-c-1f272e);
+    --sanpra-c-8d99a6: var(--sanpra-c-8d99a6);
+    --sanpra-c-ebeff2: var(--sanpra-c-ebeff2);
+    --sanpra-c-1e2130: var(--sanpra-c-1e2130);
+    --sanpra-c-f97316: var(--sanpra-c-f97316);
+    --sanpra-c-6c757d: var(--sanpra-c-6c757d);
+    --sanpra-c-adb5bd: var(--sanpra-c-adb5bd);
+    --sanpra-c-6b3e66: var(--sanpra-c-6b3e66);
+    --sanpra-c-1b1d26: var(--sanpra-c-1b1d26);
+    --sanpra-c-f0f2f8: var(--sanpra-c-f0f2f8);
+    --sanpra-c-e1e6f0: var(--sanpra-c-e1e6f0);
+    --sanpra-c-c3cce1: var(--sanpra-c-c3cce1);
+    --sanpra-c-97a8c8: var(--sanpra-c-97a8c8);
+    --sanpra-c-18397e: var(--sanpra-c-18397e);
+    --sanpra-c-132d65: var(--sanpra-c-132d65);
+    --sanpra-c-0a1a3d: var(--sanpra-c-0a1a3d);
+    --sanpra-c-fff3e8: var(--sanpra-c-fff3e8);
+    --sanpra-c-ffe0c2: var(--sanpra-c-ffe0c2);
+    --sanpra-c-e06e00: var(--sanpra-c-e06e00);
+    --sanpra-c-f5f6fa: var(--sanpra-c-f5f6fa);
+    --sanpra-c-c9cdd4: var(--sanpra-c-c9cdd4);
+    --sanpra-c-238a57: var(--sanpra-c-238a57);
+    --sanpra-c-c87818: var(--sanpra-c-c87818);
+    --sanpra-c-c33d43: var(--sanpra-c-c33d43);
+    --sanpra-c-2d72b8: var(--sanpra-c-2d72b8);
+    --sanpra-c-f8f9fa: var(--sanpra-c-f8f9fa);
+    --sanpra-c-0f1117: var(--sanpra-c-0f1117);
+    --sanpra-c-222535: var(--sanpra-c-222535);
+    --sanpra-c-4b5563: var(--sanpra-c-4b5563);
+    --sanpra-c-fafafa: var(--sanpra-c-fafafa);
+    --sanpra-c-14532d: var(--sanpra-c-14532d);
+    --sanpra-c-7f1d1d: var(--sanpra-c-7f1d1d);
+    --sanpra-c-ca8a04: var(--sanpra-c-ca8a04);
+    --sanpra-c-713f12: var(--sanpra-c-713f12);
+    --sanpra-c-f5f7fa: var(--sanpra-c-f5f7fa);
+    --sanpra-c-f87171: var(--sanpra-c-f87171);
+    --sanpra-c-20252c: var(--sanpra-c-20252c);
+    --sanpra-c-e8610a: var(--sanpra-c-e8610a);
+    --sanpra-c-18202a: var(--sanpra-c-18202a);
+    --sanpra-c-798391: var(--sanpra-c-798391);
+    --sanpra-c-15803d: var(--sanpra-c-15803d);
+    --sanpra-c-697482: var(--sanpra-c-697482);
+    --sanpra-c-e4e8ed: var(--sanpra-c-e4e8ed);
+    --sanpra-c-7b8490: var(--sanpra-c-7b8490);
+    --sanpra-c-f3f5f7: var(--sanpra-c-f3f5f7);
+    --sanpra-c-e5e9ee: var(--sanpra-c-e5e9ee);
+    --sanpra-c-d97706: var(--sanpra-c-d97706);
+    --sanpra-c-15915e: var(--sanpra-c-15915e);
+    --sanpra-c-d64f4f: var(--sanpra-c-d64f4f);
+    --sanpra-c-7b8592: var(--sanpra-c-7b8592);
+    --sanpra-c-e9edf1: var(--sanpra-c-e9edf1);
+    --sanpra-c-202833: var(--sanpra-c-202833);
+    --sanpra-c-84909c: var(--sanpra-c-84909c);
+    --sanpra-c-edf0f3: var(--sanpra-c-edf0f3);
+    --sanpra-c-f7f8fa: var(--sanpra-c-f7f8fa);
+    --sanpra-c-28313c: var(--sanpra-c-28313c);
+    --sanpra-c-87919c: var(--sanpra-c-87919c);
+    --sanpra-c-9aa2ac: var(--sanpra-c-9aa2ac);
+    --sanpra-c-e8ecf0: var(--sanpra-c-e8ecf0);
+    --sanpra-c-313a45: var(--sanpra-c-313a45);
+    --sanpra-c-b45309: var(--sanpra-c-b45309);
+    --sanpra-c-75818c: var(--sanpra-c-75818c);
+    --sanpra-c-24302d: var(--sanpra-c-24302d);
+    --sanpra-c-e8ebee: var(--sanpra-c-e8ebee);
+    --sanpra-c-dfe2e7: var(--sanpra-c-dfe2e7);
+    --sanpra-c-e4e7eb: var(--sanpra-c-e4e7eb);
+    --sanpra-c-dfe3e8: var(--sanpra-c-dfe3e8);
+    --sanpra-c-f8f9fb: var(--sanpra-c-f8f9fb);
+    --sanpra-c-717784: var(--sanpra-c-717784);
+    --sanpra-c-606875: var(--sanpra-c-606875);
+    --sanpra-c-d9dde3: var(--sanpra-c-d9dde3);
+    --sanpra-c-fafbfc: var(--sanpra-c-fafbfc);
+    --sanpra-c-f6f7f9: var(--sanpra-c-f6f7f9);
+    --sanpra-c-697386: var(--sanpra-c-697386);
+    --sanpra-c-d7dce3: var(--sanpra-c-d7dce3);
+    --sanpra-c-19202d: var(--sanpra-c-19202d);
+    --sanpra-c-70798b: var(--sanpra-c-70798b);
+    --sanpra-c-e3e5e8: var(--sanpra-c-e3e5e8);
+    --sanpra-c-f2f0eb: var(--sanpra-c-f2f0eb);
+    --sanpra-c-fbfaf7: var(--sanpra-c-fbfaf7);
+    --sanpra-c-dedbd3: var(--sanpra-c-dedbd3);
+    --sanpra-c-b6512d: var(--sanpra-c-b6512d);
+    --sanpra-c-18202b: var(--sanpra-c-18202b);
+    --sanpra-c-727882: var(--sanpra-c-727882);
+    --sanpra-c-596170: var(--sanpra-c-596170);
+    --sanpra-c-e6e2da: var(--sanpra-c-e6e2da);
+    --sanpra-c-e2ded6: var(--sanpra-c-e2ded6);
+    --sanpra-c-4c5360: var(--sanpra-c-4c5360);
+    --sanpra-c-bd6b4d: var(--sanpra-c-bd6b4d);
+    --sanpra-c-202631: var(--sanpra-c-202631);
+    --sanpra-c-4f5662: var(--sanpra-c-4f5662);
+    --sanpra-c-a2a6ad: var(--sanpra-c-a2a6ad);
+    --sanpra-c-ece9e2: var(--sanpra-c-ece9e2);
+    --sanpra-c-777d86: var(--sanpra-c-777d86);
+    --sanpra-c-dfdbd2: var(--sanpra-c-dfdbd2);
+    --sanpra-c-f4f1ea: var(--sanpra-c-f4f1ea);
+    --sanpra-c-dcd8cf: var(--sanpra-c-dcd8cf);
+    --sanpra-c-303744: var(--sanpra-c-303744);
+    --sanpra-c-202b3a: var(--sanpra-c-202b3a);
+    --sanpra-c-d9d4ca: var(--sanpra-c-d9d4ca);
+    --sanpra-c-626873: var(--sanpra-c-626873);
+    --sanpra-c-9e4425: var(--sanpra-c-9e4425);
+    --sanpra-c-d7c5b8: var(--sanpra-c-d7c5b8);
+    --sanpra-c-fffaf6: var(--sanpra-c-fffaf6);
+    --sanpra-c-202936: var(--sanpra-c-202936);
+    --sanpra-c-ddcfc4: var(--sanpra-c-ddcfc4);
+    --sanpra-c-795947: var(--sanpra-c-795947);
+    --sanpra-c-7c726b: var(--sanpra-c-7c726b);
+    --sanpra-c-d8c5b8: var(--sanpra-c-d8c5b8);
+    --sanpra-c-9b4b2e: var(--sanpra-c-9b4b2e);
+    --sanpra-c-8c9198: var(--sanpra-c-8c9198);
+    --sanpra-c-dfdbd3: var(--sanpra-c-dfdbd3);
+    --sanpra-c-29313d: var(--sanpra-c-29313d);
+    --sanpra-c-e1ddd5: var(--sanpra-c-e1ddd5);
+    --sanpra-c-6a7079: var(--sanpra-c-6a7079);
+    --sanpra-c-263244: var(--sanpra-c-263244);
+    --sanpra-c-efa987: var(--sanpra-c-efa987);
+    --sanpra-c-9a6b56: var(--sanpra-c-9a6b56);
+    --sanpra-c-858a92: var(--sanpra-c-858a92);
+    --sanpra-c-d7d2c8: var(--sanpra-c-d7d2c8);
+    --sanpra-c-f7f5f1: var(--sanpra-c-f7f5f1);
+    --sanpra-c-4f5660: var(--sanpra-c-4f5660);
+    --sanpra-c-17202c: var(--sanpra-c-17202c);
+    --sanpra-c-d7e2ee: var(--sanpra-c-d7e2ee);
+    --sanpra-c-263447: var(--sanpra-c-263447);
+    --sanpra-c-c8cbd0: var(--sanpra-c-c8cbd0);
+    --sanpra-c-f57c00: var(--sanpra-c-f57c00);
+    --sanpra-c-ded9d0: var(--sanpra-c-ded9d0);
+    --sanpra-c-bcd8c8: var(--sanpra-c-bcd8c8);
+    --sanpra-c-edf8f1: var(--sanpra-c-edf8f1);
+    --sanpra-c-276544: var(--sanpra-c-276544);
+    --sanpra-c-e2bdad: var(--sanpra-c-e2bdad);
+    --sanpra-c-fff2ec: var(--sanpra-c-fff2ec);
+    --sanpra-c-9b462a: var(--sanpra-c-9b462a);
+    --sanpra-c-d9d5cd: var(--sanpra-c-d9d5cd);
+    --sanpra-c-faf9f6: var(--sanpra-c-faf9f6);
+    --sanpra-c-656b73: var(--sanpra-c-656b73);
+    --sanpra-c-9a4b2e: var(--sanpra-c-9a4b2e);
+    --sanpra-c-dfc0b4: var(--sanpra-c-dfc0b4);
+    --sanpra-c-344052: var(--sanpra-c-344052);
+    --sanpra-c-dcd8d0: var(--sanpra-c-dcd8d0);
+    --sanpra-c-e7e3dc: var(--sanpra-c-e7e3dc);
+    --sanpra-c-232b37: var(--sanpra-c-232b37);
+    --sanpra-c-d6d1c9: var(--sanpra-c-d6d1c9);
+    --sanpra-c-303741: var(--sanpra-c-303741);
+    --sanpra-c-a95c3d: var(--sanpra-c-a95c3d);
+    --sanpra-c-8a8e94: var(--sanpra-c-8a8e94);
+    --sanpra-c-7a7f87: var(--sanpra-c-7a7f87);
+    --sanpra-c-1f2732: var(--sanpra-c-1f2732);
+    --sanpra-c-777c84: var(--sanpra-c-777c84);
+    --sanpra-c-44a06f: var(--sanpra-c-44a06f);
+    --sanpra-c-d17b42: var(--sanpra-c-d17b42);
+    --sanpra-c-b75d31: var(--sanpra-c-b75d31);
+    --sanpra-c-ddd9d1: var(--sanpra-c-ddd9d1);
+    --sanpra-c-f9f8f5: var(--sanpra-c-f9f8f5);
+    --sanpra-c-eeece6: var(--sanpra-c-eeece6);
+    --sanpra-c-c8c4ba: var(--sanpra-c-c8c4ba);
+    --sanpra-c-e9e9e9: var(--sanpra-c-e9e9e9);
+    --sanpra-c-d5d5d5: var(--sanpra-c-d5d5d5);
+    --sanpra-c-c5c5c5: var(--sanpra-c-c5c5c5);
+    --sanpra-c-df695d: var(--sanpra-c-df695d);
+    --sanpra-c-e4b348: var(--sanpra-c-e4b348);
+    --sanpra-c-65b46e: var(--sanpra-c-65b46e);
+    --sanpra-c-f8f8f8: var(--sanpra-c-f8f8f8);
+    --sanpra-c-929292: var(--sanpra-c-929292);
+    --sanpra-c-666: var(--sanpra-c-666);
+    --sanpra-c-999: var(--sanpra-c-999);
+    --sanpra-c-f5f6f8: var(--sanpra-c-f5f6f8);
+    --sanpra-c-c83d4a: var(--sanpra-c-c83d4a);
+    --sanpra-c-e4f1e9: var(--sanpra-c-e4f1e9);
+    --sanpra-c-3b9464: var(--sanpra-c-3b9464);
+    --sanpra-c-858b96: var(--sanpra-c-858b96);
+    --sanpra-c-e1e5ea: var(--sanpra-c-e1e5ea);
+    --sanpra-c-eef0f3: var(--sanpra-c-eef0f3);
+    --sanpra-c-d5d9df: var(--sanpra-c-d5d9df);
+    --sanpra-c-eef3f8: var(--sanpra-c-eef3f8);
+    --sanpra-c-667085: var(--sanpra-c-667085);
+    --sanpra-c-fff1e4: var(--sanpra-c-fff1e4);
+    --sanpra-c-a64b00: var(--sanpra-c-a64b00);
+    --sanpra-c-e8f1ff: var(--sanpra-c-e8f1ff);
+    --sanpra-c-1b5ea7: var(--sanpra-c-1b5ea7);
+    --sanpra-c-a8b0bc: var(--sanpra-c-a8b0bc);
 }
 
 /* =============================================================================
@@ -33,23 +275,23 @@ textarea,
    --st-primary is kept as a backwards-compat alias for --st-brand. */
 :root {
   /* ── Base brand colors (fallback defaults — overridden by desk.html & api.py) ── */
-  --st-brand:   #1B1D26;
-  --st-accent:  #6B3E66;
+  --st-brand:   var(--sanpra-c-1b1d26);
+  --st-accent:  var(--sanpra-c-6b3e66);
   --st-primary: var(--st-brand); /* backwards-compat alias */
 
   /* ── color-mix() derived palette — hardcoded fallbacks for browsers without color-mix() support ── */
-  --st-primary-50:   #f0f2f8;
-  --st-primary-100:  #e1e6f0;
-  --st-primary-200:  #c3cce1;
-  --st-primary-300:  #97a8c8;
-  --st-primary-600:  #18397e;
-  --st-primary-700:  #132d65;
-  --st-primary-900:  #0a1a3d;
-  --st-accent-50:    #fff3e8;
-  --st-accent-100:   #ffe0c2;
-  --st-accent-600:   #e06e00;
-  --st-accent-hover: #e06e00;
-  --st-page-bg:      #f5f6fa;
+  --st-primary-50:   var(--sanpra-c-f0f2f8);
+  --st-primary-100:  var(--sanpra-c-e1e6f0);
+  --st-primary-200:  var(--sanpra-c-c3cce1);
+  --st-primary-300:  var(--sanpra-c-97a8c8);
+  --st-primary-600:  var(--sanpra-c-18397e);
+  --st-primary-700:  var(--sanpra-c-132d65);
+  --st-primary-900:  var(--sanpra-c-0a1a3d);
+  --st-accent-50:    var(--sanpra-c-fff3e8);
+  --st-accent-100:   var(--sanpra-c-ffe0c2);
+  --st-accent-600:   var(--sanpra-c-e06e00);
+  --st-accent-hover: var(--sanpra-c-e06e00);
+  --st-page-bg:      var(--sanpra-c-f5f6fa);
 }
 
 /* ── color-mix() upgrades — only applied when the browser supports it ── */
@@ -71,29 +313,29 @@ textarea,
 
 :root {
   /* ── Semantic layout tokens (light mode) ── */
-  --st-sidebar-bg:      #FFFFFF;
+  --st-sidebar-bg:      var(--sanpra-c-ffffff);
   --st-navbar-bg:       color-mix(in srgb, var(--st-brand) 88%, black);
-  --st-page-bg:         #FFFFFF;
-  --st-card-bg:         #FFFFFF;
+  --st-page-bg:         var(--sanpra-c-ffffff);
+  --st-card-bg:         var(--sanpra-c-ffffff);
   --st-card-border:     rgba(0,0,0,0.08);
-  --st-input-bg:        #FFFFFF;
-  --st-input-border:    #C9CDD4;
+  --st-input-bg:        var(--sanpra-c-ffffff);
+  --st-input-border:    var(--sanpra-c-c9cdd4);
   --st-hover:           rgba(0,0,0,0.04);
   --st-accent-btn:      var(--st-accent);
   --st-sidebar-active:  var(--st-accent);
   --st-sidebar-hover:   rgba(0, 0, 0, 0.05);
   --st-btn-bg:          var(--st-accent);   /* backwards-compat alias */
   --st-btn-hover:       var(--st-accent-600);
-  --st-text:            #1A1A2E;
-  --st-text-primary:    #1C2333;
-  --st-text-muted:      #6B7280;
-  --st-border:          #E5E7EB;
-  --st-success:         #238A57;
-  --st-warning:         #C87818;
-  --st-error:           #C33D43;
-  --st-info:            #2D72B8;
-  --st-list-row-bg:     #FFFFFF;
-  --st-list-row-hover:  #F8F9FA;
+  --st-text:            var(--sanpra-c-1a1a2e);
+  --st-text-primary:    var(--sanpra-c-1c2333);
+  --st-text-muted:      var(--sanpra-c-6b7280);
+  --st-border:          var(--sanpra-c-e5e7eb);
+  --st-success:         var(--sanpra-c-238a57);
+  --st-warning:         var(--sanpra-c-c87818);
+  --st-error:           var(--sanpra-c-c33d43);
+  --st-info:            var(--sanpra-c-2d72b8);
+  --st-list-row-bg:     var(--sanpra-c-ffffff);
+  --st-list-row-hover:  var(--sanpra-c-f8f9fa);
   --st-bg:              var(--st-page-bg);  /* backwards-compat alias */
 
   /* Bridge Frappe native tokens to ours */
@@ -114,14 +356,14 @@ textarea,
   --st-shadow-glow:      0 0 0 3px color-mix(in srgb, var(--st-accent) 20%, transparent);
 
   /* Text */
-  --st-sidebar-text:       #1C2333;
-  --st-sidebar-text-muted: #6B7280;
-  --st-button-text:        #FFFFFF;
-  --st-white:              #FFFFFF;
+  --st-sidebar-text:       var(--sanpra-c-1c2333);
+  --st-sidebar-text-muted: var(--sanpra-c-6b7280);
+  --st-button-text:        var(--sanpra-c-ffffff);
+  --st-white:              var(--sanpra-c-ffffff);
 
   /* Login */
   --st-login-bg:           color-mix(in srgb, var(--st-brand) 80%, black);
-  --st-login-card:         #FFFFFF;
+  --st-login-card:         var(--sanpra-c-ffffff);
 
   /* Radius */
   --st-radius:             8px;
@@ -148,19 +390,19 @@ textarea,
 [data-theme="dark"] {
   --st-sidebar-bg:    var(--st-brand);
   --st-navbar-bg:     color-mix(in srgb, var(--st-brand) 88%, black);
-  --st-page-bg:       #0F1117;
-  --st-card-bg:       #1A1D27;
+  --st-page-bg:       var(--sanpra-c-0f1117);
+  --st-card-bg:       var(--sanpra-c-1a1d27);
   --st-card-border:   rgba(255,255,255,0.07);
-  --st-input-bg:      #252836;
-  --st-list-row-bg:   #1A1D27;
-  --st-list-row-hover: #222535;
-  --st-text-primary:  #E2E8F0;
+  --st-input-bg:      var(--sanpra-c-252836);
+  --st-list-row-bg:   var(--sanpra-c-1a1d27);
+  --st-list-row-hover: var(--sanpra-c-222535);
+  --st-text-primary:  var(--sanpra-c-e2e8f0);
   --st-border:        rgba(255,255,255,0.08);
   --st-input-border:  rgba(255,255,255,0.10);
   --st-hover:         rgba(255,255,255,0.06);
   --st-accent-btn:    color-mix(in srgb, var(--st-accent) 90%, white);
-  --st-text:          #E2E8F0;
-  --st-text-muted:    #94A3B8;
+  --st-text:          var(--sanpra-c-e2e8f0);
+  --st-text-muted:    var(--sanpra-c-94a3b8);
   --st-bg:            var(--st-page-bg);  /* backwards-compat alias */
   /* Sidebar vars restored to dark-on-brand for dark mode */
   /* Solid pill, matching light mode's treatment (var(--st-sidebar-active): var(--st-accent))
@@ -175,7 +417,7 @@ textarea,
      custom accents (same ratio formula as theme_studio.js's _ratio()/_contrast()). */
   --st-sidebar-active:      hsl(from var(--st-accent) h s calc(l * 0.55));
   --st-sidebar-hover:       rgba(255, 255, 255, 0.10);
-  --st-sidebar-text:        #FFFFFF;
+  --st-sidebar-text:        var(--sanpra-c-ffffff);
   --st-sidebar-text-muted:  rgba(255, 255, 255, 0.55);
   /* Accent tints recalculated against (now brand-tinted) card background */
   --st-accent-50:     color-mix(in srgb, var(--st-accent) 14%, var(--st-card-bg));
@@ -252,14 +494,14 @@ html[data-theme="dark"] .desk-page {
 .form-page,
 .frappe-card,
 .list-view-empty-state {
-  background: var(--fg-color, #fff) !important;
+  background: var(--fg-color, var(--sanpra-c-fff)) !important;
 }
 
 /* ── RIGHT FORM SIDEBAR — always white/light, never inherits nav dark color ─── */
 .layout-side-section,
 .layout-side-section .form-sidebar,
 .layout-side-section .sidebar-wrapper {
-  background-color: var(--fg-color, #fff) !important;
+  background-color: var(--fg-color, var(--sanpra-c-fff)) !important;
   color: var(--text-color) !important;
 }
 
@@ -273,7 +515,7 @@ html[data-theme="dark"] .desk-page {
 #st-sidebar-header .st-app-brand {
   font-size: 13px;
   font-weight: 700;
-  color: #fff;
+  color: var(--sanpra-c-fff);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   opacity: 0.85;
@@ -297,7 +539,7 @@ html[data-theme="dark"] .desk-page {
 }
 #st-sidebar-collapse:hover {
   background: rgba(255,255,255,0.18);
-  color: #fff;
+  color: var(--sanpra-c-fff);
 }
 
 /* Section group labels — ALL CAPS with letter-spacing */
@@ -307,7 +549,7 @@ html[data-theme="dark"] .desk-page {
   font-size: 11px !important;
   letter-spacing: 0.1em !important;
   text-transform: uppercase !important;
-  color: #9CA3AF !important;
+  color: var(--sanpra-c-9ca3af) !important;
   padding: 16px 16px 5px !important;
   font-weight: 600 !important;
   margin: 0 !important;
@@ -328,7 +570,7 @@ html[data-theme="dark"] .desk-page {
 .desk-sidebar .sidebar-item:hover,
 .desk-sidebar .standard-sidebar-item:hover {
   background: var(--st-sidebar-hover, rgba(0,0,0,0.05)) !important;
-  color: var(--st-sidebar-hover-text, var(--st-sidebar-text, #111827)) !important;
+  color: var(--st-sidebar-hover-text, var(--st-sidebar-text, var(--sanpra-c-111827))) !important;
   border-left: none !important;
   transform: translateX(2px);
 }
@@ -359,7 +601,7 @@ html[data-theme="dark"] .desk-page {
 .desk-sidebar .sidebar-item-icon,
 .desk-sidebar .standard-sidebar-item svg,
 .desk-sidebar .standard-sidebar-item .icon {
-  color: var(--st-sidebar-icon, var(--st-sidebar-text-muted, #6B7280)) !important;
+  color: var(--st-sidebar-icon, var(--st-sidebar-text-muted, var(--sanpra-c-6b7280))) !important;
   stroke: currentColor !important;
   opacity: 1;
 }
@@ -588,7 +830,7 @@ html:not([data-theme="dark"]) select,
 html:not([data-theme="dark"]) textarea {
   border: 1px solid var(--st-input-border) !important;
   border-radius: var(--st-radius-sm) !important;
-  background-color: #FFFFFF !important;
+  background-color: var(--sanpra-c-ffffff) !important;
   transition: border-color var(--st-transition), box-shadow var(--st-transition) !important;
 }
 /* Read-only / disabled fields — slightly tinted so they look distinct */
@@ -596,7 +838,7 @@ html:not([data-theme="dark"]) .frappe-control .like-disabled-input,
 html:not([data-theme="dark"]) .frappe-control[data-fieldtype] .form-control[readonly],
 html:not([data-theme="dark"]) .frappe-control[data-fieldtype] .form-control:disabled {
   border: 1px solid var(--st-input-border) !important;
-  background-color: #F8F9FA !important;
+  background-color: var(--sanpra-c-f8f9fa) !important;
 }
 /* Focus ring */
 html:not([data-theme="dark"]) .form-control:focus,
@@ -625,7 +867,7 @@ html:not([data-theme="dark"]) .frappe-control[data-fieldtype="Float"] .control-i
 html:not([data-theme="dark"]) .frappe-control[data-fieldtype="Data"] .control-input {
   border: 1px solid var(--st-input-border) !important;
   border-radius: var(--st-radius-sm) !important;
-  background: #FFFFFF !important;
+  background: var(--sanpra-c-ffffff) !important;
   overflow: visible;
 }
 /* When the wrapper has a border, the inner input should be borderless to avoid double border */
@@ -665,7 +907,7 @@ a:hover { color: var(--st-primary-hover) !important; opacity: 0.85; }
 .list-row-head,
 .dt-header,
 .datatable .dt-header .dt-cell--header {
-  background: color-mix(in srgb, var(--st-page-bg) 92%, #000) !important;
+  background: color-mix(in srgb, var(--st-page-bg) 92%, var(--sanpra-c-000)) !important;
   border-bottom: 2px solid var(--st-border) !important;
 }
 .list-row-head .list-header-subject,
@@ -689,7 +931,7 @@ a:hover { color: var(--st-primary-hover) !important; opacity: 0.85; }
 }
 /* Zebra striping for readability */
 .list-row:nth-child(even) {
-  background: var(--st-list-row-alt, #f9fafb) !important;
+  background: var(--st-list-row-alt, var(--sanpra-c-f9fafb)) !important;
 }
 /* Sticky list header below toolbar */
 .list-row-head,
@@ -725,7 +967,7 @@ html:not([data-theme="dark"]) .standard-filter-section {
 /* List view outer container — white card floating on the gray canvas */
 html:not([data-theme="dark"]) .list-view-container,
 html:not([data-theme="dark"]) .frappe-list {
-  background: #FFFFFF !important;
+  background: var(--sanpra-c-ffffff) !important;
   border: 1px solid rgba(0,0,0,0.07) !important;
   border-radius: var(--st-radius-lg) !important;
   box-shadow: 0 2px 14px rgba(0,0,0,0.07) !important;
@@ -809,7 +1051,7 @@ input[type="checkbox"]:checked {
    convention already used for list-view/datatable column headers, so the
    label reads as a distinct section header instead of a barely-visible line. */
 .widget-group-head {
-  background: color-mix(in srgb, var(--st-page-bg) 92%, #000) !important;
+  background: color-mix(in srgb, var(--st-page-bg) 92%, var(--sanpra-c-000)) !important;
   border: 1px solid var(--st-border) !important;
   border-radius: var(--st-radius-sm) !important;
   padding: 9px 14px !important;
@@ -840,7 +1082,7 @@ input[type="checkbox"]:checked {
 /* Light mode: clean white card with accent left stripe */
 html:not([data-theme="dark"]) .desk-page > .page-head,
 html:not([data-theme="dark"]) .layout-main-section > .page-head {
-  background: #FFFFFF !important;
+  background: var(--sanpra-c-ffffff) !important;
   color: var(--st-text) !important;
   border-radius: var(--st-radius-lg) !important;
   padding: 14px 20px 14px 18px !important;
@@ -867,7 +1109,7 @@ html:not([data-theme="dark"]) .layout-main-section > .page-head .st-breadcrumb {
 html:not([data-theme="dark"]) .desk-page > .page-head .btn-primary,
 html:not([data-theme="dark"]) .layout-main-section > .page-head .btn-primary {
   background: var(--st-primary-gradient) !important;
-  color: var(--st-btn-primary-text, #fff) !important;
+  color: var(--st-btn-primary-text, var(--sanpra-c-fff)) !important;
 }
 html:not([data-theme="dark"]) .desk-page > .page-head .btn-default,
 html:not([data-theme="dark"]) .layout-main-section > .page-head .btn-default {
@@ -879,7 +1121,7 @@ html:not([data-theme="dark"]) .layout-main-section > .page-head .btn-default {
 html[data-theme="dark"] .desk-page > .page-head,
 html[data-theme="dark"] .layout-main-section > .page-head {
   background: linear-gradient(120deg, var(--st-dark) 0%, var(--st-dark-mid) 100%) !important;
-  color: #fff !important;
+  color: var(--sanpra-c-fff) !important;
   border-radius: var(--st-radius-lg) !important;
   padding: 20px 24px !important;
   margin-bottom: 18px;
@@ -888,7 +1130,7 @@ html[data-theme="dark"] .layout-main-section > .page-head {
 }
 html[data-theme="dark"] .desk-page > .page-head .page-title,
 html[data-theme="dark"] .desk-page > .page-head .title-text {
-  color: #fff !important;
+  color: var(--sanpra-c-fff) !important;
 }
 html[data-theme="dark"] .desk-page > .page-head .breadcrumb-area,
 html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
@@ -899,7 +1141,7 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
 .number-card .number-card-head {
   background: var(--st-primary-gradient) !important;
   border-radius: var(--st-radius-lg) var(--st-radius-lg) 0 0 !important;
-  color: #fff !important;
+  color: var(--sanpra-c-fff) !important;
   padding: 12px 16px !important;
 }
 .number-card .number-card-body .count,
@@ -945,14 +1187,14 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
 .indicator-pill.blue,
 .indicator-pill.cyan,
 .badge-info     { --indicator-color: var(--st-info); background: color-mix(in srgb,var(--st-info) 12%,transparent) !important; color: var(--st-info) !important; }
-.indicator-pill.purple { background: rgba(139,92,246,0.12) !important; color: #7c3aed !important; }
+.indicator-pill.purple { background: rgba(139,92,246,0.12) !important; color: var(--sanpra-c-7c3aed) !important; }
 .indicator-pill.gray,
-.indicator-pill.grey   { background: rgba(107,114,128,0.1) !important; color: #4b5563 !important; }
+.indicator-pill.grey   { background: rgba(107,114,128,0.1) !important; color: var(--sanpra-c-4b5563) !important; }
 
 /* ── MODAL / DIALOG GRADIENT HEADER ──────────────────────────── */
 .modal-header {
   background: linear-gradient(120deg, var(--st-dark) 0%, var(--st-dark-mid) 100%) !important;
-  color: #fff !important;
+  color: var(--sanpra-c-fff) !important;
   border-radius: var(--st-radius-lg) var(--st-radius-lg) 0 0 !important;
   border-bottom: none !important;
   padding: 16px 20px !important;
@@ -960,7 +1202,7 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
 .modal-title,
 .modal-header h4,
 .modal-header h5 {
-  color: #fff !important;
+  color: var(--sanpra-c-fff) !important;
   font-weight: 600 !important;
   font-size: 15px !important;
 }
@@ -972,7 +1214,7 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
 }
 .modal-header .btn-modal-close:hover,
 .modal-header .close:hover {
-  color: #fff !important;
+  color: var(--sanpra-c-fff) !important;
 }
 .modal-content {
   border-radius: var(--st-radius-lg) !important;
@@ -982,7 +1224,7 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
 }
 .modal-footer {
   border-top: 1px solid rgba(0,0,0,0.06) !important;
-  background: #fafafa;
+  background: var(--sanpra-c-fafafa);
   border-radius: 0 0 var(--st-radius-lg) var(--st-radius-lg) !important;
 }
 
@@ -1003,7 +1245,7 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
   text-decoration: none !important;
 }
 #st-breadcrumb a:hover {
-  color: #fff !important;
+  color: var(--sanpra-c-fff) !important;
 }
 #st-breadcrumb .st-sep {
   margin: 0 5px;
@@ -1021,20 +1263,20 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
   border-color: transparent !important;
 }
 .alert-success {
-  border-left-color: #16a34a !important;
+  border-left-color: var(--sanpra-c-16a34a) !important;
   background: rgba(34,197,94,0.1) !important;
-  color: #14532d !important;
+  color: var(--sanpra-c-14532d) !important;
 }
 .alert-danger,
 .alert-error {
-  border-left-color: #dc2626 !important;
+  border-left-color: var(--sanpra-c-dc2626) !important;
   background: rgba(239,68,68,0.08) !important;
-  color: #7f1d1d !important;
+  color: var(--sanpra-c-7f1d1d) !important;
 }
 .alert-warning {
-  border-left-color: #ca8a04 !important;
+  border-left-color: var(--sanpra-c-ca8a04) !important;
   background: rgba(234,179,8,0.1) !important;
-  color: #713f12 !important;
+  color: var(--sanpra-c-713f12) !important;
 }
 
 /* ── MODERN CENTERED LOGIN PAGE ─────────────────────────────────────────────── */
@@ -1059,7 +1301,7 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
   background: linear-gradient(
     135deg,
     var(--st-brand) 0%,
-    color-mix(in srgb, var(--st-brand) 50%, #000) 100%
+    color-mix(in srgb, var(--st-brand) 50%, var(--sanpra-c-000)) 100%
   ) !important;
   background-size: 200% 200% !important;
   animation: st-gradient-shift 10s ease infinite alternate !important;
@@ -1079,7 +1321,7 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
 .for-email-login .page-card-head {
   width: 420px !important;
   max-width: 100% !important;
-  background: var(--st-login-card, #FFFFFF) !important;
+  background: var(--st-login-card, var(--sanpra-c-ffffff)) !important;
   border-radius: 16px 16px 0 0 !important;
   padding: 40px 48px 20px !important;
   text-align: center !important;
@@ -1100,7 +1342,7 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
 .for-signup .page-card-head h4 {
   font-size: 20px !important;
   font-weight: 700 !important;
-  color: var(--st-text, #1A1A2E) !important;
+  color: var(--st-text, var(--sanpra-c-1a1a2e)) !important;
   margin: 0 !important;
 }
 
@@ -1116,7 +1358,7 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
   min-height: auto !important;
   border-radius: 0 0 16px 16px !important;
   padding: 4px 48px 40px !important;
-  background: var(--st-login-card, #FFFFFF) !important;
+  background: var(--st-login-card, var(--sanpra-c-ffffff)) !important;
   box-shadow: 0 24px 64px rgba(0,0,0,0.25) !important;
   border: none !important;
   display: block !important;
@@ -1141,8 +1383,8 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
   border: 1.5px solid rgba(0,0,0,0.15) !important;
   padding: 0 40px 0 14px !important;
   font-size: 14px !important;
-  background: #FFFFFF !important;
-  color: var(--st-text, #1A1A2E) !important;
+  background: var(--sanpra-c-ffffff) !important;
+  color: var(--st-text, var(--sanpra-c-1a1a2e)) !important;
   width: 100% !important;
   box-shadow: none !important;
   transition: border-color 200ms, box-shadow 200ms !important;
@@ -1153,7 +1395,7 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
   border-color: var(--st-brand) !important;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--st-brand) 16%, transparent) !important;
   outline: none !important;
-  background: #FFFFFF !important;
+  background: var(--sanpra-c-ffffff) !important;
 }
 
 /* Primary login/submit button */
@@ -1170,7 +1412,7 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
   border-radius: 8px !important;
   font-weight: 600 !important;
   font-size: 15px !important;
-  color: #FFFFFF !important;
+  color: var(--sanpra-c-ffffff) !important;
   letter-spacing: 0.02em !important;
   box-shadow: 0 4px 14px color-mix(in srgb, var(--st-accent) 40%, transparent) !important;
   transition: transform 200ms, box-shadow 200ms, background 200ms !important;
@@ -1185,7 +1427,7 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
   transform: translateY(-1px) !important;
   box-shadow: 0 8px 22px color-mix(in srgb, var(--st-accent) 55%, transparent) !important;
   background: color-mix(in srgb, var(--st-accent) 90%, white) !important;
-  color: #FFFFFF !important;
+  color: var(--sanpra-c-ffffff) !important;
 }
 .for-login .btn-login:active,
 .for-forgot .btn-forgot:active {
@@ -1208,7 +1450,7 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
 }
 .for-login .sign-up-message a,
 .for-forgot .sign-up-message a {
-  color: #FFFFFF !important;
+  color: var(--sanpra-c-ffffff) !important;
   font-weight: 600 !important;
   text-decoration: underline !important;
 }
@@ -1217,27 +1459,27 @@ html[data-theme="dark"] .desk-page > .page-head .st-breadcrumb {
 html[data-theme="dark"] .for-login .page-card-head,
 html[data-theme="dark"] .for-forgot .page-card-head,
 html[data-theme="dark"] .for-signup .page-card-head {
-  background: var(--st-card-bg, #1A1D27) !important;
+  background: var(--st-card-bg, var(--sanpra-c-1a1d27)) !important;
 }
 html[data-theme="dark"] .for-login .login-content.page-card,
 html[data-theme="dark"] .for-forgot .login-content.page-card,
 html[data-theme="dark"] .for-signup .login-content.page-card {
-  background: var(--st-card-bg, #1A1D27) !important;
+  background: var(--st-card-bg, var(--sanpra-c-1a1d27)) !important;
 }
 html[data-theme="dark"] .for-login .page-card-head h4,
 html[data-theme="dark"] .for-forgot .page-card-head h4 {
-  color: var(--st-text, #E2E8F0) !important;
+  color: var(--st-text, var(--sanpra-c-e2e8f0)) !important;
 }
 html[data-theme="dark"] .for-login .page-card .form-control,
 html[data-theme="dark"] .for-forgot .page-card .form-control {
-  background: var(--st-input-bg, #252836) !important;
+  background: var(--st-input-bg, var(--sanpra-c-252836)) !important;
   border-color: rgba(255,255,255,0.10) !important;
-  color: var(--st-text, #E2E8F0) !important;
+  color: var(--st-text, var(--sanpra-c-e2e8f0)) !important;
 }
 html[data-theme="dark"] .for-login .page-card .form-control:focus,
 html[data-theme="dark"] .for-forgot .page-card .form-control:focus {
   border-color: color-mix(in srgb, var(--st-brand) 80%, white) !important;
-  background: var(--st-input-bg, #252836) !important;
+  background: var(--st-input-bg, var(--sanpra-c-252836)) !important;
 }
 html[data-theme="dark"] .for-login .forgot-password-message a {
   color: color-mix(in srgb, var(--st-brand) 70%, white) !important;
@@ -1278,7 +1520,7 @@ html[data-theme="dark"] .for-forgot .page-card-actions::after {
 }
 #st-module-switch-btn:hover {
   background: rgba(255,255,255,0.14);
-  color: #fff;
+  color: var(--sanpra-c-fff);
   border-color: rgba(255,255,255,0.2);
 }
 #st-module-switch-btn .st-chevron {
@@ -1296,7 +1538,7 @@ html[data-theme="dark"] .for-forgot .page-card-actions::after {
   top: auto;
   left: 8px;
   right: 8px;
-  background: #fff;
+  background: var(--sanpra-c-fff);
   border: 1px solid rgba(0,0,0,0.1);
   border-radius: var(--st-radius);
   z-index: var(--zi-overlay);
@@ -1397,7 +1639,7 @@ html[data-theme="dark"] #st-powered-by {
 #st-setup-guide {
   position: relative;
   margin: 16px 16px 0;
-  background: var(--st-card-bg, #fff);
+  background: var(--st-card-bg, var(--sanpra-c-fff));
   border: 1px solid var(--st-card-border, rgba(0,0,0,0.08));
   border-left: 3px solid var(--st-accent);
   border-radius: var(--st-radius, 8px);
@@ -1407,19 +1649,19 @@ html[data-theme="dark"] #st-powered-by {
 #st-setup-guide .st-sg-title {
   font-size: 13px;
   font-weight: 600;
-  color: var(--st-text, #1A1A2E);
+  color: var(--st-text, var(--sanpra-c-1a1a2e));
   margin-bottom: 10px;
 }
 #st-setup-guide .st-sg-step {
   font-size: 12px;
-  color: var(--st-text-muted, #6B7280);
+  color: var(--st-text-muted, var(--sanpra-c-6b7280));
   margin-bottom: 5px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 #st-setup-guide .st-sg-step.done {
-  color: #16a34a;
+  color: var(--sanpra-c-16a34a);
 }
 #st-setup-guide .st-sg-actions {
   margin-top: 12px;
@@ -1430,7 +1672,7 @@ html[data-theme="dark"] #st-powered-by {
   border-radius: 6px;
   cursor: pointer;
   background: var(--st-accent) !important;
-  color: #fff !important;
+  color: var(--sanpra-c-fff) !important;
   border: none !important;
   text-decoration: none !important;
   display: inline-block;
@@ -1438,7 +1680,7 @@ html[data-theme="dark"] #st-powered-by {
 }
 #st-setup-guide .st-sg-open-btn:hover {
   opacity: 0.88;
-  color: #fff !important;
+  color: var(--sanpra-c-fff) !important;
   text-decoration: none !important;
 }
 #st-setup-guide .st-sg-dismiss {
@@ -1447,14 +1689,14 @@ html[data-theme="dark"] #st-powered-by {
   right: 12px;
   font-size: 20px;
   cursor: pointer;
-  color: var(--st-text-muted, #6B7280);
+  color: var(--st-text-muted, var(--sanpra-c-6b7280));
   background: none;
   border: none;
   line-height: 1;
   padding: 0;
 }
 #st-setup-guide .st-sg-dismiss:hover {
-  color: var(--st-text, #1A1A2E);
+  color: var(--st-text, var(--sanpra-c-1a1a2e));
 }
 
 /* Link-field dropdown (awesomplete) must paint above the DataTable's sticky
@@ -1499,7 +1741,7 @@ html[data-theme="dark"] #st-powered-by {
 .pagination .active a {
   background: var(--st-primary-gradient) !important;
   border-color: var(--st-accent) !important;
-  color: #fff !important;
+  color: var(--sanpra-c-fff) !important;
   border-radius: var(--st-radius-sm) !important;
 }
 .paginate_button:hover,
@@ -1638,13 +1880,13 @@ body.st-has-toolbar .navbar-default {
   border-radius: 6px;
   border: 1px solid rgba(255,255,255,0.18);
   background: rgba(255,255,255,0.08);
-  color: #fff !important;
+  color: var(--sanpra-c-fff) !important;
   cursor: pointer;
   transition: all 150ms ease;
 }
 #st-top-toolbar #st-tb-app-switcher:hover {
   background: rgba(255,255,255,0.18);
-  border-color: var(--st-accent, #B35200);
+  border-color: var(--st-accent, var(--sanpra-c-b35200));
   transform: translateY(-1px);
 }
 
@@ -1699,7 +1941,7 @@ body.st-has-toolbar .navbar-default {
   transition: color 150ms;
 }
 #st-sh-link:hover {
-  color: var(--st-accent, #B35200);
+  color: var(--st-accent, var(--sanpra-c-b35200));
   text-decoration: none;
 }
 
@@ -1728,7 +1970,7 @@ body.st-has-toolbar .navbar-default {
 }
 #st-lang-btn:hover {
   background: rgba(255,255,255,0.13);
-  color: #fff;
+  color: var(--sanpra-c-fff);
   border-color: rgba(255,255,255,0.22);
 }
 #st-lang-btn .st-lang-globe {
@@ -1746,7 +1988,7 @@ body.st-has-toolbar .navbar-default {
 
 #st-lang-dropdown {
   position: fixed;
-  background: #fff;
+  background: var(--sanpra-c-fff);
   border: 1px solid rgba(0,0,0,0.1);
   border-radius: var(--st-radius);
   box-shadow: var(--st-shadow-lg);
@@ -1764,7 +2006,7 @@ body.st-has-toolbar .navbar-default {
   font-size: 12px;
   font-family: inherit;
   outline: none;
-  color: #333;
+  color: var(--sanpra-c-333);
 }
 #st-lang-search:focus {
   border-bottom-color: var(--st-accent);
@@ -1775,7 +2017,7 @@ body.st-has-toolbar .navbar-default {
   gap: 8px;
   padding: 8px 13px;
   font-size: 12px;
-  color: #333;
+  color: var(--sanpra-c-333);
   cursor: pointer;
   transition: background var(--st-transition);
   font-family: inherit;
@@ -1866,7 +2108,7 @@ body.st-has-toolbar .navbar-default {
 }
 .st-tb-qn-btn:hover {
   background: rgba(255,255,255,0.12);
-  color: #fff;
+  color: var(--sanpra-c-fff);
 }
 
 /* Native Frappe bell (.desktop-notifications) re-parented into toolbar */
@@ -1892,7 +2134,7 @@ body.st-has-toolbar .navbar-default {
 #st-top-toolbar .desktop-notifications .btn-reset:hover,
 #st-top-toolbar .desktop-notifications .nav-link:hover {
   background: rgba(255,255,255,0.12);
-  color: #fff !important;
+  color: var(--sanpra-c-fff) !important;
 }
 #st-top-toolbar .desktop-notifications .icon {
   color: currentColor !important;
@@ -1913,7 +2155,7 @@ body.st-has-toolbar .navbar-default {
   background: var(--st-primary-gradient);
   border: none;
   border-radius: var(--st-radius-sm);
-  color: #fff;
+  color: var(--sanpra-c-fff);
   font-size: 11px;
   font-weight: 600;
   padding: 4px 11px;
@@ -1950,14 +2192,14 @@ body.st-has-toolbar .navbar-default {
 #st-user-btn.active {
   background: rgba(255,255,255,0.15);
   border-color: rgba(255,255,255,0.30);
-  color: #fff;
+  color: var(--sanpra-c-fff);
 }
 .st-user-av {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: var(--st-accent, #B35200);
-  color: #fff;
+  background: var(--st-accent, var(--sanpra-c-b35200));
+  color: var(--sanpra-c-fff);
   font-size: 11px;
   font-weight: 700;
   display: flex;
@@ -1989,7 +2231,7 @@ body.st-has-toolbar .navbar-default {
   display: none;
   position: fixed;
   z-index: var(--zi-modal);
-  background: #fff;
+  background: var(--sanpra-c-fff);
   border: 1px solid rgba(0,0,0,0.10);
   border-radius: 10px;
   box-shadow: 0 8px 28px rgba(0,0,0,0.13), 0 2px 8px rgba(0,0,0,0.06);
@@ -2011,7 +2253,7 @@ body.st-has-toolbar .navbar-default {
   height: 38px;
   border-radius: 50%;
   background: var(--st-accent);
-  color: #fff;
+  color: var(--sanpra-c-fff);
   font-size: 14px;
   font-weight: 700;
   display: flex;
@@ -2029,7 +2271,7 @@ body.st-has-toolbar .navbar-default {
 .st-ud-name {
   font-size: 13px;
   font-weight: 600;
-  color: #fff;
+  color: var(--sanpra-c-fff);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2059,13 +2301,13 @@ body.st-has-toolbar .navbar-default {
   text-align: left;
   font-size: 13px;
   font-family: inherit;
-  color: #374151;
+  color: var(--sanpra-c-374151);
   cursor: pointer;
   transition: background 100ms;
 }
 .st-ud-item:hover {
-  background: #f5f7fa;
-  color: var(--st-brand, #1B1D26);
+  background: var(--sanpra-c-f5f7fa);
+  color: var(--st-brand, var(--sanpra-c-1b1d26));
 }
 .st-ud-item svg {
   flex-shrink: 0;
@@ -2082,7 +2324,7 @@ body.st-has-toolbar .navbar-default {
   margin-left: auto;
   border-radius: 999px;
   background: var(--st-accent);
-  color: #fff;
+  color: var(--sanpra-c-fff);
   font-size: 11px;
   font-weight: 800;
   line-height: 1;
@@ -2095,19 +2337,19 @@ body.st-has-toolbar .navbar-default {
   transform: scale(1);
 }
 .st-ud-logout {
-  color: #DC2626 !important;
+  color: var(--sanpra-c-dc2626) !important;
 }
 .st-ud-logout svg {
   opacity: 0.7;
 }
 .st-ud-logout:hover {
-  background: #fef2f2 !important;
-  color: #DC2626 !important;
+  background: var(--sanpra-c-fef2f2) !important;
+  color: var(--sanpra-c-dc2626) !important;
 }
 
 /* Dark mode */
 html[data-theme="dark"] #st-user-dropdown {
-  background: #1E2130;
+  background: var(--sanpra-c-1e2130);
   border-color: rgba(255,255,255,0.09);
   box-shadow: 0 8px 28px rgba(0,0,0,0.4);
 }
@@ -2119,10 +2361,10 @@ html[data-theme="dark"] .st-ud-item {
 }
 html[data-theme="dark"] .st-ud-item:hover {
   background: rgba(255,255,255,0.07);
-  color: #fff;
+  color: var(--sanpra-c-fff);
 }
 html[data-theme="dark"] .st-ud-logout {
-  color: #f87171 !important;
+  color: var(--sanpra-c-f87171) !important;
 }
 html[data-theme="dark"] .st-ud-logout:hover {
   background: rgba(220,38,38,0.12) !important;
@@ -2135,7 +2377,7 @@ html[data-theme="dark"] .st-ud-logout:hover {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #9ca3af;
+  color: var(--sanpra-c-9ca3af);
 }
 html[data-theme="dark"] .st-ud-section-label {
   color: rgba(255,255,255,0.35);
@@ -2171,13 +2413,13 @@ html[data-theme="dark"] .st-ud-app-tile:hover {
   justify-content: center;
   font-size: 16px;
   font-weight: 700;
-  color: #fff;
+  color: var(--sanpra-c-fff);
   flex-shrink: 0;
 }
 .st-ud-app-name {
   font-size: 11px;
   font-weight: 500;
-  color: #374151;
+  color: var(--sanpra-c-374151);
   text-align: center;
   line-height: 1.2;
   word-break: break-word;
@@ -2189,7 +2431,7 @@ html[data-theme="dark"] .st-ud-app-name {
 .st-ud-app-ver {
   font-size: 11px;
   font-weight: 400;
-  color: #9ca3af;
+  color: var(--sanpra-c-9ca3af);
   text-align: center;
   max-width: 52px;
   overflow: hidden;
@@ -2220,7 +2462,7 @@ html[data-theme="dark"] .st-ud-app-ver {
   width: 420px;
   max-width: 92vw;
   height: 100vh;
-  background: #fff;
+  background: var(--sanpra-c-fff);
   z-index: var(--zi-overlay);
   box-shadow: -8px 0 32px rgba(0,0,0,0.18);
   display: flex;
@@ -2235,7 +2477,7 @@ html[data-theme="dark"] .st-ud-app-ver {
 /* Panel header */
 #st-options-panel-head {
   background: linear-gradient(120deg, var(--st-dark) 0%, var(--st-dark-mid) 100%);
-  color: #fff;
+  color: var(--sanpra-c-fff);
   padding: 18px 20px 14px;
   flex-shrink: 0;
   display: flex;
@@ -2246,7 +2488,7 @@ html[data-theme="dark"] .st-ud-app-ver {
   font-size: 15px;
   font-weight: 700;
   margin: 0;
-  color: #fff;
+  color: var(--sanpra-c-fff);
   letter-spacing: 0.01em;
 }
 #st-options-panel-close {
@@ -2267,7 +2509,7 @@ html[data-theme="dark"] .st-ud-app-ver {
 }
 #st-options-panel-close:hover {
   background: rgba(255,255,255,0.22);
-  color: #fff;
+  color: var(--sanpra-c-fff);
 }
 
 /* Panel search */
@@ -2284,7 +2526,7 @@ html[data-theme="dark"] .st-ud-app-ver {
   font-size: 13px;
   font-family: inherit;
   outline: none;
-  color: #333;
+  color: var(--sanpra-c-333);
   transition: border-color var(--st-transition);
 }
 #st-options-search:focus {
@@ -2343,7 +2585,7 @@ html[data-theme="dark"] .st-ud-app-ver {
   padding: 8px 10px;
   border-radius: var(--st-radius-sm);
   text-decoration: none !important;
-  color: #374151 !important;
+  color: var(--sanpra-c-374151) !important;
   font-size: 12px;
   font-weight: 500;
   transition: all var(--st-transition);

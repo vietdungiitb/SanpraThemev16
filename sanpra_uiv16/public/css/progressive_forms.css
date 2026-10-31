@@ -25,11 +25,11 @@
   align-items: center;
   gap: 7px;
   background: none;
-  border: 1.5px dashed var(--border-color, #e2e8f0);
+  border: 1.5px dashed var(--border-color, var(--sanpra-c-e2e8f0));
   border-radius: 6px;
   padding: 6px 14px;
   font-size: 12px;
-  color: var(--text-muted, #6b7280);
+  color: var(--text-muted, var(--sanpra-c-6b7280));
   cursor: pointer;
   transition: background 150ms, color 150ms, border-color 150ms;
   font-family: inherit;
@@ -38,8 +38,8 @@
 
 .st-pf-toggle-btn:hover {
   background: var(--st-accent-50, rgba(107,62,102,0.06));
-  color: var(--st-accent, #6B3E66);
-  border-color: var(--st-accent, #6B3E66);
+  color: var(--st-accent, var(--sanpra-c-6b3e66));
+  border-color: var(--st-accent, var(--sanpra-c-6b3e66));
   border-style: solid;
 }
 

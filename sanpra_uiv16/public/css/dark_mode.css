@@ -17,7 +17,7 @@ html[data-theme="dark"] {
   --text-color:            var(--st-text);
   --text-muted:            var(--st-text-muted);
   --border-color:          var(--st-card-border);
-  --heading-color:         #F1F5F9;
+  --heading-color:         var(--sanpra-c-f1f5f9);
   --fg-hover-color:        var(--st-hover);
   --subtle-fg:             var(--st-hover);
   --disabled-text-color:   rgba(255,255,255,0.30);
@@ -37,7 +37,7 @@ html[data-theme="dark"] {
   --gray-600:  rgba(255,255,255,0.55);
   --gray-700:  rgba(255,255,255,0.70);
   --gray-800:  rgba(255,255,255,0.85);
-  --gray-900:  #F1F5F9;
+  --gray-900:  var(--sanpra-c-f1f5f9);
 
   /* frappe-charts uses --subtle-accent for loading bg — must be a real color */
   --subtle-accent:          var(--st-input-bg);
@@ -68,11 +68,11 @@ html[data-theme="dark"] {
   --charts-label-color:       var(--st-text-muted);
   --charts-axis-line-color:   rgba(255,255,255,0.07);
   --charts-tooltip-bg:        var(--st-input-bg);
-  --charts-tooltip-title:     #F1F5F9;
+  --charts-tooltip-title:     var(--sanpra-c-f1f5f9);
   --charts-tooltip-label:     var(--st-text-muted);
   --charts-tooltip-value:     var(--st-text);
   --charts-legend-label:      var(--st-text-muted);
-  --charts-legend-value:      #CBD5E1;
+  --charts-legend-value:      var(--sanpra-c-cbd5e1);
 
   /* Frappe's semantic design tokens (espresso colors.css). Their dark values
      are built on the raw gray scale (e.g. --ink-gray-9: var(--gray-50)),
@@ -155,7 +155,7 @@ html[data-theme="dark"] .body-sidebar .standard-sidebar-item .item-anchor {
 
 html[data-theme="dark"] .body-sidebar .standard-sidebar-item:not(.active-sidebar) .item-anchor:hover {
   background: var(--st-sidebar-hover, rgba(255,255,255,0.1)) !important;
-  color: var(--st-sidebar-text, #fff) !important;
+  color: var(--st-sidebar-text, var(--sanpra-c-fff)) !important;
 }
 
 html[data-theme="dark"] .body-sidebar .standard-sidebar-item:not(.active-sidebar) .sidebar-item-icon,
@@ -576,7 +576,7 @@ html[data-theme="dark"] .st-lang-item.st-active {
    for safety on elements that use fallback hex colors */
 
 html[data-theme="dark"] .st-sh-greeting {
-  color: #F1F5F9 !important;
+  color: var(--sanpra-c-f1f5f9) !important;
 }
 
 html[data-theme="dark"] .st-sh-date {
@@ -674,18 +674,18 @@ html[data-theme="dark"] .alert-info {
 
 html[data-theme="dark"] .alert-success {
   background: rgba(34,197,94,0.08) !important;
-  color: #86efac !important;
+  color: var(--sanpra-c-86efac) !important;
 }
 
 html[data-theme="dark"] .alert-danger,
 html[data-theme="dark"] .alert-error {
   background: rgba(239,68,68,0.08) !important;
-  color: #fca5a5 !important;
+  color: var(--sanpra-c-fca5a5) !important;
 }
 
 html[data-theme="dark"] .alert-warning {
   background: rgba(234,179,8,0.08) !important;
-  color: #fde68a !important;
+  color: var(--sanpra-c-fde68a) !important;
 }
 
 /* Indicator pills in dark mode */
@@ -718,17 +718,17 @@ html[data-theme="dark"] .global-search-modal .modal-content {
 }
 #st-dark-toggle:hover {
   background: rgba(255,255,255,0.16);
-  color: #fff;
+  color: var(--sanpra-c-fff);
   border-color: rgba(255,255,255,0.35);
 }
 html[data-theme="dark"] #st-dark-toggle {
   background: rgba(255,255,255,0.10);
-  color: #F59E0B;
+  color: var(--sanpra-c-f59e0b);
   border-color: rgba(255,255,255,0.18);
 }
 html[data-theme="dark"] #st-dark-toggle:hover {
   background: rgba(255,255,255,0.18);
-  color: #FBB040;
+  color: var(--sanpra-c-fbb040);
   border-color: rgba(255,255,255,0.35);
 }
 
@@ -968,7 +968,7 @@ html[data-theme="dark"] .datepicker--cell.-current- {
 }
 html[data-theme="dark"] .datepicker--cell.-selected- {
   background: var(--st-accent) !important;
-  color: #fff !important;
+  color: var(--sanpra-c-fff) !important;
 }
 html[data-theme="dark"] .datepicker--nav-title,
 html[data-theme="dark"] .datepicker--nav-action {
@@ -1093,8 +1093,8 @@ html:not([data-theme="dark"]) .body-sidebar-container > .body-sidebar,
 html:not([data-theme="dark"]) .body-sidebar-container.expanded .body-sidebar,
 html:not([data-theme="dark"]) .body-sidebar-container .body-sidebar-placeholder,
 html:not([data-theme="dark"]) .desk-sidebar {
-  background: var(--st-sidebar-bg, var(--fg-color, #fff)) !important;
-  background-color: var(--st-sidebar-bg, var(--fg-color, #fff)) !important;
+  background: var(--st-sidebar-bg, var(--fg-color, var(--sanpra-c-fff))) !important;
+  background-color: var(--st-sidebar-bg, var(--fg-color, var(--sanpra-c-fff))) !important;
   border-right: 1px solid var(--st-sidebar-border, rgba(0,0,0,0.08)) !important;
 }
 
@@ -1105,7 +1105,7 @@ html:not([data-theme="dark"]) #st-company-header {
 
 /* ── Company name → dark text ────────────────────────────────── */
 html:not([data-theme="dark"]) .st-company-name {
-  color: var(--st-sidebar-text, var(--text-color, #1A1A2E)) !important;
+  color: var(--st-sidebar-text, var(--text-color, var(--sanpra-c-1a1a2e))) !important;
 }
 
 /* ── Sidebar item links → dark text ─────────────────────────── */
@@ -1114,7 +1114,7 @@ html:not([data-theme="dark"]) .desk-sidebar .sidebar-item,
 html:not([data-theme="dark"]) .desk-sidebar .standard-sidebar-item,
 html:not([data-theme="dark"]) .desk-sidebar .sidebar-item a,
 html:not([data-theme="dark"]) .desk-sidebar .standard-sidebar-item a {
-  color: var(--st-sidebar-text, var(--text-color, #333)) !important;
+  color: var(--st-sidebar-text, var(--text-color, var(--sanpra-c-333))) !important;
 }
 
 /* ── Hover → light gray ──────────────────────────────────────── */
@@ -1123,7 +1123,7 @@ html:not([data-theme="dark"]) .body-sidebar .standard-sidebar-item:not(.active-s
 html:not([data-theme="dark"]) .desk-sidebar .sidebar-item:hover,
 html:not([data-theme="dark"]) .desk-sidebar .standard-sidebar-item:hover {
   background: var(--st-sidebar-hover, rgba(0,0,0,0.05)) !important;
-  color: var(--st-sidebar-text, var(--text-color, #1A1A2E)) !important;
+  color: var(--st-sidebar-text, var(--text-color, var(--sanpra-c-1a1a2e))) !important;
   transform: none !important;
 }
 
@@ -1136,9 +1136,9 @@ html:not([data-theme="dark"]) .body-sidebar .sidebar-item-icon .icon,
 html:not([data-theme="dark"]) .desk-sidebar .sidebar-item-icon,
 html:not([data-theme="dark"]) .desk-sidebar .standard-sidebar-item svg,
 html:not([data-theme="dark"]) .desk-sidebar .standard-sidebar-item .icon {
-  color: var(--st-sidebar-text-muted, var(--text-muted, #6B7280)) !important;
-  stroke: var(--st-sidebar-text-muted, var(--text-muted, #6B7280)) !important;
-  fill: var(--st-sidebar-text-muted, var(--text-muted, #6B7280)) !important;
+  color: var(--st-sidebar-text-muted, var(--text-muted, var(--sanpra-c-6b7280))) !important;
+  stroke: var(--st-sidebar-text-muted, var(--text-muted, var(--sanpra-c-6b7280))) !important;
+  fill: var(--st-sidebar-text-muted, var(--text-muted, var(--sanpra-c-6b7280))) !important;
   opacity: 1 !important;
 }
 
@@ -1166,7 +1166,7 @@ html:not([data-theme="dark"]) .body-sidebar .divider {
 /* ── Collapse / onboarding links ─────────────────────────────── */
 html:not([data-theme="dark"]) .body-sidebar .collapse-sidebar-link,
 html:not([data-theme="dark"]) .body-sidebar .collapse-sidebar-link span {
-  color: var(--text-muted, #6B7280) !important;
+  color: var(--text-muted, var(--sanpra-c-6b7280)) !important;
 }
 html:not([data-theme="dark"]) .body-sidebar .onboarding-sidebar {
   color: rgba(0,0,0,0.5) !important;
