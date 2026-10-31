@@ -98,6 +98,6 @@ class AssetVersionTest(unittest.TestCase):
         """Fail-before: doi asset ma quen bump ?v= la trinh duyet giu JS/CSS cu.
         Quy uoc hooks.py: Query versions are bumped whenever an asset changes."""
         hooks = (ROOT / "sanpra_uiv16" / "hooks.py").read_text(encoding="utf-8")
-        self.assertIn("sanpra_uiv16.js?v=72", hooks)
-        self.assertIn("sanpra_uiv16.css?v=72", hooks)
+        self.assertIn("sanpra_uiv16.js?v=73", hooks)
+        self.assertIn("sanpra_uiv16.css?v=74", hooks)
         self.assertIn("command_palette.css?v=5", hooks)
