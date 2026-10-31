@@ -62,7 +62,7 @@ class DesktopNavTest(unittest.TestCase):
         """sanpra_uiv16.css phải có version mới để trình duyệt nhận CSS desktop."""
         from pathlib import Path as _P
         hooks = (_P(__file__).resolve().parents[1] / "sanpra_uiv16" / "hooks.py").read_text(encoding="utf-8")
-        self.assertIn("/assets/sanpra_uiv16/css/sanpra_uiv16.css?v=69", hooks)
+        self.assertIn("/assets/sanpra_uiv16/css/sanpra_uiv16.css?v=70", hooks)
 
 
 if __name__ == "__main__":
