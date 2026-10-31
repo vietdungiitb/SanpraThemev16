@@ -86,7 +86,7 @@ class TouchTargetP11Test(unittest.TestCase):
 
     def test_filter_inputs_min_height_36(self):
         css = DESK_CSS.read_text(encoding="utf-8")
-        self.assertIn(".filter-area input", css)
+        self.assertIn(".standard-filter-section input.form-control.input-xs", css)
         self.assertIn("min-height: 36px !important", css)
 
     def test_checkbox_min_18(self):
@@ -96,7 +96,7 @@ class TouchTargetP11Test(unittest.TestCase):
 
     def test_p1_1_bump_v(self):
         hooks = HOOKS.read_text(encoding="utf-8")
-        self.assertIn("sanpra_uiv16.css?v=70", hooks)
+        self.assertIn("sanpra_uiv16.css?v=71", hooks)
 
 
 if __name__ == "__main__":

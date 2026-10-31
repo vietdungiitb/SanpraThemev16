@@ -2727,18 +2727,16 @@ html[dir="rtl"] #st-lang-dropdown {
 }
 
 /* P1-1 touch-target bundle (31/10/2026): override Frappe core small controls. */
-.list-row input[type="checkbox"],
-.dt-cell input[type="checkbox"],
-.datatable input[type="checkbox"],
-.frappe-list .list-row input[type="checkbox"] {
+.standard-filter-section .checkbox input[type="checkbox"],
+.frappes-control .checkbox input[type="checkbox"],
+input.input-with-feedback.input-xs[type="checkbox"] {
   width: 18px !important;
   height: 18px !important;
   min-width: 18px !important;
   min-height: 18px !important;
 }
-.filter-area input,
-.filter-section input,
-.list-filters input,
-.frappe-list .list-filters input {
+.standard-filter-section input.form-control.input-xs,
+.list-page-form input.form-control.input-xs,
+input.input-with-feedback.form-control.input-xs {
   min-height: 36px !important;
 }
