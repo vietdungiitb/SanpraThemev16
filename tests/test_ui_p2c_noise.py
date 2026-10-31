@@ -51,6 +51,7 @@ class NoiseReductionP2cTest(unittest.TestCase):
         self.assertIn("opacity: 0", combined)
         self.assertIn(".list-row:hover", css)
         self.assertIn(":focus-within", css)
+        self.assertIn(".list-row-container:focus-within", css)
         self.assertIn("hover: none", css)
 
     def test_header_casing_single_rule(self):
