@@ -2766,7 +2766,9 @@ input.input-with-feedback.form-control.input-xs {
 .list-row:hover .list-row-activity,
 .list-row:hover .list-row-like,
 .list-row:focus-within .list-row-activity,
-.list-row:focus-within .list-row-like {
+.list-row:focus-within .list-row-like,
+.list-row-container:focus-within .list-row-activity,
+.list-row-container:focus-within .list-row-like {
   opacity: 1;
 }
 /* Touch (hover: none): luon hien, khong ket chuc nang. */
