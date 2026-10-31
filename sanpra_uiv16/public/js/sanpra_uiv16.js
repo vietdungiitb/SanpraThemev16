@@ -505,7 +505,17 @@
              (its declared route, else its first dock module). */
           var compat = ST.compat;
           var app = compat && compat.hasDock ? appMeta[$(this).attr("data-app")] : null;
-          var route = (app && compat.appLandingRoute(app)) || $(this).attr("data-route");
+          var landing = app && compat ? compat.appLandingRoute(app) : null;
+          /* Portal/external routes (e.g. LMS /lms) are not Desk workspaces: a
+             full navigation avoids the "Khong tim thay Trang ..." modal that
+             frappe.set_route() raises for unknown Desk routes. */
+          var wsSlug = landing ? String(landing).replace(/^\/+/, "").replace(/^desk\//, "").replace(/^app\//, "").split("/")[0] : "";
+          var isDeskWorkspace = !!landing && !!window.frappe && !!frappe.workspaces && !!frappe.workspaces[wsSlug];
+          if (landing && !isDeskWorkspace) {
+            window.location.assign(landing);
+            return;
+          }
+          var route = landing || $(this).attr("data-route");
           if (!route) return;
           frappe.set_route(route);
           setTimeout(syncRailHighlight, 0);
@@ -1681,6 +1691,20 @@
       hasRail: !!document.getElementById("st-icon-rail")
     };
   };
+  /* P2-b (31/10/2026): semantic heading for the Desk page title.
+     Frappe renders the page title as <div class="page-title">, so screen
+     readers see no heading. Add role="heading" + aria-level="1" without
+     changing the tag (avoids breaking Frappe's own selectors). */
+  function injectHeadingSemantics() {
+    var titles = document.querySelectorAll(".page-head .page-title, .page-head .title-text");
+    titles.forEach(function (el) {
+      if (el.getAttribute("role") !== "heading") {
+        el.setAttribute("role", "heading");
+        el.setAttribute("aria-level", "1");
+      }
+    });
+  }
+
   function onDeskReady() {
     /* Setup Wizard should stay Frappe's clean, standalone onboarding flow —
        no theme chrome (toolbar/branding/etc.) until setup actually completes. */
@@ -1691,6 +1715,7 @@
     setupTitleUpdate();
     injectTopToolbar();
     installWorkspaceBlockPickerLayerFix();
+    injectHeadingSemantics();
 
     sidebarReady(function () {
       injectSidebarCollapseToggle();
@@ -1715,6 +1740,7 @@
       patchNativeSidebar();
       injectPoweredBy();
       injectSetupGuide();
+      injectHeadingSemantics();
       setTimeout(moveNativeBell, 400);
       setTimeout(syncRailHighlight, 0);
     });
