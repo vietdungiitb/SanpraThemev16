@@ -381,5 +381,25 @@ class IconRailTest(unittest.TestCase):
         self.assertIn('"vietnam_compliance"', js)
         self.assertIn("st-rail-collapse-svg", js)
 
+    def test_rail_click_uses_normal_routing_and_syncs_highlight(self):
+        js = JS.read_text(encoding="utf-8")
+
+        self.assertIn("function syncRailHighlight", js)
+        self.assertIn("frappe.set_route(route)", js)
+        self.assertIn('data-title', js)
+        self.assertIn('frappe.router.on("change", syncRailHighlight)', js)
+
+
+class RailPortalRouteTest(unittest.TestCase):
+    def test_rail_click_portal_route_does_full_navigation(self):
+        """P0-1 LMS: landing route khong phai Desk workspace (VD /lms) phai
+        dieu huong day du (window.location.assign) thay vi frappe.set_route
+        (tranh modal 'Khong tim thay Trang ...'). Desk workspace van SPA."""
+        js = JS.read_text(encoding="utf-8")
+
+        self.assertIn("window.location.assign", js)
+        self.assertIn("frappe.workspaces", js)
+        self.assertIn("isDeskWorkspace", js)
+
 if __name__ == "__main__":
     unittest.main()
