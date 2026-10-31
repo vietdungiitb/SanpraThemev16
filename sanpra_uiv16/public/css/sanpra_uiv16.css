@@ -670,12 +670,25 @@ a:hover { color: var(--st-primary-hover) !important; opacity: 0.85; }
   text-transform: uppercase;
 }
 
-/* List rows — solid bg, clear border, comfortable padding */
+/* List rows — compact density (32-36px) + sticky header support */
 .list-row {
   background: var(--st-list-row-bg) !important;
   border-bottom: 1px solid var(--st-border) !important;
-  padding: 10px 16px !important;
+  padding: 6px 12px !important;
+  min-height: 36px !important;
   transition: background 0.15s ease;
+}
+/* Zebra striping for readability */
+.list-row:nth-child(even) {
+  background: var(--st-list-row-alt, #f9fafb) !important;
+}
+/* Sticky list header below toolbar */
+.list-row-head,
+.dt-header,
+.datatable .dt-header .dt-cell--header {
+  position: sticky !important;
+  top: var(--st-header-height, 36px) !important;
+  z-index: 10 !important;
 }
 .list-row:hover,
 .dt-row:hover {
