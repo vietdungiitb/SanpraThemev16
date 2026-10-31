@@ -2753,3 +2753,26 @@ input.input-with-feedback.input-xs[type="checkbox"] {
 input.input-with-feedback.form-control.input-xs {
   min-height: 36px !important;
 }
+
+/* P2-c noise reduction (31/10/2026): gom comment/heart vao hover.
+   Selector chinh xac theo DOM Frappe do tren staging (SPAN.comment-count
+   trong DIV.list-row-activity, SPAN.like-action trong SPAN.list-row-like);
+   khong dung selector rong de tranh an nham icon status. */
+.list-row .list-row-activity,
+.list-row .list-row-like {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.list-row:hover .list-row-activity,
+.list-row:hover .list-row-like,
+.list-row:focus-within .list-row-activity,
+.list-row:focus-within .list-row-like {
+  opacity: 1;
+}
+/* Touch (hover: none): luon hien, khong ket chuc nang. */
+@media (hover: none) {
+  .list-row .list-row-activity,
+  .list-row .list-row-like {
+    opacity: 1;
+  }
+}
