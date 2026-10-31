@@ -505,7 +505,17 @@
              (its declared route, else its first dock module). */
           var compat = ST.compat;
           var app = compat && compat.hasDock ? appMeta[$(this).attr("data-app")] : null;
-          var route = (app && compat.appLandingRoute(app)) || $(this).attr("data-route");
+          var landing = app && compat ? compat.appLandingRoute(app) : null;
+          /* Portal/external routes (e.g. LMS /lms) are not Desk workspaces: a
+             full navigation avoids the "Khong tim thay Trang ..." modal that
+             frappe.set_route() raises for unknown Desk routes. */
+          var wsSlug = landing ? String(landing).replace(/^\/+/, "").replace(/^desk\//, "").replace(/^app\//, "").split("/")[0] : "";
+          var isDeskWorkspace = !!landing && !!window.frappe && !!frappe.workspaces && !!frappe.workspaces[wsSlug];
+          if (landing && !isDeskWorkspace) {
+            window.location.assign(landing);
+            return;
+          }
+          var route = landing || $(this).attr("data-route");
           if (!route) return;
           frappe.set_route(route);
           setTimeout(syncRailHighlight, 0);
