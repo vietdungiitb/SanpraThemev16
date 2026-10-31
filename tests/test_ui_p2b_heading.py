@@ -30,7 +30,7 @@ class HeadingSemanticsP2bTest(unittest.TestCase):
 
     def test_p2b_bump_v(self):
         hooks = HOOKS.read_text(encoding="utf-8")
-        self.assertIn("sanpra_uiv16.js?v=72", hooks)
+        self.assertIn("sanpra_uiv16.js?v=73", hooks)
 
 
 if __name__ == "__main__":

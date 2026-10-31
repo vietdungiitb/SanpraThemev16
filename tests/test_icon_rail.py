@@ -345,7 +345,7 @@ class IconRailTest(unittest.TestCase):
         hooks = HOOKS.read_text(encoding="utf-8")
 
         self.assertIn("/assets/sanpra_uiv16/css/sidebar.css?v=40", hooks)
-        self.assertIn("/assets/sanpra_uiv16/js/sanpra_uiv16.js?v=72", hooks)
+        self.assertIn("/assets/sanpra_uiv16/js/sanpra_uiv16.js?v=73", hooks)
         self.assertIn("/assets/sanpra_uiv16/css/theme_studio.css?v=19", hooks)
 
     def test_legacy_config_treats_never_set_icon_rail_width_as_unset_not_zero(self):
