@@ -1691,6 +1691,20 @@
       hasRail: !!document.getElementById("st-icon-rail")
     };
   };
+  /* P2-b (31/10/2026): semantic heading for the Desk page title.
+     Frappe renders the page title as <div class="page-title">, so screen
+     readers see no heading. Add role="heading" + aria-level="1" without
+     changing the tag (avoids breaking Frappe's own selectors). */
+  function injectHeadingSemantics() {
+    var titles = document.querySelectorAll(".page-head .page-title, .page-head .title-text");
+    titles.forEach(function (el) {
+      if (el.getAttribute("role") !== "heading") {
+        el.setAttribute("role", "heading");
+        el.setAttribute("aria-level", "1");
+      }
+    });
+  }
+
   function onDeskReady() {
     /* Setup Wizard should stay Frappe's clean, standalone onboarding flow —
        no theme chrome (toolbar/branding/etc.) until setup actually completes. */
@@ -1701,6 +1715,7 @@
     setupTitleUpdate();
     injectTopToolbar();
     installWorkspaceBlockPickerLayerFix();
+    injectHeadingSemantics();
 
     sidebarReady(function () {
       injectSidebarCollapseToggle();
@@ -1725,6 +1740,7 @@
       patchNativeSidebar();
       injectPoweredBy();
       injectSetupGuide();
+      injectHeadingSemantics();
       setTimeout(moveNativeBell, 400);
       setTimeout(syncRailHighlight, 0);
     });
