@@ -132,7 +132,7 @@ html body.sl-split section::before { display: none !important; }
 }
 .sl-hero-inner {
   position: relative;
-  z-index: 1;
+  z-index: var(--zi-base);
   width: 100%;
   max-width: 760px;
 }
@@ -688,7 +688,7 @@ html body.sl-split .sl-card .sign-up-message a:hover { text-decoration: underlin
 
 .sl-preview-ribbon {
   position: fixed;
-  z-index: 1000;
+  z-index: var(--zi-overlay);
   bottom: 12px;
   max-width: calc(100vw - 32px);
   text-align: center;

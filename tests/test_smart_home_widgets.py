@@ -43,7 +43,7 @@ class SmartHomeWidgetsTest(unittest.TestCase):
 
     def test_smart_home_asset_cache_is_bumped(self):
         hooks = HOOKS.read_text(encoding="utf-8")
-        self.assertIn("/assets/sanpra_uiv16/css/smart_home.css?v=9", hooks)
+        self.assertIn("/assets/sanpra_uiv16/css/smart_home.css?v=10", hooks)
 
     def test_widget_library_and_simple_builder_are_available(self):
         js = JS.read_text(encoding="utf-8")

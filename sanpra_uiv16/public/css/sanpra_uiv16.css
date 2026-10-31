@@ -1,3 +1,12 @@
+:root {
+    --zi-base: 0;
+    --zi-raised: 10;
+    --zi-overlay: 1000;
+    --zi-editor: 1200;
+    --zi-modal: 2000;
+    --zi-top: 99999;
+}
+
 /* =============================================================================
    Sanpra UI V16 — Premium Stylesheet
    Sanpra design system — original visual language for Frappe Desk
@@ -688,7 +697,7 @@ a:hover { color: var(--st-primary-hover) !important; opacity: 0.85; }
 .datatable .dt-header .dt-cell--header {
   position: sticky !important;
   top: var(--st-header-height, 36px) !important;
-  z-index: 10 !important;
+  z-index: var(--zi-raised) !important;
 }
 .list-row:hover,
 .dt-row:hover {
@@ -1290,7 +1299,7 @@ html[data-theme="dark"] .for-forgot .page-card-actions::after {
   background: #fff;
   border: 1px solid rgba(0,0,0,0.1);
   border-radius: var(--st-radius);
-  z-index: 1050;
+  z-index: var(--zi-overlay);
   box-shadow: var(--st-shadow-lg);
   overflow: hidden;
   max-height: 320px;
@@ -1452,7 +1461,7 @@ html[data-theme="dark"] #st-powered-by {
    checkbox column. Frappe core (.awesomplete > [role="listbox"]) and the
    bundled frappe-datatable library's sticky top-left corner cell
    (.dt-cell--sticky-top, the "select all" checkbox) both independently use
-   z-index: 4 — an exact tie. On any report where a Link filter sits directly
+   z-index: var(--zi-base) — an exact tie. On any report where a Link filter sits directly
    above the grid (e.g. the Bull filter on Bull Performance Report), the
    dropdown's on-screen position overlaps that sticky cell, and with a tied
    z-index the browser falls back to DOM order, so the checkbox bleeds
@@ -1461,7 +1470,7 @@ html[data-theme="dark"] #st-powered-by {
    header menu), while staying well below this theme's modal/toolbar layers
    (1040–1200), so it never covers something it shouldn't. */
 .awesomplete > [role="listbox"] {
-  z-index: 20 !important;
+  z-index: var(--zi-raised) !important;
 }
 /* Dropdown menus — z-index above our toolbar (1060) so they're never hidden by it */
 .dropdown-menu,
@@ -1470,7 +1479,7 @@ html[data-theme="dark"] #st-powered-by {
   box-shadow: var(--st-shadow-lg) !important;
   border: 1px solid rgba(0,0,0,0.08) !important;
   overflow: hidden;
-  z-index: 1070 !important;
+  z-index: var(--zi-overlay) !important;
 }
 .dropdown-item:hover,
 .dropdown-item:focus {
@@ -1556,7 +1565,7 @@ html[data-theme="dark"] #st-powered-by {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1060;
+  z-index: var(--zi-overlay);
   height: var(--st-header-height, 36px);
   background: var(--st-toolbar-bg, var(--st-dark-deep));
   box-shadow: inset 0 -1px 0 rgba(255,255,255,0.07);
@@ -1741,7 +1750,7 @@ body.st-has-toolbar .navbar-default {
   border: 1px solid rgba(0,0,0,0.1);
   border-radius: var(--st-radius);
   box-shadow: var(--st-shadow-lg);
-  z-index: 1070;
+  z-index: var(--zi-overlay);
   min-width: 210px;
   max-height: 320px;
   overflow-y: auto;
@@ -1979,7 +1988,7 @@ body.st-has-toolbar .navbar-default {
 #st-user-dropdown {
   display: none;
   position: fixed;
-  z-index: 2000;
+  z-index: var(--zi-modal);
   background: #fff;
   border: 1px solid rgba(0,0,0,0.10);
   border-radius: 10px;
@@ -2197,7 +2206,7 @@ html[data-theme="dark"] .st-ud-app-ver {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.35);
-  z-index: 1080;
+  z-index: var(--zi-overlay);
   backdrop-filter: blur(2px);
 }
 #st-options-overlay.open {
@@ -2212,7 +2221,7 @@ html[data-theme="dark"] .st-ud-app-ver {
   max-width: 92vw;
   height: 100vh;
   background: #fff;
-  z-index: 1090;
+  z-index: var(--zi-overlay);
   box-shadow: -8px 0 32px rgba(0,0,0,0.18);
   display: flex;
   flex-direction: column;
@@ -2411,19 +2420,19 @@ html[data-theme="dark"] .st-ud-app-ver {
 [data-page-route="Workspaces"] #editorjs .ce-conversion-toolbar,
 [data-page-route="Workspaces"] #editorjs .ce-settings,
 [data-page-route="Workspaces"] #editorjs .ce-settings__default-zone {
-  z-index: 1200 !important;
+  z-index: var(--zi-editor) !important;
 }
 [data-page-route="Workspaces"] #editorjs .ce-popover {
-  z-index: 1201 !important;
+  z-index: var(--zi-editor) !important;
 }
 [data-page-route="Workspaces"] #editorjs .st-editorjs-popover-host {
   position: relative;
-  z-index: 1195 !important;
+  z-index: var(--zi-editor) !important;
 }
 [data-page-route="Workspaces"] #editorjs .ce-block--focused,
 [data-page-route="Workspaces"] #editorjs .ce-block--selected {
   position: relative;
-  z-index: 1190 !important;
+  z-index: var(--zi-editor) !important;
 }
 
 /* Hover lifts create stacking contexts that can flicker against the open block menu. */

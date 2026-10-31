@@ -326,7 +326,7 @@ html[data-theme="dark"] body.st-sidebar-layout-rail .body-sidebar-container .bod
   border-radius: 6px;
   white-space: nowrap;
   pointer-events: none;
-  z-index: 9999;
+  z-index: var(--zi-top);
   box-shadow: 0 4px 12px rgba(0,0,0,0.35);
   opacity: 0;
   transition: opacity 0.12s ease;
@@ -666,7 +666,7 @@ body.st-has-toolbar #st-icon-rail {
     width: var(--st-rail-width, 72px);
     height: auto !important;
     margin-top: 0 !important;
-    z-index: 1023;
+    z-index: var(--zi-overlay);
   }
   body:has(#st-icon-rail) .body-sidebar-container.expanded .body-sidebar {
     left: var(--st-rail-width, 72px);
