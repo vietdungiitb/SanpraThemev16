@@ -1610,8 +1610,8 @@ body.st-has-toolbar .navbar-default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 36px;
+  height: 36px;
   padding: 0;
   border-radius: 6px;
   border: 1px solid rgba(255,255,255,0.18);
@@ -1827,8 +1827,8 @@ body.st-has-toolbar .navbar-default {
   gap: 1px;
 }
 .st-tb-qn-btn {
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1854,8 +1854,8 @@ body.st-has-toolbar .navbar-default {
 }
 #st-top-toolbar .desktop-notifications .btn-reset,
 #st-top-toolbar .desktop-notifications .nav-link {
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   display: flex !important;
   align-items: center;
   justify-content: center;
@@ -2231,8 +2231,8 @@ html[data-theme="dark"] .st-ud-app-ver {
   background: rgba(255,255,255,0.12);
   border: none;
   color: rgba(255,255,255,0.8);
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--st-radius-sm);
   font-size: 18px;
   line-height: 1;
@@ -2724,4 +2724,21 @@ html[dir="rtl"] #st-lang-dropdown {
   overflow: hidden;
   min-height: 2.4em;
   line-height: 1.2;
+}
+
+/* P1-1 touch-target bundle (31/10/2026): override Frappe core small controls. */
+.list-row input[type="checkbox"],
+.dt-cell input[type="checkbox"],
+.datatable input[type="checkbox"],
+.frappe-list .list-row input[type="checkbox"] {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+}
+.filter-area input,
+.filter-section input,
+.list-filters input,
+.frappe-list .list-filters input {
+  min-height: 36px !important;
 }
