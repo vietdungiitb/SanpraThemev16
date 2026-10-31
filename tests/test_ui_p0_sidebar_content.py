@@ -89,7 +89,7 @@ class P0AssetVersionTest(unittest.TestCase):
         """Fail-before REQ-04: doi 2 file CSS phai bump ?v= cung commit."""
         hooks = HOOKS.read_text(encoding="utf-8")
         self.assertIn("sidebar.css?v=40", hooks)
-        self.assertIn("sanpra_uiv16.css?v=71", hooks)
+        self.assertIn("sanpra_uiv16.css?v=72", hooks)
 
 
 if __name__ == "__main__":
