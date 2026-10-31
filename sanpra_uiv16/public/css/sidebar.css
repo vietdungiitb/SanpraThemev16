@@ -221,7 +221,7 @@ html[data-theme="dark"] body.st-sidebar-layout-rail .body-sidebar-container .bod
 .body-sidebar .sidebar-item-container.section-item .item-anchor .sidebar-item-label,
 .body-sidebar .section-break .sidebar-item-label {
   color: var(--st-sidebar-text-muted, #9CA3AF) !important;
-  font-size: 10px !important;
+  font-size: 11px !important;
   letter-spacing: 0.06em !important;
   text-transform: uppercase !important;
   font-weight: 700 !important;
@@ -233,7 +233,7 @@ html[data-theme="dark"] body.st-sidebar-layout-rail .body-sidebar-container .bod
    validate chi cho Link/Card Break). Dinh dang giong section-break. */
 .body-sidebar .sidebar-item-container .item-anchor:not([href]) .sidebar-item-label {
   color: var(--st-sidebar-text-muted, #9CA3AF) !important;
-  font-size: 10px !important;
+  font-size: 11px !important;
   letter-spacing: 0.06em !important;
   text-transform: uppercase !important;
   font-weight: 700 !important;
@@ -626,7 +626,7 @@ body.st-has-toolbar #st-icon-rail {
 #st-icon-rail .st-rail-module-icon svg { width: 16px; height: 16px; }
 #st-icon-rail .st-rail-module-label {
   max-width: 100%;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
   line-height: 1.15;
   text-align: center;

@@ -18,11 +18,11 @@ web_include_js = ["/assets/sanpra_uiv16/js/login_theme.js?v=9"]
 # ── AUTHENTICATED DESK ASSETS ──────────────────────────────────────────────────
 # Query versions are bumped whenever an asset changes to invalidate browser cache.
 app_include_css = [
-    "/assets/sanpra_uiv16/css/sanpra_uiv16.css?v=74",
-    "/assets/sanpra_uiv16/css/sidebar.css?v=40",
-    "/assets/sanpra_uiv16/css/command_palette.css?v=5",
-    "/assets/sanpra_uiv16/css/smart_home.css?v=8",
-    "/assets/sanpra_uiv16/css/notification_center.css?v=3",
+    "/assets/sanpra_uiv16/css/sanpra_uiv16.css?v=75",
+    "/assets/sanpra_uiv16/css/sidebar.css?v=41",
+    "/assets/sanpra_uiv16/css/command_palette.css?v=6",
+    "/assets/sanpra_uiv16/css/smart_home.css?v=9",
+    "/assets/sanpra_uiv16/css/notification_center.css?v=4",
     "/assets/sanpra_uiv16/css/polish.css?v=4",
     "/assets/sanpra_uiv16/css/dark_mode.css?v=17",
     "/assets/sanpra_uiv16/css/module_cards.css?v=2",

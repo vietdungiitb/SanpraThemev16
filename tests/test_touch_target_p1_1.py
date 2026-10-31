@@ -96,7 +96,7 @@ class TouchTargetP11Test(unittest.TestCase):
 
     def test_p1_1_bump_v(self):
         hooks = HOOKS.read_text(encoding="utf-8")
-        self.assertIn("sanpra_uiv16.css?v=74", hooks)
+        self.assertIn("sanpra_uiv16.css?v=75", hooks)
 
 
 if __name__ == "__main__":

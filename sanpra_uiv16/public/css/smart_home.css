@@ -32,7 +32,7 @@
 .st-sh-eyebrow {
   margin-bottom: 7px;
   color: var(--st-accent, #e8610a);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -273,7 +273,7 @@
 .st-sh-size-label {
   min-width: 31px;
   color: var(--text-muted, #7b8490);
-  font-size: 9px;
+  font-size: 11px;
   font-variant-numeric: tabular-nums;
   text-align: center;
 }
@@ -425,7 +425,7 @@
 .st-sh-card-head p {
   margin: 2px 0 0;
   color: var(--text-muted, #84909c);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .st-sh-card-body {
@@ -498,7 +498,7 @@
 .st-sh-doc-dt {
   margin-top: 1px;
   color: var(--text-muted, #87919c);
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .st-sh-row-arrow {
@@ -531,7 +531,7 @@
   border-radius: 9px;
   background: color-mix(in srgb, var(--card-bg, #fff) 94%, var(--st-accent, #e8610a));
   color: var(--text-color, #313a45) !important;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 650;
   line-height: 1.25;
   text-decoration: none !important;
@@ -584,7 +584,7 @@
   border-radius: 8px;
   background: color-mix(in srgb, #d97706 12%, transparent);
   color: #b45309;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
 }
 
@@ -627,7 +627,7 @@
 
 .st-sh-all-clear div span {
   margin-top: 2px;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 /* ── SHARED LOADING / EMPTY STATES ──────────────────────────────────────────── */
@@ -804,7 +804,7 @@ html[data-theme="dark"] .st-sh-qc-item {
 .st-sh-library-kicker,
 .st-sh-builder-head > div > span {
   color: var(--st-accent, #e8610a);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: .15em;
   text-transform: uppercase;
@@ -956,7 +956,7 @@ html[data-theme="dark"] .st-sh-qc-item {
 .st-sh-builder-form textarea { resize: vertical; }
 .st-sh-builder-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .st-sh-builder-submit { min-height: 42px; margin-top: 4px; }
-.st-sh-builder-preview > span { display: block; margin-bottom: 9px; color: var(--text-muted, #717784); font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.st-sh-builder-preview > span { display: block; margin-bottom: 9px; color: var(--text-muted, #717784); font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 .st-sh-builder-preview .st-sh-widget { width: 100%; min-height: 190px; }
 .st-sh-builder-preview .st-sh-drag-tools,
 .st-sh-builder-preview .st-sh-remove-widget { display: none !important; }

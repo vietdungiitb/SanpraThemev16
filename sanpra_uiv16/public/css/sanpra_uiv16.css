@@ -295,7 +295,7 @@ html[data-theme="dark"] .desk-page {
 .desk-sidebar .sidebar-group-title,
 .desk-sidebar .sidebar-section-head,
 .desk-sidebar .standard-sidebar-section > .standard-sidebar-label {
-  font-size: 10px !important;
+  font-size: 11px !important;
   letter-spacing: 0.1em !important;
   text-transform: uppercase !important;
   color: #9CA3AF !important;
@@ -1275,7 +1275,7 @@ html[data-theme="dark"] .for-forgot .page-card-actions::after {
 #st-module-switch-btn .st-chevron {
   margin-left: auto;
   color: var(--st-accent);
-  font-size: 10px;
+  font-size: 11px;
   transition: transform var(--st-transition);
 }
 #st-module-switch-btn.open .st-chevron {
@@ -1310,7 +1310,7 @@ html[data-theme="dark"] .for-forgot .page-card-actions::after {
   border-bottom-color: var(--st-accent);
 }
 #st-module-switcher-dropdown .st-module-category {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1374,7 +1374,7 @@ html[data-theme="dark"] .for-forgot .page-card-actions::after {
 /* ── POWERED-BY BADGE ───────────────────────────────────────────────────────── */
 #st-powered-by {
   text-align: center;
-  font-size: 10px;
+  font-size: 11px;
   color: rgba(0,0,0,0.28);  /* dark text — works on light sidebar */
   padding: 3px 0 8px;
   letter-spacing: 0.03em;
@@ -1727,7 +1727,7 @@ body.st-has-toolbar .navbar-default {
   line-height: 1;
 }
 #st-lang-btn .st-lang-chevron {
-  font-size: 9px;
+  font-size: 11px;
   opacity: 0.6;
   transition: transform var(--st-transition);
 }
@@ -1825,7 +1825,7 @@ body.st-has-toolbar .navbar-default {
   white-space: nowrap;
 }
 .st-tb-search-kbd {
-  font-size: 9px;
+  font-size: 11px;
   background: rgba(255,255,255,0.12);
   border-radius: 4px;
   padding: 1px 5px;
@@ -2122,7 +2122,7 @@ html[data-theme="dark"] .st-ud-logout:hover {
 /* ── INSTALLED APPS GRID ─────────────────────────────────────────────────────── */
 .st-ud-section-label {
   padding: 10px 16px 6px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -2166,7 +2166,7 @@ html[data-theme="dark"] .st-ud-app-tile:hover {
   flex-shrink: 0;
 }
 .st-ud-app-name {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
   color: #374151;
   text-align: center;
@@ -2178,7 +2178,7 @@ html[data-theme="dark"] .st-ud-app-name {
   color: rgba(255,255,255,0.7);
 }
 .st-ud-app-ver {
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 400;
   color: #9ca3af;
   text-align: center;
@@ -2299,7 +2299,7 @@ html[data-theme="dark"] .st-ud-app-ver {
   align-items: center;
   gap: 8px;
   padding: 8px 18px 4px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;

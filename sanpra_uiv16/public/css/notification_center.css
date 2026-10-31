@@ -32,7 +32,7 @@
   background: var(--st-accent, #B35200);
   color: #fff;
   border-radius: 99px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   line-height: 16px;
   text-align: center;
@@ -252,7 +252,7 @@
 }
 
 .st-notif-doctype {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-muted, #6c757d);
   background: var(--control-bg, rgba(0,0,0,0.05));
   border-radius: 4px;
@@ -261,7 +261,7 @@
 }
 
 .st-notif-time {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-extra-muted, #adb5bd);
   white-space: nowrap;
 }
@@ -274,7 +274,7 @@
   border: none;
   cursor: pointer;
   color: var(--st-accent, #B35200);
-  font-size: 10px;
+  font-size: 11px;
   padding: 4px;
   opacity: 0;
   transition: opacity 150ms;
