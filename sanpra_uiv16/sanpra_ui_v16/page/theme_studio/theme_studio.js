@@ -337,7 +337,7 @@ sanpra_uiv16.ThemeStudio = class ThemeStudio {
 		this.$root.off();
 		this.$root.removeClass("sts-loading").addClass("st-theme-studio").html(
 			'<aside class="sts-controls">' +
-				'<div class="sts-eyebrow">' + __("DESIGN SYSTEM") + "</div>" +
+				'<p class="sts-eyebrow">' + __("DESIGN SYSTEM") + "</p>" +
 				'<h2>' + __("Make it unmistakably yours.") + "</h2>" +
 				'<p class="sts-intro">' + __("Every theme token, assignment, and deployment control in one place.") + "</p>" +
 				this._profile_bar_html() +
@@ -346,13 +346,13 @@ sanpra_uiv16.ThemeStudio = class ThemeStudio {
 				'<div class="sts-control-panels">' + this._sections_html() + "</div>" +
 			"</aside>" +
 			'<main class="sts-workbench">' +
-				'<div class="sts-toolbar">' +
+				'<header class="sts-toolbar">' +
 					'<div class="sts-device-switch" role="group" aria-label="' + __("Preview size") + '">' +
 						'<button class="active" data-device="desktop" title="' + __("Desktop") + '">' + this._icon("desktop") + "</button>" +
 						'<button data-device="tablet" title="' + __("Tablet") + '">' + this._icon("tablet") + "</button>" +
 						'<button data-device="mobile" title="' + __("Mobile") + '">' + this._icon("mobile") + "</button>" +
 					"</div>" +
-					'<div class="sts-scene-switch" role="group">' +
+					'<div class="sts-scene-switch" role="group" aria-label="' + __("Preview scene") + '">' +
 						'<button class="active" data-preview-scene="dashboard">' + __("Dashboard") + "</button>" +
 						'<button data-preview-scene="form">' + __("Form") + "</button>" +
 						'<button data-preview-scene="table">' + __("Table") + "</button>" +
@@ -368,7 +368,7 @@ sanpra_uiv16.ThemeStudio = class ThemeStudio {
 						'<button data-action="undo" title="' + __("Undo") + '">' + this._icon("undo") + "</button>" +
 						'<button data-action="redo" title="' + __("Redo") + '">' + this._icon("redo") + "</button>" +
 					"</div>" +
-				"</div>" +
+				"</header>" +
 				'<div class="sts-stage">' +
 					'<div class="sts-preview-frame" id="st-theme-studio-preview">' +
 						'<div class="sts-browser-bar"><span></span><span></span><span></span><div class="sts-browser-address">' +
@@ -829,8 +829,8 @@ sanpra_uiv16.ThemeStudio = class ThemeStudio {
 		return sanpra_uiv16.theme_studio_sections.map(function (section) {
 			return '<section class="sts-section sts-control-panel' +
 				(section.id === self.active_section ? " active" : "") + '" data-section="' + section.id + '">' +
-				'<div class="sts-section-title"><span>' + section.index + "</span>" + __(section.title) +
-					'<button type="button" data-reset-section="' + section.id + '">' + __("Reset section") + "</button></div>" +
+				'<h3 class="sts-section-title"><span>' + section.index + "</span>" + __(section.title) +
+					'<button type="button" data-reset-section="' + section.id + '">' + __("Reset section") + "</button></h3>" +
 				'<p class="sts-section-copy">' + __(section.description) + "</p>" +
 				section.controls.map(function (definition) { return self._render_control(definition); }).join("") +
 				(section.id === "workspace" ? self._chart_system_html() : "") +
@@ -1083,8 +1083,8 @@ sanpra_uiv16.ThemeStudio = class ThemeStudio {
 	_chart_system_html() {
 		if (!this.state || !this.state.chart_schema) return "";
 		var self = this, registry = this.state.chart_registry || [];
-		return '<div class="sts-chart-system"><div class="sts-section-title"><span>CH</span>' + __("Chart appearance") +
-			'<button type="button" data-reset-global-charts>' + __("Reset global charts") + '</button></div><p class="sts-section-copy">' +
+		return '<div class="sts-chart-system"><h3 class="sts-section-title"><span>CH</span>' + __("Chart appearance") +
+			'<button type="button" data-reset-global-charts>' + __("Reset global charts") + '</button></h3><p class="sts-section-copy">' +
 			__("Start with a few common settings. Open Advanced only when you need precise control.") + '</p><details open><summary>' + __("Defaults for all charts") +
 			'</summary><div class="sts-chart-controls">' + this._chart_controls_html("global", "", "full") + '</div></details>' +
 			'<div class="sts-chart-registry"><label>' + __("Individual charts") + '</label><input type="search" data-chart-search placeholder="' + __("Search charts…") + '"><div data-chart-registry-list>' +
