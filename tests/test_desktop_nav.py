@@ -64,6 +64,22 @@ class DesktopNavTest(unittest.TestCase):
         hooks = (_P(__file__).resolve().parents[1] / "sanpra_uiv16" / "hooks.py").read_text(encoding="utf-8")
         self.assertRegex(hooks, r"/assets/sanpra_uiv16/css/sanpra_uiv16\.css\?v=\d+")
 
+    def test_header_chi_1_chuong_va_co_icon_giam_sat(self):
+        """Option B (2026-11-09): chuong native bi an, panel theme la chuong duy nhat;
+        icon Giam sat van hanh (#st-ops-center) chi hien khi workspace trong pool
+        get_workspaces (viewer roles) — non-viewer khong bao gio thay."""
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn('id="st-ops-center"', js)
+        self.assertIn("fetchWorkspaces", js)
+        self.assertIn('addClass("st-hidden-native-bell")', js)
+
+    def test_icon_giam_sat_dung_slug_khong_dau(self):
+        """Route workspace giu dau tieng Viet — dung unicode escape trong JS de
+        pipe edit khong lam hong ky tu (lesson 74)."""
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn(r"Gi\u00e1m s\u00e1t v\u1eadn h\u00e0nh", js)
+        self.assertIn("frappe.router.slug", js)
+
 
 if __name__ == "__main__":
     unittest.main()

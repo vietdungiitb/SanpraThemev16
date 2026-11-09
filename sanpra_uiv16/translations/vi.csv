@@ -444,6 +444,7 @@
 "Preset applied — click Save to update","Đã áp dụng preset — bấm Lưu để cập nhật"
 "Preview fallback","Xem trước dự phòng"
 "Preview size","Cỡ xem trước"
+"Preview scene","Cảnh xem trước"
 "Preview unavailable","Không xem trước được"
 "Primary series","Chuỗi chính"
 "Publishing your theme…","Đang xuất bản giao diện…"
@@ -731,3 +732,6 @@ Up to 4 cards. Leave empty to use the built-in cards.,Tối đa 4 thẻ. Để t
 Use Login Page Designer,Dùng trình thiết kế trang đăng nhập
 Use {company} anywhere to insert the company name.,Dùng {company} ở mọi nơi để chèn tên công ty.
 Visual Design,Thiết kế trực quan
+"Giám sát hệ thống","Giám sát hệ thống"
+"Trung tâm công việc hàng ngày — theo dõi toàn hệ thống","Trung tâm công việc hàng ngày — theo dõi toàn hệ thống"
+"Mở trung tâm điều hành","Mở trung tâm điều hành"

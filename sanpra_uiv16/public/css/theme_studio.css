@@ -30,8 +30,8 @@
 	max-height: calc(100vh - 108px);
 	scrollbar-width: thin;
 }
-.sts-eyebrow { color: var(--sanpra-c-b6512d); font-size: 12px; font-weight: 800; letter-spacing: .18em; margin-bottom: 8px; }
-.sts-controls h2 { margin: 0; max-width: 230px; color: var(--sanpra-c-18202b); font-family: Georgia, 'Times New Roman', serif; font-size: 27px; line-height: 1.08; letter-spacing: -.025em; }
+.sts-eyebrow { color: var(--sanpra-c-b6512d); font-size: 12px; font-weight: 800; letter-spacing: .18em; margin-top: 0; margin-bottom: 8px; }
+.sts-controls h2 { margin: 0; max-width: 230px; color: var(--sanpra-c-18202b); font-family: "Be Vietnam Pro", "Inter", system-ui, "Segoe UI", sans-serif; font-size: 27px; line-height: 1.08; letter-spacing: -.025em; }
 .sts-intro { margin: 10px 0 24px; color: var(--sanpra-c-727882); font-size: 12px; line-height: 1.6; }
 /* ── CONTROL PRIMITIVES / SECTIONS ─────────────────────────────────────────── */
 .sts-label, .sts-color-row > label { display: block; margin: 0; color: var(--sanpra-c-596170); font-size: 11px; font-weight: 650; }
@@ -45,7 +45,7 @@
 .sts-preset:hover { border-color: var(--sanpra-c-bd6b4d); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(41,32,24,.08); }
 .sts-preset i { width: 19px; height: 19px; flex: 0 0 19px; border-radius: 5px; background: linear-gradient(135deg, var(--a) 0 58%, var(--b) 59%); }
 .sts-section { padding: 22px 0 4px; border-bottom: 1px solid var(--sanpra-c-e6e2da); }
-.sts-section-title { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; color: var(--sanpra-c-202631); font-size: 11px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.sts-section-title { display: flex; gap: 8px; align-items: center; margin-top: 0; margin-bottom: 14px; color: var(--sanpra-c-202631); font-size: 11px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
 .sts-section-title span { color: var(--sanpra-c-b6512d); font-family: Georgia, serif; font-size: 12px; }
 .sts-color-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
 .sts-color-row > div { display: flex; align-items: center; width: 154px; height: 30px; overflow: hidden; border: 1px solid var(--sanpra-c-dedbd3); border-radius: 7px; background: var(--sanpra-c-fff); }
@@ -94,7 +94,7 @@
 .sts-inspector-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
 .sts-inspector-head > div { display: grid; gap: 1px; }
 .sts-inspector-head small { color: var(--sanpra-c-b6512d); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
-.sts-inspector-head b { color: var(--sanpra-c-202936); font: 700 18px/1.2 Georgia,serif; }
+.sts-inspector-head b { color: var(--sanpra-c-202936); font: 700 18px/1.2 "Be Vietnam Pro", "Inter", system-ui, sans-serif; }
 .sts-inspector-head > button { width: 27px; height: 27px; border: 1px solid var(--sanpra-c-ddcfc4); border-radius: 7px; background: var(--sanpra-c-fff); color: var(--sanpra-c-795947); font-size: 17px; line-height: 1; }
 .sts-context-inspector > p { margin: 0 0 13px; color: var(--sanpra-c-7c726b); font-size: 11px; line-height: 1.45; }
 .sts-inspector-controls { min-height: 0; max-height: min(390px,calc(100vh - 190px)); padding-right: 4px; overflow-y: auto; scrollbar-width: thin; }
@@ -203,9 +203,10 @@
 .sts-assignment-reference code { color: var(--st-accent); font-size: 11px; }
 
 .sts-workbench { min-width: 0; display: flex; flex-direction: column; }
-.sts-toolbar { height: 55px; display: flex; align-items: center; gap: 16px; padding: 0 22px; border-bottom: 1px solid var(--sanpra-c-dcd8d0); background: rgba(249,247,242,.82); backdrop-filter: blur(12px); }
-.sts-device-switch { display: flex; gap: 2px; padding: 3px; border-radius: 8px; background: var(--sanpra-c-e7e3dc); }
-.sts-scene-switch { display: flex; gap: 2px; padding: 3px; border-radius: 8px; background: var(--sanpra-c-e7e3dc); }
+.sts-toolbar { min-height: 55px; height: auto; display: flex; align-items: center; gap: 8px; padding: 6px 22px; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid var(--sanpra-c-dcd8d0); background: rgba(249,247,242,.82); backdrop-filter: blur(12px); scrollbar-width: thin; }
+.sts-device-switch { display: flex; flex: 0 0 auto; gap: 2px; padding: 3px; border-radius: 8px; background: var(--sanpra-c-e7e3dc); }
+.sts-scene-switch { display: flex; flex: 0 0 auto; gap: 2px; padding: 3px; border-radius: 8px; background: var(--sanpra-c-e7e3dc); }
+.sts-scene-switch button { white-space: nowrap; }
 .sts-scene-switch button { min-height: 36px; height: 27px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--sanpra-c-777d86); font-size: 12px; font-weight: 650; }
 .sts-scene-switch button.active { background: var(--sanpra-c-fff); color: var(--sanpra-c-232b37); box-shadow: 0 1px 4px rgba(37,31,25,.12); }
 .sts-workspace-picker { display: none; align-items: center; gap: 6px; min-width: 0; }
@@ -308,7 +309,7 @@
 /* ── WORKSPACE SCENE / DRAGGABLE BLOCKS ────────────────────────────────────── */
 .sts-preview-heading { display: flex; align-items: end; justify-content: space-between; margin-bottom: 14px; }
 .sts-preview-heading small { color: var(--studio-accent); font-size: 11px; font-weight: 800; letter-spacing: .16em; }
-.sts-preview-heading h3 { margin: 2px 0 0; color: var(--studio-text); font-family: Georgia, serif; font-size: 20px; letter-spacing: -.02em; }
+.sts-preview-heading h3 { margin: 2px 0 0; color: var(--studio-text); font-family: "Be Vietnam Pro", "Inter", system-ui, sans-serif; font-size: 20px; letter-spacing: -.02em; }
 .sts-preview-heading button { height: var(--studio-button-height); padding: 0 var(--studio-button-padding); border: 0; border-radius: var(--studio-button-radius); background: var(--studio-primary-btn,var(--studio-accent)); color: var(--sanpra-c-fff); font-size: 12px; font-weight: 650; }
 .sts-drop-hint { display: flex; align-items: center; gap: 5px; margin-bottom: 8px; color: color-mix(in srgb, var(--studio-text) 45%, transparent); font-size: 11px; }
 .sts-drop-hint svg { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 1.5; }

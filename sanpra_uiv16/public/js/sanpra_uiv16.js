@@ -1004,7 +1004,26 @@
       $btn.on("click", function () { frappe.set_route(item.route); });
       $qnav.append($btn);
     });
+    /* Giam sat van hanh: chi hien khi user co quyen xem (pool get_workspaces
+   co workspace tu `sanpra_uiv16.api.get_workspaces`, khong them request). */
+    var $opsBtn = $('<button id="st-ops-center" class="st-tb-qn-btn" title="Gi\u00e1m s\u00e1t v\u1eadn h\u00e0nh" style="display:none">&#9879;</button>');
+    $opsBtn.on("click", function () {
+      var slug = (frappe.router && frappe.router.slug)
+        ? frappe.router.slug("Gi\u00e1m s\u00e1t v\u1eadn h\u00e0nh")
+        : "Gi\u00e1m s\u00e1t v\u1eadn h\u00e0nh";
+      frappe.set_route(slug);
+    });
+    $qnav.append($opsBtn);
     $right.append($qnav);
+    /* Hien thi icon thuoc pool: chi dung mot lan fetchWorkspaces cua module_cards. */
+    var _opsWc = sanpra_uiv16.workspaceCards;
+    if (_opsWc && _opsWc.fetchWorkspaces) {
+      _opsWc.fetchWorkspaces(function (pages) {
+        var has = (pages || []).some(function (p) { return p.name === "Gi\u00e1m s\u00e1t v\u1eadn h\u00e0nh"; });
+        if (has) $opsBtn.css("display", "");
+        else $opsBtn.remove();
+      });
+    }
     /* Bell placeholder — Frappe's native .desktop-notifications is moved here by moveNativeBell() */
     $right.append('<span id="st-tb-bell-anchor"></span>');
     $right.append('<span class="st-tb-sep"></span>');
@@ -1210,7 +1229,12 @@
     buildOptionsPanel();
   }
 
-  /* ── Move Frappe's native notification bell into our toolbar ── */
+  /* ── Hide Frappe's native notification bell ──
+     Notification Center (notification_center.js) owns the toolbar bell: slide
+     panel with Notifications/Events tabs + realtime + badge. Showing BOTH
+     bells meant two dropdowns over the same Notification Log data, so the
+     native one is hidden at `#st-tb-bell-anchor` and the anchor itself stays
+     as the placeholder for the theme bell inside `.st-tb-right`. */
   function moveNativeBell() {
     var $anchor = $("#st-tb-bell-anchor");
     if (!$anchor.length) return;
@@ -1218,10 +1242,10 @@
     var $bell = $(".desktop-notifications").first();
     if (!$bell.length) return;
 
-    /* Already moved — nothing to do */
-    if ($bell.closest("#st-top-toolbar").length) return;
-
-    $bell.insertAfter($anchor);
+    /* Hide instead of moving: native bell duplicates the theme slide panel. */
+    $bell.addClass("st-hidden-native-bell").hide();
+    $bell.removeAttr("style"); /* keep DOM but invisible; don't remove node */
+    $bell.css("display", "none");
   }
 
   /* ── Language switch ── */

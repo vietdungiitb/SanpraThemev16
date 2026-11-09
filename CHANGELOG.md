@@ -1,6 +1,13 @@
 # Changelog
 
-## [2.6.3] — 2026-11-08 — App grid private workspaces + greeting width
+## [2.6.4] — 2026-11-09 — Ops center header + Smart Home 3 lớp
+
+### Fixed
+- Header chỉ còn **1 chuông** (chuông native Frappe bị ẩn, giữ chuông theme/notification panel) + thêm icon **Giám sát vận hành** (⚙, chỉ hiện với viewer roles, chỉ render khi pool get_workspaces chứa workspace).
+- Smart Home ("Việc của tôi hôm nay") xếp 3 lớp mặc định: Việc cá nhân (My ToDos/Open Tasks) → Ứng dụng của bạn → Giám sát hệ thống (viewer-only) → KPIs hệ thống → hồ sơ/tạo mới/xử lý.
+- **"My ToDos" scope đúng cá nhân**: filter thêm `allocated_to: frappe.session.user` (bản cũ chỉ filter `status: Open` qua `frappe.client.get_count` nên đếm toàn site).
+- Grid "Your Apps" 8 → **12** mục (workspace Giám sát vận hành thứ tự 21 không còn rớt khỏi 8 ô đầu).
+- Bump `sanpra_uiv16.js?v=74→75` (cache-bust).## [2.6.3] — 2026-11-08 — App grid private workspaces + greeting width
 
 ### Fixed
 - Module grid loc lại workspace `public=0` cho viewer (bỏ filter `!p.public`; server API đã lọc theo quyền) — Giám sát vận hành xuất hiện ở "Ứng dụng của bạn".
