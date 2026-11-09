@@ -189,12 +189,23 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		var self = this;
 		var hidden = this.state.hidden || [];
 
-		/* KPI cards are individual widgets rather than one fixed KPI row. */
-		this.kpis.forEach(function (kpi) {
-			if (hidden.indexOf(kpi.id) === -1) $grid.append(self._kpi_widget(kpi));
-		});
+		/* Layer 1 (personal): personal KPIs come first so the daily routine is
+		   visible immediately; system KPIs follow so they stay deliberate. */
+		var personal_ids = ["my-todos", "open-tasks"];
+		this.kpis
+			.slice()
+			.sort(function (a, b) {
+				return personal_ids.indexOf(b.id) !== -1 ? 1 : -1;
+			})
+			.forEach(function (kpi) {
+				if (hidden.indexOf(kpi.id) === -1) $grid.append(self._kpi_widget(kpi));
+			});
 
 		if (hidden.indexOf("your-apps") === -1) $grid.append(this._apps_widget());
+
+		/* Layer 3 (system, viewer-only): ops entry, revealed only if the pool
+		   let this user see the workspace (same check as header ops icon). */
+		if (hidden.indexOf("giam-sat-van-hanh") === -1) $grid.append(this._ops_widget());
 
 		if (hidden.indexOf("recent-documents") === -1) $grid.append(
 			this._panel_widget(
@@ -379,6 +390,30 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		return this._widget_shell("your-apps", "full", inner, "st-sh-panel-widget");
 	}
 
+	/* ★ Giám sát hệ thống (viewer-only entry to Trung tâm điều hành). Rendered
+	   hidden by default and revealed by `_render_apps_grid` when the workspace
+	   is in this user's pool — same gate as the header ops icon. */
+	_ops_widget() {
+		var ws_name = "Gi\u00e1m s\u00e1t v\u1eadn h\u00e0nh";
+		this._ops_workspace_name = ws_name;
+		var slug = (frappe.router && frappe.router.slug)
+			? frappe.router.slug(ws_name)
+			: ws_name;
+		var inner =
+			'<div class="st-sh-card st-sh-ops-card">' +
+				'<div class="st-sh-card-head st-sh-ops-head">' +
+					'<div class="st-sh-card-heading">' +
+						'<span class="st-sh-card-icon">' + this._icon("warning", "sm") + '</span>' +
+						'<div><h3>' + __("Giám sát hệ thống") + '</h3><p>' + __("Trung tâm công việc hàng ngày — theo dõi toàn hệ thống") + '</p></div>' +
+					'</div>' +
+					'<a href="/desk/' + encodeURIComponent(slug) + '" class="st-sh-all-ws" data-ops-link="' + slug + '">' +
+						__("Mở trung tâm điều hành") + ' <span aria-hidden="true">&rarr;</span>' +
+					'</a>' +
+				'</div>' +
+			'</div>';
+		return this._widget_shell("giam-sat-van-hanh", "full", inner, "st-sh-panel-widget");
+	}
+
 	/* Filter before rendering so inaccessible DocTypes never enter the DOM. */
 	_get_kpi_definitions() {
 		var can_read = ((frappe.boot && frappe.boot.user && frappe.boot.user.can_read) || []);
@@ -414,7 +449,10 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				id: "my-todos",
 				label: __("My ToDos"),
 				dt: "ToDo",
-				filters: { status: "Open" },
+				/* Scope theo cá nhân — KHÔNG phát “My ToDos” đếm toàn site (Frappe
+				   `can_read` cho role “All” đọc mọi ToDo ⇒ sai nghiệp vụ + rủi ro
+				   riêng tư). Phải có `allocated_to` bằng user hiện tại. */
+				filters: { status: "Open", allocated_to: frappe.session.user },
 				route: "/desk/todo?status=Open",
 				icon: "circle-check",
 				accent: "coral",
@@ -933,9 +971,22 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		if (!$row.length || !wc) return;
 
 		$row.html(wc.buildSkeletons(8));
+		var self = this;
 
 		wc.fetchWorkspaces(function (pages) {
-			var items = (pages || []).slice(0, 8);
+			/* Hiển thị 12 mục đầu (tăng từ 8) — tổng workspace của hệ thống
+			   (~10) phải lọt hết vào lưới mà cần cuộn — `slice(0, 8)` cũ khiến
+			   "Giám sát vận hành" (sequence 21) rớt khỏi 8 ô đầu. */
+			var items = (pages || []).slice(0, 12);
+
+			/* Ops entry (Giám sát vận hành): chỉ hiện khi user có quyền xem (pool
+			   đã lọc theo role ở server) — cùng gate với icon header ops. */
+			self.$body.find('[data-widget-id="giam-sat-van-hanh"]').each(function () {
+				var ws = self._ops_workspace_name;
+				var has = (pages || []).some(function (p) { return p.name === ws; });
+				if (has) $(this).css("display", "");
+				else $(this).remove();
+			});
 			if (!items.length) {
 				$row.html('<div class="st-ws-cards"><div class="st-sh-empty">' + __("No workspaces found.") + '</div></div>');
 				return;

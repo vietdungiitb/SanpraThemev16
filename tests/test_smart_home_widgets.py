@@ -77,6 +77,30 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertIn('[data-widget-size="medium"]', css)
         self.assertIn('[data-widget-size="full"]', css)
 
+    def test_my_todos_kpi_is_scoped_to_current_user(self):
+        """My ToDos phải scope allocated_to=frappe.session.user — ToDo read
+        permission là role All, filter chỉ status:Open sẽ đếm toàn site."""
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn('filters: { status: "Open", allocated_to: frappe.session.user }', js)
+        self.assertNotIn(
+            'id: "my-todos",\n\t\t\t\tlabel: __("My ToDos"),\n\t\t\t\tdt: "ToDo",\n\t\t\t\tfilters: { status: "Open" },',
+            js,
+        )
+
+    def test_personal_kpis_render_before_system_kpis(self):
+        """Lớp 1 (việc cá nhân) lên trước lớp hệ thống trong default order."""
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn('personal_ids = ["my-todos", "open-tasks"]', js)
+        self.assertIn("personal_ids.indexOf", js)
+        self.assertIn("Layer 1 (personal)", js)
+
+    def test_apps_grid_shows_12_and_ops_widget_is_viewer_gated(self):
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn("slice(0, 12)", js)
+        self.assertIn('_ops_widget', js)
+        self.assertIn('data-widget-id="giam-sat-van-hanh"', js)
+        self.assertIn("self._ops_workspace_name", js)
+
 
 if __name__ == "__main__":
     unittest.main()
