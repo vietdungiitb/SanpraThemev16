@@ -641,6 +641,147 @@
   font-size: 11px;
 }
 
+/* ── OPS LIVE BODY ──────────────────────────────────────────────────────────
+   Mini stat luoi 3 cot + thanh suc khoe job + top loi. Tai dung token theme. */
+.st-sh-ops-body {
+  padding: 16px 18px 14px;
+}
+
+.st-sh-ops-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.st-sh-ops-stat {
+  display: flex;
+  min-height: 74px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 10px 13px;
+  border: 1px solid var(--border-color, var(--sanpra-c-e8ecf0));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--card-bg, var(--sanpra-c-fff)) 94%, var(--st-accent, var(--sanpra-c-e8610a)));
+  color: inherit !important;
+  text-decoration: none !important;
+  transition: border-color 120ms ease, transform 120ms ease;
+}
+
+.st-sh-ops-stat:hover {
+  border-color: color-mix(in srgb, var(--st-accent, var(--sanpra-c-e8610a)) 40%, transparent);
+  transform: translateY(-1px);
+}
+
+.st-sh-ops-num {
+  color: var(--heading-color, var(--sanpra-c-18202a));
+  font-size: clamp(20px, 1.7vw, 26px);
+  font-weight: 750;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.st-sh-ops-cap {
+  color: var(--text-muted, var(--sanpra-c-7b8592));
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.st-sh-ops-health,
+.st-sh-ops-errors {
+  margin-top: 14px;
+}
+
+.st-sh-ops-health-title {
+  margin-bottom: 8px;
+  color: var(--text-muted, var(--sanpra-c-7b8592));
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.st-sh-ops-bars {
+  display: grid;
+  gap: 6px;
+}
+
+.st-sh-ops-bar-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-color, var(--sanpra-c-313a45));
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.st-sh-ops-bar {
+  display: block;
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--fg-hover-color, var(--sanpra-c-f3f5f7));
+}
+
+.st-sh-ops-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--st-accent, var(--sanpra-c-e8610a)) 75%, transparent);
+}
+
+.st-sh-ops-err {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--border-color, var(--sanpra-c-edf0f3));
+  color: var(--text-color, var(--sanpra-c-313a45)) !important;
+  font-size: 11px;
+  text-decoration: none !important;
+}
+
+.st-sh-ops-err:last-child {
+  border-bottom: 0;
+}
+
+.st-sh-ops-err:hover {
+  background: var(--fg-hover-color, var(--sanpra-c-f7f8fa));
+}
+
+.st-sh-ops-err b {
+  color: var(--sanpra-c-b45309);
+  font-variant-numeric: tabular-nums;
+}
+
+.st-sh-ops-foot {
+  margin-top: 12px;
+  color: var(--text-muted, var(--sanpra-c-87919c));
+  font-size: 11px;
+}
+
+@media (max-width: 560px) {
+  .st-sh-ops-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .st-sh-ops-bar-row {
+    grid-template-columns: 104px 1fr;
+  }
+}
+
+/* Number Card GSVH bam duoc: con tro + hover nhu KPI Smart Home. */
+#editorjs [number_card_name] .widget-body {
+  cursor: pointer;
+}
+
+#editorjs [number_card_name] .widget-body:hover .widget-content {
+  transform: translateY(-1px);
+}
+
 /* ── SHARED LOADING / EMPTY STATES ──────────────────────────────────────────── */
 .st-sh-empty {
   display: flex;

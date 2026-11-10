@@ -62,6 +62,8 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		this._refresh_kpis();
 		this._refresh_recent();
 		this._refresh_pending();
+		this._refresh_ops();
+		this._refresh_today();
 	}
 
 	/* ── 3. PAGE SHELL ────────────────────────────────────────────────────────
@@ -237,6 +239,27 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				'<div id="st-sh-pending" class="st-sh-card-body"><div class="st-sh-spin"></div></div>'
 			)
 		);
+		/* Hang cuoi can 3 o half (4+4+4): them 2 widget canh Needs Attention. */
+		if (hidden.indexOf("today-focus") === -1) $grid.append(
+			this._panel_widget(
+				"today-focus",
+				__("My Day"),
+				__("Your todos, events and notifications"),
+				"calendar",
+				"half",
+				'<div id="st-sh-today" class="st-sh-card-body"><div class="st-sh-spin"></div></div>'
+			)
+		);
+		if (hidden.indexOf("reports-charts") === -1) $grid.append(
+			this._panel_widget(
+				"reports-charts",
+				__("Reports & Charts"),
+				__("One click to the ops reports"),
+				"chart",
+				"half",
+				'<div id="st-sh-rc" class="st-sh-card-body"></div>'
+			)
+		);
 
 		(this.state.added || []).forEach(function (id) {
 			var template = self._find_template(id);
@@ -247,6 +270,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		});
 
 		this._render_quick_create();
+		this._render_reports_charts();
 		this._render_apps_grid();
 		this._start_live_widgets();
 	}
@@ -390,29 +414,35 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		return this._widget_shell("your-apps", "full", inner, "st-sh-panel-widget");
 	}
 
-	/* ★ Giám sát hệ thống (viewer-only entry to Trung tâm điều hành). Rendered
-	   hidden by default and revealed by `_render_apps_grid` when the workspace
-	   is in this user's pool — same gate as the header ops icon. */
-	_ops_widget() {
-		var ws_name = "Gi\u00e1m s\u00e1t v\u1eadn h\u00e0nh";
-		this._ops_workspace_name = ws_name;
-		var slug = (frappe.router && frappe.router.slug)
-			? frappe.router.slug(ws_name)
-			: ws_name;
-		var inner =
-			'<div class="st-sh-card st-sh-ops-card">' +
-				'<div class="st-sh-card-head st-sh-ops-head">' +
-					'<div class="st-sh-card-heading">' +
-						'<span class="st-sh-card-icon">' + this._icon("warning", "sm") + '</span>' +
-						'<div><h3>' + __("Giám sát hệ thống") + '</h3><p>' + __("Trung tâm công việc hàng ngày — theo dõi toàn hệ thống") + '</p></div>' +
-					'</div>' +
-					'<a href="/desk/' + encodeURIComponent(slug) + '" class="st-sh-all-ws" data-ops-link="' + slug + '">' +
-						__("Mở trung tâm điều hành") + ' <span aria-hidden="true">&rarr;</span>' +
-					'</a>' +
-				'</div>' +
-			'</div>';
-		return this._widget_shell("giam-sat-van-hanh", "full", inner, "st-sh-panel-widget");
-	}
+ 	/* ★ Giám sát hệ thống (viewer-only entry to Trung tâm điều hành). Body lay
+ 	   `smart_edu_core.api.ops.get_ops_summary` (scope site, fallback me khi 403):
+ 	   mini stat + thanh suc khoe job + top loi — chi so dem, khong PII (S7). */
+ 	_ops_widget() {
+ 		var ws_name = "Gi\u00e1m s\u00e1t v\u1eadn h\u00e0nh";
+ 		this._ops_workspace_name = ws_name;
+ 		var slug = (frappe.router && frappe.router.slug)
+ 			? frappe.router.slug(ws_name)
+ 			: ws_name;
+ 		var inner =
+ 			'<div class="st-sh-card st-sh-ops-card">' +
+ 				'<div class="st-sh-card-head st-sh-ops-head">' +
+ 					'<div class="st-sh-card-heading">' +
+ 						'<span class="st-sh-card-icon">' + this._icon("warning", "sm") + '</span>' +
+ 						'<div><h3>' + __("Giám sát hệ thống") + '</h3><p>' + __("Trung tâm công việc hàng ngày — theo dõi toàn hệ thống") + '</p></div>' +
+ 					'</div>' +
+ 					'<a href="/desk/' + encodeURIComponent(slug) + '" class="st-sh-all-ws" data-ops-link="' + slug + '">' +
+ 						__("Mở trung tâm điều hành") + ' <span aria-hidden="true">&rarr;</span>' +
+ 					'</a>' +
+ 				'</div>' +
+ 				'<div class="st-sh-card-body st-sh-ops-body">' +
+ 					'<div class="st-sh-ops-stats" data-ops-stats><div class="st-sh-spin"></div></div>' +
+ 					'<div class="st-sh-ops-health" data-ops-health hidden></div>' +
+ 					'<div class="st-sh-ops-errors" data-ops-errors hidden></div>' +
+ 					'<div class="st-sh-ops-foot"><span data-ops-updated></span></div>' +
+ 				'</div>' +
+ 			'</div>';
+ 		return this._widget_shell("giam-sat-van-hanh", "full", inner, "st-sh-panel-widget");
+ 	}
 
 	/* Filter before rendering so inaccessible DocTypes never enter the DOM. */
 	_get_kpi_definitions() {
@@ -850,6 +880,13 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		}
 		update();
 		if (!this._clock_timer) this._clock_timer = setInterval(update, 30000);
+		/* Realtime nhe: ops + my-day poll lai 2 phut (API chi dem, re). */
+		if (!this._ops_timer) {
+			this._ops_timer = setInterval(function () {
+				self._refresh_ops();
+				self._refresh_today();
+			}, 120000);
+		}
 	}
 
 	/* Inline feedback avoids showing a global toast after every small movement. */
@@ -1069,6 +1106,143 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				},
 			});
 		});
+	}
+
+	/* ── 10b. OPS LIVE BODY ────────────────────────────────────────────────────
+	   Mini stat + suc khoe job + top loi tu get_ops_summary (scope site,
+	   fallback me khi 403). Chi so dem, khong PII (S7). Moi o deu la link
+	   nhu KPI Smart Home. */
+	_refresh_ops() {
+		var $stats = this.$body.find("[data-ops-stats]");
+		if (!$stats.length) return;
+		var $health = this.$body.find("[data-ops-health]");
+		var $errors = this.$body.find("[data-ops-errors]");
+		var $updated = this.$body.find("[data-ops-updated]");
+		var self = this;
+
+		function stat(label, route, value) {
+			return '<a href="' + route + '" class="st-sh-ops-stat">' +
+				'<span class="st-sh-ops-num">' + self._esc(value !== undefined && value !== null ? value : "—") + '</span>' +
+				'<span class="st-sh-ops-cap">' + label + '</span></a>';
+		}
+
+		function render(summary, is_site) {
+			var html =
+				stat(__("Việc mở"), "/desk/todo?status=Open", summary.todos_open) +
+				stat(__("Việc quá hạn"), "/desk/todo?status=Open", summary.todos_overdue) +
+				stat(__("Sự kiện"), "/desk/event", summary.events_today) +
+				stat(__("Chưa đọc"), "/desk/notification-log", summary.notifications_unread);
+			if (is_site) {
+				html +=
+					stat(__("Lỗi 24 giờ"), "/desk/error-log", summary.errors_24h) +
+					stat(__("Job lỗi 24 giờ"), "/desk/scheduled-job-log", summary.jobs_failed_24h);
+			}
+			$stats.html(html);
+			var job_health = summary.job_status_summary;
+			if (is_site && job_health) {
+				var parts = [
+					["ran", __("Chạy tốt")],
+					["stale", __("Stale")],
+					["never_ran", __("Chưa chạy")],
+					["stopped", __("Đã dừng")],
+				];
+				var total = parts.reduce(function (n, p) {
+					return n + (parseInt(job_health[p[0]], 10) || 0);
+				}, 0) || 1;
+				$health.html(
+					'<div class="st-sh-ops-health-title">' + __("Sức khỏe job nền") + '</div>' +
+					'<div class="st-sh-ops-bars">' + parts.map(function (p) {
+						var v = parseInt(job_health[p[0]], 10) || 0;
+						return '<div class="st-sh-ops-bar-row"><span>' + p[1] + ' ' + v + '</span>' +
+							'<span class="st-sh-ops-bar"><i style="width:' + Math.round((v / total) * 100) + '%"></i></span></div>';
+					}).join("") + '</div>'
+				).prop("hidden", false);
+			}
+			var groups = summary.groups;
+			if (is_site && groups && groups.length) {
+				$errors.html(
+					'<div class="st-sh-ops-health-title">' + __("Lỗi nhiều nhất 24 giờ") + '</div>' +
+					groups.map(function (g) {
+						return '<a href="/desk/error-log" class="st-sh-ops-err"><span>' +
+							self._esc(g.method || "") + '</span><b>' + self._esc(g.count) + '</b></a>';
+					}).join("")
+				).prop("hidden", false);
+			}
+			if ($updated.length) $updated.text(__("Cập nhật") + " " + new Date().toLocaleTimeString());
+		}
+
+		function render_me() {
+			frappe.xcall("smart_edu_core.api.ops.get_ops_summary", { scope: "me" }).then(
+				function (r) { render(r || {}, false); },
+				function () {
+					$stats.html('<div class="st-sh-empty"><span>' + __("Ops data unavailable.") + '</span></div>');
+				}
+			);
+		}
+		if (typeof frappe.xcall !== "function") {
+			render_me();
+			return;
+		}
+		frappe.xcall("smart_edu_core.api.ops.get_ops_summary", { scope: "site" }).then(
+			function (r) { render(r || {}, true); },
+			render_me
+		);
+	}
+
+	/* ── 10c. MY DAY + REPORTS ────────────────────────────────────────────────
+	   today-focus: so ca nhan tu scope me (sau fix O1 loc dung session user;
+	   events_today la so chung cua site vi Event khong co truong ca nhan).
+	   reports-charts: link tinh vao bao cao/bieu do dieu hanh, Frappe gate
+	   quyen o trang dich. */
+	_refresh_today() {
+		var $container = this.$body.find("#st-sh-today");
+		if (!$container.length || typeof frappe.xcall !== "function") return;
+		var self = this;
+		frappe.xcall("smart_edu_core.api.ops.get_ops_summary", { scope: "me" }).then(
+			function (summary) {
+				summary = summary || {};
+				var rows = [
+					{ value: summary.todos_open, label: __("Việc mở của tôi"), route: "/desk/todo?status=Open" },
+					{ value: summary.todos_overdue, label: __("Quá hạn của tôi"), route: "/desk/todo?status=Open" },
+					{ value: summary.events_today, label: __("Sự kiện chung hôm nay"), route: "/desk/event" },
+					{ value: summary.notifications_unread, label: __("Thông báo chưa đọc"), route: "/desk/notification-log" },
+				];
+				$container.html(rows.map(function (item) {
+					return (
+						'<a href="' + item.route + '" class="st-sh-pending-row">' +
+							'<span class="st-sh-pending-count">' + self._esc(item.value !== undefined && item.value !== null ? item.value : "—") + '</span>' +
+							'<span>' + item.label + '</span>' +
+							'<span class="st-sh-row-arrow" aria-hidden="true">&rarr;</span>' +
+						'</a>'
+					);
+				}).join(""));
+			},
+			function () {
+				$container.html('<div class="st-sh-empty"><span>' + __("Ops data unavailable.") + '</span></div>');
+			}
+		);
+	}
+
+	_render_reports_charts() {
+		var $container = this.$body.find("#st-sh-rc");
+		if (!$container.length) return;
+		var slug = (frappe.router && frappe.router.slug)
+			? frappe.router.slug("Giám sát vận hành")
+			: "giam-sat-van-hanh";
+		var items = [
+			{ label: __("Hiệu quả giáo viên"), route: "/desk/query-report/hieu-qua-giao-vien" },
+			{ label: __("Học phí đến hạn hôm nay"), route: "/desk/query-report/hoc-phi-den-han-hom-nay" },
+			{ label: __("Doanh thu theo tháng"), route: "/desk/" + slug },
+			{ label: __("Công nợ theo tháng"), route: "/desk/" + slug },
+		];
+		$container.html('<div class="st-sh-qc-grid">' + items.map(function (item) {
+			return (
+				'<a href="' + item.route + '" class="st-sh-qc-item">' +
+					'<span class="st-sh-qc-plus">&rarr;</span>' +
+					'<span>' + item.label + '</span>' +
+				'</a>'
+			);
+		}).join("") + '</div>');
 	}
 
 	/* Non-zero results become actionable rows after the request batch settles. */

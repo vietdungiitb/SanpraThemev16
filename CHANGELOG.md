@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.6.6] — 2026-11-10 — Smart Home giàu thông tin + Number Card GSVH bấm được
+
+### Added
+- Ô Giám sát hệ thống có thân live: mini stat 6 ô (việc mở/quá hạn/sự kiện/chưa
+  đọc + lỗi 24 giờ/job lỗi 24 giờ ở scope site), thanh sức khỏe job nền
+  (`job_status_summary`), top lỗi 24 giờ (`groups` đã che) — tất cả là link như
+  KPI Smart Home; poll lại 2 phút + timestamp cập nhật. Dữ liệu từ
+  `smart_edu_core.api.ops.get_ops_summary` (site, fallback me khi 403), chỉ số
+  đếm, không PII.
+- 2 widget half cạnh Cần xử lý (hàng cuối 4+4+4): `today-focus` (việc mở/quá hạn/
+  sự kiện/thông báo của chính user, scope `me`) và `reports-charts` (link tới 2
+  query report + 2 biểu đồ điều hành).
+- Number Card trên workspace Giám sát vận hành bấm được: delegated click trên
+  block EditorJS `[number_card_name]` map 13 thẻ (6 snapshot + 5 ops + 2 finance)
+  về đúng List/Report; không match thì giữ hành vi cũ + `console.warn`; bỏ qua khi
+  đang sửa layout (`.edit-mode`).
+
+### Fixed
+- `sanpra_uiv16.js?v=75→76`, `smart_home.css?v=12→13` (cache-bust).
+
 ## [2.6.5] — 2026-11-10 — Smart Home becomes the system root
 
 ### Added
