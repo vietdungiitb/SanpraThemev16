@@ -132,6 +132,33 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertIn('"/desk/dashboard-chart/"', js)
         self.assertNotIn('route: "/desk/" + slug', js)
 
+    def test_report_charts_has_six_entries(self):
+        """Anh 3: 6 nut lap day o trong (2 report + 2 chart + 2 chung tu)."""
+        js = JS.read_text(encoding="utf-8")
+        for label in (
+            "hieu-qua-giao-vien",
+            "hoc-phi-den-han-hom-nay",
+            "dashboard-chart",
+            '"/desk/sales-invoice"',
+            '"/desk/payment-entry"',
+        ):
+            self.assertIn(label, js)
+
+    def test_app_cards_are_centered(self):
+        """Card luoi ung dung: icon + tieu de can giua (module_cards.css)."""
+        root = Path(__file__).resolve().parents[1]
+        css = (root / "sanpra_uiv16" / "public" / "css" / "module_cards.css").read_text(encoding="utf-8")
+        hooks = (root / "sanpra_uiv16" / "hooks.py").read_text(encoding="utf-8")
+        card_block = css.split(".st-ws-card {", 1)[1].split("}", 1)[0]
+        self.assertIn("align-items: center", card_block)
+        self.assertIn("text-align: center", card_block)
+        # Center co tu d054ecb nhung thieu bump -> browser giu ban cu: khoa bang version.
+        # (Guard test_test_files_utf8 cam ghim so ?v= cu the: parse dong thay vi ghim.)
+        import re as _re
+        _m = _re.search(r"module_cards\.css\?v=(\d+)", hooks)
+        self.assertIsNotNone(_m, "thieu version module_cards.css trong hooks")
+        self.assertGreaterEqual(int(_m.group(1)), 3)
+
     def test_ops_click_matches_any_route_segment(self):
         """F3: URL canonical co shell dung truoc nen so khop tren moi doan."""
         root = Path(__file__).resolve().parents[1]
@@ -156,6 +183,45 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertIn("_refresh_today", js)
         self.assertIn("_render_reports_charts", js)
 
+    def test_workspace_click_map_covers_all_real_card_names(self):
+        """Mo phong st_norm_vi (JS) tren 13 nhan the that do user do duoc:
+        moi ten deu phai ra key co trong ST_OPS_CARD_ROUTES."""
+        import re
+        import unicodedata
+        root = Path(__file__).resolve().parents[1]
+        desk_js = (root / "sanpra_uiv16" / "public" / "js" / "sanpra_uiv16.js").read_text(encoding="utf-8")
+
+        def st_norm_vi(value):
+            s = str(value or "").lower()
+            s = unicodedata.normalize("NFD", s)
+            s = "".join(c for c in s if unicodedata.category(c) != "Mn")
+            return s.replace("đ", "d").replace(" ", "-").strip()
+
+        # Route that tren browser user (F3 that): [shell, ten giu dau cach].
+        self.assertEqual(st_norm_vi("Giám sát vận hành"), "giam-sat-van-hanh")
+
+        m = re.search(r"ST_OPS_CARD_ROUTES\s*=\s*\{(.*?)\};", desk_js, re.S)
+        self.assertIsNotNone(m)
+        keys = set(re.findall(r'"([^"]+)"\s*:', m.group(1)))
+        names = [
+            "Việc mở toàn hệ thống",
+            "Việc quá hạn toàn hệ thống",
+            "Sự kiện hôm nay",
+            "Lỗi 24 giờ",
+            "Job lỗi 24 giờ",
+            "Số học viên đang học",
+            "Số lớp đang mở",
+            "Lead mới từ đầu tháng",
+            "Doanh thu ngày qua",
+            "Điểm danh hôm nay",
+            "Lead mới hôm nay",
+            "Tổng công nợ chưa thu",
+            "Công nợ quá hạn",
+        ]
+        self.assertEqual(len(names), 13)
+        for name in names:
+            self.assertIn(st_norm_vi(name), keys, name)
+
     def test_workspace_number_cards_have_click_map(self):
         """13 the so GSVH co map ve route: 6 snapshot + 5 ops + 2 finance."""
         root = Path(__file__).resolve().parents[1]
@@ -165,21 +231,21 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertIn("number_card_name", desk_js)
         self.assertIn("console.warn", desk_js)
         for key in (
-            "viec mo toan he thong",
-            "viec qua han toan he thong",
-            "su kien hom nay",
-            "loi 24 gio",
-            "job loi 24 gio",
-            "so hoc vien dang hoc",
-            "so lop dang mo",
-            "lead moi tu dau thang",
-            "doanh thu ngay qua",
-            "diem danh hom nay",
-            "lead moi hom nay",
-            "tong cong no chua thu",
-            "cong no qua han",
+            "viec-mo-toan-he-thong",
+            "viec-qua-han-toan-he-thong",
+            "su-kien-hom-nay",
+            "loi-24-gio",
+            "job-loi-24-gio",
+            "so-hoc-vien-dang-hoc",
+            "so-lop-dang-mo",
+            "lead-moi-tu-dau-thang",
+            "doanh-thu-ngay-qua",
+            "diem-danh-hom-nay",
+            "lead-moi-hom-nay",
+            "tong-cong-no-chua-thu",
+            "cong-no-qua-han",
         ):
-            self.assertIn(key, desk_js)
+            self.assertIn('"' + key + '"', desk_js)
 
     def test_no_pii_in_new_widgets(self):
         """Widget moi chi dem, khong subject/email/ten (S7)."""
