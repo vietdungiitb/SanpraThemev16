@@ -101,6 +101,53 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertIn('data-widget-id="giam-sat-van-hanh"', js)
         self.assertIn("self._ops_workspace_name", js)
 
+    def test_ops_widget_has_live_body_and_links(self):
+        """O Giam sat khong duoc trong: body lay get_ops_summary + link ve workspace."""
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn("st-sh-ops-stats", js)
+        self.assertIn("get_ops_summary", js)
+        self.assertIn("job_status_summary", js)
+        self.assertIn("_refresh_ops", js)
+
+    def test_two_half_widgets_balance_attention_row(self):
+        """Hang cuoi: needs-attention + 2 widget half = 4+4+4 khit hang."""
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn('"today-focus"', js)
+        self.assertIn('"reports-charts"', js)
+        self.assertIn("_refresh_today", js)
+        self.assertIn("_render_reports_charts", js)
+
+    def test_workspace_number_cards_have_click_map(self):
+        """13 the so GSVH co map ve route: 6 snapshot + 5 ops + 2 finance."""
+        root = Path(__file__).resolve().parents[1]
+        desk_js = (root / "sanpra_uiv16" / "public" / "js" / "sanpra_uiv16.js").read_text(encoding="utf-8")
+        # EditorJS number_card block dat `number_card_name` = nhan the (block.js)
+        self.assertIn("ST_OPS_CARD_ROUTES", desk_js)
+        self.assertIn("number_card_name", desk_js)
+        self.assertIn("console.warn", desk_js)
+        for key in (
+            "viec mo toan he thong",
+            "viec qua han toan he thong",
+            "su kien hom nay",
+            "loi 24 gio",
+            "job loi 24 gio",
+            "so hoc vien dang hoc",
+            "so lop dang mo",
+            "lead moi tu dau thang",
+            "doanh thu ngay qua",
+            "diem danh hom nay",
+            "lead moi hom nay",
+            "tong cong no chua thu",
+            "cong no qua han",
+        ):
+            self.assertIn(key, desk_js)
+
+    def test_no_pii_in_new_widgets(self):
+        """Widget moi chi dem, khong subject/email/ten (S7)."""
+        js = JS.read_text(encoding="utf-8")
+        self.assertNotIn("subject", js)
+        self.assertNotIn("for_user", js)
+
 
 if __name__ == "__main__":
     unittest.main()

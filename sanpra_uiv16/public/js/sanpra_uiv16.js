@@ -1682,6 +1682,60 @@
   }, true);
 
   /* ────────────────────────────────────────────────────────────────────────────
+     OPS NUMBER CARDS CLICKABLE (RICH-HOME 2026-11-10)
+     Frappe Custom card khong co .route (backend tra chuoi de ne NaN — WBS-141)
+     nen click goc la no-op. Map them o day (additive): khong match thi giu
+     hanh vi cu; Frappe gate quyen o trang dich. EditorJS number_card block dat
+     `number_card_name` = dung nhan the (frappe blocks/block.js: make()).
+     Key chuan hoa khong dau de khop moi dau tieng Viet.
+  ──────────────────────────────────────────────────────────────────────────── */
+  var ST_OPS_CARD_ROUTES = {
+    "viec mo toan he thong": "todo",
+    "viec qua han toan he thong": "todo",
+    "su kien hom nay": "event",
+    "loi 24 gio": "error-log",
+    "job loi 24 gio": "scheduled-job-log",
+    "so hoc vien dang hoc": "student",
+    "so lop dang mo": "student-group",
+    "lead moi tu dau thang": "crm-lead",
+    "doanh thu ngay qua": "payment-entry",
+    "diem danh hom nay": "edu-attendance-session",
+    "lead moi hom nay": "crm-lead",
+    "tong cong no chua thu": "sales-invoice",
+    "cong no qua han": "sales-invoice"
+  };
+
+  function st_norm_vi(value) {
+    return String(value == null ? "" : value)
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/đ/g, "d")
+      .trim();
+  }
+
+  function wireOpsNumberCards() {
+    $(document).on("click.st_ops_cards", '#editorjs [number_card_name] .widget-body', function () {
+      try {
+        if ($(this).closest(".edit-mode").length) return;
+        var want = (frappe.router && frappe.router.slug)
+          ? frappe.router.slug("Gi\u00e1m s\u00e1t v\u1eadn h\u00e0nh")
+          : "giam-sat-van-hanh";
+        var route = (frappe.get_route && frappe.get_route()) || [];
+        if (!route.length || route[0] !== want) return;
+        var holder = $(this).closest("[number_card_name]");
+        var raw = holder.attr("number_card_name") || "";
+        var dest = ST_OPS_CARD_ROUTES[st_norm_vi(raw)];
+        if (!dest) {
+          if (window.console && console.warn) console.warn("[sanpra] number card chua map:", raw);
+          return;
+        }
+        frappe.set_route(dest);
+      } catch (e) { /* giu hanh vi cu khi loi */ }
+    });
+  }
+
+  /* ────────────────────────────────────────────────────────────────────────────
      BOOT SEQUENCE
   ──────────────────────────────────────────────────────────────────────────── */
   frappe.provide("sanpra_uiv16");
@@ -1771,6 +1825,7 @@
       if (frappe.router && frappe.router.on) {
         frappe.router.on("change", syncRailHighlight);
       }
+      wireOpsNumberCards();
 
     /* Move Frappe's native notification bell into toolbar after desktop page renders */
       setTimeout(moveNativeBell, 800);
