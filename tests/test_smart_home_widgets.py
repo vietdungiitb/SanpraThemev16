@@ -137,6 +137,7 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         desk_js = (root / "sanpra_uiv16" / "public" / "js" / "sanpra_uiv16.js").read_text(encoding="utf-8")
         self.assertIn("on_ops_page", desk_js)
+        self.assertIn("location.pathname", desk_js)
         self.assertNotIn("route[0] !== want", desk_js)
 
     def test_ops_widget_has_live_body_and_links(self):

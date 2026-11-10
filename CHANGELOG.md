@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.6.9] — 2026-11-10 — Cache-bust để trình duyệt nhận fix F3
+
+### Fixed
+- Bump `sanpra_uiv16.js?v=76→77`, `smart_home.css?v=13→14`: fix F3 (PR #42) xong
+  nhưng browser vẫn cache URL cũ nên click GSVH vẫn chết — đổi URL để ép tải mới.
+- Handler click GSVH thêm nhánh dự phòng đọc `location.pathname` khi
+  `frappe.get_route` chưa sẵn sàng.
+
 ## [2.6.8] — 2026-11-10 — Fix audit UI/UX: trio đều nhau, chart deep-link, GSVH bấm được
 
 ### Fixed

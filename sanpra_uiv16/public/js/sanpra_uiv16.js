@@ -1724,6 +1724,11 @@
         var want = "giam-sat-van-hanh";
         var route = (frappe.get_route && frappe.get_route()) || [];
         var on_ops_page = route.some(function (seg) { return st_norm_vi(seg) === want; });
+        if (!on_ops_page) {
+          // Du phong khi get_route chua san sang: doc truc tiep URL.
+          var path_segs = String(window.location.pathname || "").split("/");
+          on_ops_page = path_segs.some(function (seg) { return st_norm_vi(seg) === want; });
+        }
         if (!on_ops_page) return;
         var holder = $(this).closest("[number_card_name]");
         var raw = holder.attr("number_card_name") || "";
