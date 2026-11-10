@@ -1690,19 +1690,19 @@
      Key chuan hoa khong dau de khop moi dau tieng Viet.
   ──────────────────────────────────────────────────────────────────────────── */
   var ST_OPS_CARD_ROUTES = {
-    "viec mo toan he thong": "todo",
-    "viec qua han toan he thong": "todo",
-    "su kien hom nay": "event",
-    "loi 24 gio": "error-log",
-    "job loi 24 gio": "scheduled-job-log",
-    "so hoc vien dang hoc": "student",
-    "so lop dang mo": "student-group",
-    "lead moi tu dau thang": "crm-lead",
-    "doanh thu ngay qua": "payment-entry",
-    "diem danh hom nay": "edu-attendance-session",
-    "lead moi hom nay": "crm-lead",
-    "tong cong no chua thu": "sales-invoice",
-    "cong no qua han": "sales-invoice"
+    "viec-mo-toan-he-thong": "todo",
+    "viec-qua-han-toan-he-thong": "todo",
+    "su-kien-hom-nay": "event",
+    "loi-24-gio": "error-log",
+    "job-loi-24-gio": "scheduled-job-log",
+    "so-hoc-vien-dang-hoc": "student",
+    "so-lop-dang-mo": "student-group",
+    "lead-moi-tu-dau-thang": "crm-lead",
+    "doanh-thu-ngay-qua": "payment-entry",
+    "diem-danh-hom-nay": "edu-attendance-session",
+    "lead-moi-hom-nay": "crm-lead",
+    "tong-cong-no-chua-thu": "sales-invoice",
+    "cong-no-qua-han": "sales-invoice"
   };
 
   function st_norm_vi(value) {
@@ -1711,6 +1711,7 @@
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .replace(/đ/g, "d")
+      .replace(/\s+/g, "-")
       .trim();
   }
 

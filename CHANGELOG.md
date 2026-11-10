@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.6.11] — 2026-11-10 — Fix thật click GSVH: chuẩn hóa khoảng trắng
+
+### Fixed
+- `st_norm_vi` thiếu đổi khoảng trắng thành gạch ngang nên route thật
+  `["Workspaces", "Giám sát vận hành"]` (đo từ browser user) và 13 nhãn thẻ
+  đều trượt match — click chết dù code đúng. Thêm `.replace(/\s+/g, "-")`,
+  key map chuyển sang dạng gạch ngang; test mới mô phỏng chuẩn hóa trên đúng
+  13 nhãn thật để khóa.
+
+## [2.6.10] — 2026-11-10 — Card ứng dụng căn giữa + lấp đầy Báo cáo & Biểu đồ
+
+### Fixed
+- Card lưới ứng dụng (Smart Home + Tất cả ứng dụng): nội dung đã căn giữa từ
+  d054ecb nhưng `module_cards.css` không bump version nên browser giữ bản cũ
+  lệch trái — bump `module_cards.css?v=2→3` để trình duyệt nhận bản căn giữa.
+- Widget Báo cáo & Biểu đồ thêm 2 nút (Hóa đơn học phí, Phiếu thu — 2 thao tác
+  nhanh đầu của workspace Giám sát vận hành): 6 nút lấp đầy khoảng trống.
+
 ## [2.6.9] — 2026-11-10 — Cache-bust để trình duyệt nhận fix F3
 
 ### Fixed

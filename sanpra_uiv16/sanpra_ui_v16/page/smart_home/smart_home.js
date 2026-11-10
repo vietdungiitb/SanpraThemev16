@@ -1227,6 +1227,8 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			{ label: __("Học phí đến hạn hôm nay"), route: "/desk/query-report/hoc-phi-den-han-hom-nay" },
 			{ label: __("Doanh thu theo tháng"), route: "/desk/dashboard-chart/" + encodeURIComponent("Doanh thu theo tháng") },
 			{ label: __("Công nợ theo tháng"), route: "/desk/dashboard-chart/" + encodeURIComponent("Công nợ theo tháng") },
+			{ label: __("Hóa đơn học phí"), route: "/desk/sales-invoice" },
+			{ label: __("Phiếu thu"), route: "/desk/payment-entry" },
 		];
 		$container.html('<div class="st-sh-qc-grid">' + items.map(function (item) {
 			return (
