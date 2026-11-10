@@ -253,11 +253,15 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertNotIn("subject", js)
         self.assertNotIn("for_user", js)
 
-    def test_open_tasks_kpi_scoped_to_user(self):
-        """open-todos KPI phai loc allocated_to=user (cung lop bug O1 cua my-todos)."""
+    def test_open_tasks_kpi_has_valid_filters_only(self):
+        """open-tasks KHONG duoc loc allocated_to: Task khong co field nay
+        (do container 10/11/2026) — filter sai nem popup cho moi user (UAT 10/11).
+        Dem dung theo user can backend join (deferred)."""
         js = JS.read_text(encoding="utf-8")
-        block = js.split('id: "open-tasks"', 1)[1].split("},", 1)[0]
-        self.assertIn("allocated_to: frappe.session.user", block)
+        block = js.split('id: "open-tasks"', 1)[1].split('route: "/desk/task', 1)[0]
+        filters_line = [ln for ln in block.splitlines() if "filters:" in ln][0]
+        self.assertNotIn("allocated_to", filters_line)
+        self.assertIn('filters: { status: "Open" }', filters_line)
 
     def test_today_focus_no_duplicate_counts(self):
         """today-focus render viec tiep theo (link ban ghi), khong dem so;
