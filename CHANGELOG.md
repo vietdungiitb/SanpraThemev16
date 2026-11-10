@@ -3,8 +3,11 @@
 ## [2.6.13] — 2026-11-10 — Smart Home v2: hết trùng, có charts thật
 
 ### Fixed
-- KPI "Nhiệm vụ đang mở" scope theo user (`allocated_to`, cùng lớp bug O1 của
-  My ToDos): trước đếm toàn site trong khi nhãn đứng cạnh "Việc làm của tôi".
+- "Nhiệm vụ đang mở" GIỮ nguyên đếm site-wide (Task KHÔNG có field
+  `allocated_to` — đã đo container; filter sai ném popup "Field not permitted"
+  cho mọi user, phát hiện ở UAT 10/11). Đếm đúng theo user cần backend join
+  (deferred, cần PM duyệt API mới). Test khóa: filter open-tasks không được
+  chứa field lạ (mutation check đỏ khi chèn `allocated_to`).
 - "Ngày của tôi" đổi từ 4 dòng đếm trùng KPI sang danh sách việc tiếp theo
   (link thẳng bản ghi, quá hạn lên trước); trống thì thu gọn 1 dòng all-clear.
 - "Cần xử lý" thêm "học phí quá hạn" (Fees không có field status — lọc theo

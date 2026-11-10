@@ -473,9 +473,11 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				id: "open-tasks",
 				label: __("Open Tasks"),
 				dt: "Task",
-				/* Scope theo cá nhân như my-todos (cùng lớp bug O1): Task Open
-				   đếm toàn site trong khi nhãn đứng cạnh "Việc làm của tôi". */
-				filters: { status: "Open", allocated_to: frappe.session.user },
+				/* Task KHONG co field allocated_to (do container 10/11/2026) —
+				   filter allocated_to o day nem popup "Field not permitted"
+				   cho MOI user (UAT 10/11). Giu dem site-wide nhu cu; dem dung
+				   theo user can backend join (deferred, can PM duyet API moi). */
+				filters: { status: "Open" },
 				route: "/desk/task?status=Open",
 				icon: "list-todo",
 				accent: "green",
