@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.6.13] — 2026-11-10 — Smart Home v2: hết trùng, có charts thật
+
+### Fixed
+- KPI "Nhiệm vụ đang mở" scope theo user (`allocated_to`, cùng lớp bug O1 của
+  My ToDos): trước đếm toàn site trong khi nhãn đứng cạnh "Việc làm của tôi".
+- "Ngày của tôi" đổi từ 4 dòng đếm trùng KPI sang danh sách việc tiếp theo
+  (link thẳng bản ghi, quá hạn lên trước); trống thì thu gọn 1 dòng all-clear.
+- "Cần xử lý" thêm "học phí quá hạn" (Fees không có field status — lọc theo
+  `due_date` + `outstanding_amount`, đã xác minh source Education trong container).
+- Widget "Báo cáo & Biểu đồ" vẽ 2 biểu đồ thật (`frappe.Chart` có sẵn trong Desk
+  + API whitelist `dashboard_chart.get`; đã xác minh `ui/chart.js:4` và decorator
+  `@whitelist`); thiếu chart doc → giữ lưới link cũ, không trắng.
+- Lưới "Ứng dụng của bạn" ẩn 7 tile kỹ thuật tiếng Anh (Build, HR Setup, Tenure,
+  Invoicing, Payments, Recruitment, Accounting — quyết định PM 10/11; vào qua
+  sidebar như cũ); "Tài liệu gần đây" bỏ qua DocType User (hết email thô).
+- Ngày dưới lời chào theo site lang (`vi` → `vi-VN`) thay vì locale trình duyệt.
+
+### Changed
+- Bump `smart_home.css?v=14→15` để trình duyệt nhận CSS mới (smart_home.js đi
+  theo build image, không cần version riêng).
+- i18n: +3 chuỗi (`overdue tuition fees`, `events today`, `unread`).
+
 ## [2.6.12] — 2026-11-10 — Ép trình duyệt nhận fix norm (v78)
 
 ### Fixed

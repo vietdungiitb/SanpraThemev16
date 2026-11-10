@@ -644,6 +644,66 @@
   font-size: 11px;
 }
 
+/* ── MY DAY: danh sach viec tiep theo (thay 4 dong dem trung KPI) ────────── */
+.st-sh-todo-dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--sanpra-c-d5d9df);
+}
+.st-sh-todo-dot.st-sh-todo-late {
+  background: var(--sanpra-c-d64f4f);
+}
+.st-sh-todo-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.st-sh-todo-date {
+  flex: 0 0 auto;
+  color: var(--text-muted, var(--sanpra-c-75818c));
+  font-size: 11px;
+}
+.st-sh-today-foot {
+  padding: 8px 16px 12px;
+  color: var(--text-muted, var(--sanpra-c-75818c));
+  font-size: 11px;
+}
+.st-sh-today-foot a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+/* ── REPORTS: bieu do that + luoi link du phong ─────────────────────────── */
+.st-sh-charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 4px 16px 0;
+}
+.st-sh-chart-title {
+  margin-bottom: 2px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.st-sh-chart-canvas {
+  min-height: 140px;
+}
+.st-sh-chart-canvas:empty {
+  display: none;
+}
+.st-sh-rc-links {
+  padding-top: 8px;
+}
+@media (max-width: 560px) {
+  .st-sh-charts {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ── OPS LIVE BODY ──────────────────────────────────────────────────────────
    Mini stat luoi 3 cot + thanh suc khoe job + top loi. Tai dung token theme. */
 .st-sh-ops-body {
