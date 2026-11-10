@@ -229,7 +229,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		if (hidden.indexOf("reports-charts") === -1) $grid.append(
 			this._panel_widget(
 				"reports-charts",
-				__("Reports & Charts"),
+				__("Reports"),
 				__("One click to the ops reports"),
 				"chart",
 				"half",
@@ -1313,9 +1313,8 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	_render_reports_charts() {
 		var $container = this.$body.find("#st-sh-rc");
 		if (!$container.length) return;
-		var self = this;
-		/* Bieu do link thang Form view cua Dashboard Chart doc (F2 RICH-FIX),
-		   khong ve trang workspace chung. Docname da xac minh tren staging. */
+		/* 6 hang muc bao cao — khong ve bieu do (user: loai bo bieu do,
+		   giu 6 link bao cao). */
 		var items = [
 			{ label: __("Hiệu quả giáo viên"), route: "/desk/query-report/hieu-qua-giao-vien" },
 			{ label: __("Học phí đến hạn hôm nay"), route: "/desk/query-report/hoc-phi-den-han-hom-nay" },
@@ -1324,66 +1323,14 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			{ label: __("Hóa đơn học phí"), route: "/desk/sales-invoice" },
 			{ label: __("Phiếu thu"), route: "/desk/payment-entry" },
 		];
-		function renderLinks($target) {
-			$target.html('<div class="st-sh-qc-grid">' + items.map(function (item) {
-				return (
-					'<a href="' + item.route + '" class="st-sh-qc-item">' +
-						'<span class="st-sh-qc-plus">&rarr;</span>' +
-						'<span>' + item.label + '</span>' +
-					'</a>'
-				);
-			}).join("") + '</div>');
-		}
-		if (typeof frappe.Chart !== "function" || typeof frappe.xcall !== "function") {
-			renderLinks($container);
-			return;
-		}
-		/* Chart that: frappe.Chart co san trong Desk (frappe/ui/chart.js) +
-		   du lieu tu Dashboard Chart doc qua API whitelist (khong them lib). */
-		var chartDefs = [
-			{ name: "Doanh thu theo tháng", el: "st-sh-chart-rev" },
-			{ name: "Công nợ theo tháng", el: "st-sh-chart-debt" },
-		];
-		$container.html(
-			'<div class="st-sh-charts">' + chartDefs.map(function (def, idx) {
-				return (
-					'<div class="st-sh-chart-block">' +
-						'<div class="st-sh-chart-title">' + self._esc(def.name) + '</div>' +
-						'<div id="' + def.el + '" class="st-sh-chart-canvas"><div class="st-sh-spin"></div></div>' +
-					'</div>'
-				);
-			}).join("") + '</div><div class="st-sh-rc-links"></div>'
-		);
-		renderLinks($container.find(".st-sh-rc-links"));
-		chartDefs.forEach(function (def) {
-			frappe.xcall("frappe.desk.doctype.dashboard_chart.dashboard_chart.get", {
-				chart_name: def.name,
-			}).then(function (config) {
-				var el = document.getElementById(def.el);
-				if (!el) return;
-				config = config || {};
-				var labels = config.labels || [];
-				var datasets = config.datasets || [];
-				if (!labels.length || !datasets.length) {
-					el.innerHTML = "";
-					return;
-				}
-				try {
-					new frappe.Chart("#" + def.el, {
-						data: { labels: labels, datasets: datasets },
-						type: "bar",
-						height: 140,
-						colors: ["#B35200"],
-						axis_options: { x_is_series: true },
-					});
-				} catch (err) {
-					el.innerHTML = "";
-				}
-			}).catch(function () {
-				var el = document.getElementById(def.el);
-				if (el) el.innerHTML = "";
-			});
-		});
+		$container.html('<div class="st-sh-qc-grid">' + items.map(function (item) {
+			return (
+				'<a href="' + item.route + '" class="st-sh-qc-item">' +
+					'<span class="st-sh-qc-plus">&rarr;</span>' +
+					'<span>' + item.label + '</span>' +
+				'</a>'
+			);
+		}).join("") + '</div>');
 	}
 
 	/* Non-zero results become actionable rows after the request batch settles. */
