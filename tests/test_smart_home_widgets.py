@@ -253,6 +253,61 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertNotIn("subject", js)
         self.assertNotIn("for_user", js)
 
+    def test_open_tasks_kpi_scoped_to_user(self):
+        """open-todos KPI phai loc allocated_to=user (cung lop bug O1 cua my-todos)."""
+        js = JS.read_text(encoding="utf-8")
+        block = js.split('id: "open-tasks"', 1)[1].split("},", 1)[0]
+        self.assertIn("allocated_to: frappe.session.user", block)
+
+    def test_today_focus_no_duplicate_counts(self):
+        """today-focus render viec tiep theo (link ban ghi), khong dem so;
+        trong -> thu gon all-clear thay vi 4 dong 0."""
+        js = JS.read_text(encoding="utf-8")
+        body = js.split("_refresh_today() {", 1)[1].split("_render_reports_charts", 1)[0]
+        self.assertIn("frappe.client.get_list", body)
+        self.assertNotIn("st-sh-pending-count", body)
+        self.assertNotIn("Việc mở của tôi", body)
+        self.assertIn("st-sh-all-clear", body)
+
+    def test_pending_includes_overdue_fees(self):
+        """Fees khong co status -> loc due_date + outstanding_amount."""
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn('dt: "Fees"', js)
+        self.assertIn("due_date", js)
+        self.assertIn("outstanding_amount", js)
+        self.assertIn("overdue tuition fees", js)
+
+    def test_reports_charts_renders_chart_container(self):
+        """Chart that qua frappe.Chart + dashboard_chart.get; thieu -> fallback link."""
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn("frappe.Chart", js)
+        self.assertIn("dashboard_chart.dashboard_chart.get", js)
+        self.assertIn("st-sh-chart-canvas", js)
+        self.assertIn("st-sh-rc-links", js)
+
+    def test_apps_grid_filters_technical(self):
+        """Luoi apps an 7 tile ky thuat tieng Anh (PM quyet 10/11/2026)."""
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn("HIDDEN_APPS", js)
+        for name in ("build", "hr setup", "tenure", "invoicing", "payments", "recruitment", "accounting"):
+            self.assertIn('"' + name + '"', js)
+        # Khoa dung that, khong chi ton tai: filter phai duoc ap vao slice.
+        self.assertIn("HIDDEN_APPS.indexOf(normTitle", js)
+        self.assertIn("visible.slice(0, 12)", js)
+        self.assertNotIn("(pages || []).slice(0, 12)", js)
+
+    def test_recent_skips_user_doctype(self):
+        """recent-documents bo qua User (docname la email)."""
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn('route[1] !== "User"', js)
+
+    def test_greeting_date_uses_site_lang(self):
+        """Ngay theo site lang (vi -> vi-VN), khong theo locale trinh duyet."""
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn("_site_locale()", js)
+        self.assertIn('"vi-VN"', js)
+        self.assertNotIn("toLocaleDateString(undefined", js)
+
 
 if __name__ == "__main__":
     unittest.main()

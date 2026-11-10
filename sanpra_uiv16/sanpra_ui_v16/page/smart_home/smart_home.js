@@ -81,7 +81,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			(frappe.session && frappe.session.user_fullname) ||
 			this.user ||
 			"";
-		var date_label = new Date().toLocaleDateString(undefined, {
+		var date_label = new Date().toLocaleDateString(this._site_locale(), {
 			weekday: "long",
 			year: "numeric",
 			month: "long",
@@ -473,7 +473,9 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				id: "open-tasks",
 				label: __("Open Tasks"),
 				dt: "Task",
-				filters: { status: "Open" },
+				/* Scope theo cá nhân như my-todos (cùng lớp bug O1): Task Open
+				   đếm toàn site trong khi nhãn đứng cạnh "Việc làm của tôi". */
+				filters: { status: "Open", allocated_to: frappe.session.user },
 				route: "/desk/task?status=Open",
 				icon: "list-todo",
 				accent: "green",
@@ -870,7 +872,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			var now = new Date();
 			self.$body.find("[data-live-clock]").text(now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
 			self.$body.find("[data-date-day]").text(now.getDate());
-			self.$body.find("[data-date-month]").text(now.toLocaleDateString(undefined, { weekday: "long", month: "long" }));
+			self.$body.find("[data-date-month]").text(now.toLocaleDateString(self._site_locale(), { weekday: "long", month: "long" }));
 		}
 		update();
 		if (!this._clock_timer) this._clock_timer = setInterval(update, 30000);
@@ -928,6 +930,8 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				route[0] === "Form" &&
 				route[1] &&
 				route[2] &&
+				/* Bo qua DocType User: docname la email, hien len vo nghia. */
+				route[1] !== "User" &&
 				!String(route[2]).startsWith("new-")
 			) {
 				var key = route[1] + "::" + route[2];
@@ -1005,10 +1009,32 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		var self = this;
 
 		wc.fetchWorkspaces(function (pages) {
+			/* Loc tile ky thuat tieng Anh (PM quyet 10/11/2026): Build, HR Setup,
+			   Tenure, Invoicing, Payments, Recruitment, Accounting — van vao duoc
+			   qua sidebar, chi an tren luoi Smart Home. So khop tren title chuan
+			   hoa (khong dau, lower) de chiu duoc dich label. */
+			var HIDDEN_APPS = ["build", "hr setup", "tenure", "invoicing", "payments", "recruitment", "accounting"];
+			function normTitle(value) {
+				/* Chuan hoa de so khop: lower + bo dau (title co the da Viet hoa). */
+				var s = String(value || "").toLowerCase();
+				try {
+					s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+				} catch (e) {}
+				return s.replace(/đ/g, "d");
+			}
+			function isHidden(page) {
+				return (
+					HIDDEN_APPS.indexOf(normTitle(page && page.name)) !== -1 ||
+					HIDDEN_APPS.indexOf(normTitle(page && page.title)) !== -1
+				);
+			}
+			var visible = (pages || []).filter(function (p) {
+				return !isHidden(p);
+			});
 			/* Hiển thị 12 mục đầu (tăng từ 8) — tổng workspace của hệ thống
 			   (~10) phải lọt hết vào lưới mà cần cuộn — `slice(0, 8)` cũ khiến
 			   "Giám sát vận hành" (sequence 21) rớt khỏi 8 ô đầu. */
-			var items = (pages || []).slice(0, 12);
+			var items = visible.slice(0, 12);
 
 			/* Ops entry (Giám sát vận hành): chỉ hiện khi user có quyền xem (pool
 			   đã lọc theo role ở server) — cùng gate với icon header ops. */
@@ -1048,6 +1074,14 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				filters: { status: "Overdue", docstatus: 1 },
 				label: __("{0} overdue sales invoices"),
 				route: "/desk/sales-invoice?status=Overdue",
+			},
+			{
+				/* Hoc phi qua han: Fees KHONG co field status (do that Education
+				   container 10/11/2026) — loc theo due_date + outstanding_amount. */
+				dt: "Fees",
+				filters: { due_date: ["<", frappe.datetime.nowdate()], outstanding_amount: [">", 0], docstatus: 1 },
+				label: __("{0} overdue tuition fees"),
+				route: "/desk/fees",
 			},
 			{
 				dt: "Purchase Order",
@@ -1189,30 +1223,71 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	   reports-charts: link tinh vao bao cao/bieu do dieu hanh, Frappe gate
 	   quyen o trang dich. */
 	_refresh_today() {
+		/* Ngay cua toi = danh sach viec tiep theo (link thang ban ghi), KHONG
+		   dem so — so dem da co tren KPI my-todos/open-tasks (tranh trung lap).
+		   Trong het -> thu gon 1 dong all-clear thay vi 4 dong 0. */
 		var $container = this.$body.find("#st-sh-today");
 		if (!$container.length || typeof frappe.xcall !== "function") return;
 		var self = this;
-		frappe.xcall("smart_edu_core.api.ops.get_ops_summary", { scope: "me" }).then(
-			function (summary) {
-				summary = summary || {};
-				var rows = [
-					{ value: summary.todos_open, label: __("Việc mở của tôi"), route: "/desk/todo?status=Open" },
-					{ value: summary.todos_overdue, label: __("Quá hạn của tôi"), route: "/desk/todo?status=Open" },
-					{ value: summary.events_today, label: __("Sự kiện chung hôm nay"), route: "/desk/event" },
-					{ value: summary.notifications_unread, label: __("Thông báo chưa đọc"), route: "/desk/notification-log" },
-				];
-				$container.html(rows.map(function (item) {
+		function renderList(todos, summary) {
+			summary = summary || {};
+			var html = "";
+			if (todos.length) {
+				html += todos.map(function (td) {
+					var title = td.description || td.name;
 					return (
-						'<a href="' + item.route + '" class="st-sh-pending-row">' +
-							'<span class="st-sh-pending-count">' + self._esc(item.value !== undefined && item.value !== null ? item.value : "—") + '</span>' +
-							'<span>' + item.label + '</span>' +
+						'<a href="/desk/todo/' + encodeURIComponent(td.name) + '" class="st-sh-pending-row">' +
+							'<span class="st-sh-todo-dot' + (td._overdue ? " st-sh-todo-late" : "") + '"></span>' +
+							'<span class="st-sh-todo-name">' + self._esc(title) + '</span>' +
+							'<span class="st-sh-todo-date">' + self._esc(td.date || "") + '</span>' +
 							'<span class="st-sh-row-arrow" aria-hidden="true">&rarr;</span>' +
 						'</a>'
 					);
-				}).join(""));
+				}).join("");
+			} else {
+				html += '<div class="st-sh-all-clear"><span class="st-sh-clear-check">✓</span>' +
+					'<div><strong>' + __("All clear") + '</strong></div></div>';
+			}
+			var foot = [];
+			if (summary.events_today) foot.push('<a href="/desk/event">' + self._esc(summary.events_today) + " " + __("events today") + "</a>");
+			if (summary.notifications_unread) foot.push('<a href="/desk/notification-log">' + self._esc(summary.notifications_unread) + " " + __("unread") + "</a>");
+			if (foot.length) html += '<div class="st-sh-today-foot">' + foot.join(" · ") + "</div>";
+			$container.html(html);
+		}
+		function loadTodos(summary) {
+			frappe.call({
+				method: "frappe.client.get_list",
+				args: {
+					doctype: "ToDo",
+					fields: ["name", "description", "date"],
+					filters: { status: "Open", allocated_to: frappe.session.user },
+					limit_page_length: 5,
+					order_by: "date asc",
+				},
+				callback: function (response) {
+					var today = frappe.datetime.nowdate();
+					var todos = (response.message || []).slice(0, 5).map(function (td) {
+						td._overdue = td.date && td.date < today;
+						return td;
+					});
+					todos.sort(function (a, b) { return (b._overdue ? 1 : 0) - (a._overdue ? 1 : 0); });
+					renderList(todos, summary);
+				},
+				error: function () {
+					renderList([], summary);
+				},
+			});
+		}
+		if (typeof frappe.call !== "function") {
+			renderList([], {});
+			return;
+		}
+		frappe.xcall("smart_edu_core.api.ops.get_ops_summary", { scope: "me" }).then(
+			function (summary) {
+				loadTodos(summary || {});
 			},
 			function () {
-				$container.html('<div class="st-sh-empty"><span>' + __("Ops data unavailable.") + '</span></div>');
+				loadTodos({});
 			}
 		);
 	}
@@ -1220,6 +1295,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	_render_reports_charts() {
 		var $container = this.$body.find("#st-sh-rc");
 		if (!$container.length) return;
+		var self = this;
 		/* Bieu do link thang Form view cua Dashboard Chart doc (F2 RICH-FIX),
 		   khong ve trang workspace chung. Docname da xac minh tren staging. */
 		var items = [
@@ -1230,14 +1306,66 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			{ label: __("Hóa đơn học phí"), route: "/desk/sales-invoice" },
 			{ label: __("Phiếu thu"), route: "/desk/payment-entry" },
 		];
-		$container.html('<div class="st-sh-qc-grid">' + items.map(function (item) {
-			return (
-				'<a href="' + item.route + '" class="st-sh-qc-item">' +
-					'<span class="st-sh-qc-plus">&rarr;</span>' +
-					'<span>' + item.label + '</span>' +
-				'</a>'
-			);
-		}).join("") + '</div>');
+		function renderLinks($target) {
+			$target.html('<div class="st-sh-qc-grid">' + items.map(function (item) {
+				return (
+					'<a href="' + item.route + '" class="st-sh-qc-item">' +
+						'<span class="st-sh-qc-plus">&rarr;</span>' +
+						'<span>' + item.label + '</span>' +
+					'</a>'
+				);
+			}).join("") + '</div>');
+		}
+		if (typeof frappe.Chart !== "function" || typeof frappe.xcall !== "function") {
+			renderLinks($container);
+			return;
+		}
+		/* Chart that: frappe.Chart co san trong Desk (frappe/ui/chart.js) +
+		   du lieu tu Dashboard Chart doc qua API whitelist (khong them lib). */
+		var chartDefs = [
+			{ name: "Doanh thu theo tháng", el: "st-sh-chart-rev" },
+			{ name: "Công nợ theo tháng", el: "st-sh-chart-debt" },
+		];
+		$container.html(
+			'<div class="st-sh-charts">' + chartDefs.map(function (def, idx) {
+				return (
+					'<div class="st-sh-chart-block">' +
+						'<div class="st-sh-chart-title">' + self._esc(def.name) + '</div>' +
+						'<div id="' + def.el + '" class="st-sh-chart-canvas"><div class="st-sh-spin"></div></div>' +
+					'</div>'
+				);
+			}).join("") + '</div><div class="st-sh-rc-links"></div>'
+		);
+		renderLinks($container.find(".st-sh-rc-links"));
+		chartDefs.forEach(function (def) {
+			frappe.xcall("frappe.desk.doctype.dashboard_chart.dashboard_chart.get", {
+				chart_name: def.name,
+			}).then(function (config) {
+				var el = document.getElementById(def.el);
+				if (!el) return;
+				config = config || {};
+				var labels = config.labels || [];
+				var datasets = config.datasets || [];
+				if (!labels.length || !datasets.length) {
+					el.innerHTML = "";
+					return;
+				}
+				try {
+					new frappe.Chart("#" + def.el, {
+						data: { labels: labels, datasets: datasets },
+						type: "bar",
+						height: 140,
+						colors: ["#B35200"],
+						axis_options: { x_is_series: true },
+					});
+				} catch (err) {
+					el.innerHTML = "";
+				}
+			}).catch(function () {
+				var el = document.getElementById(def.el);
+				if (el) el.innerHTML = "";
+			});
+		});
 	}
 
 	/* Non-zero results become actionable rows after the request batch settles. */
@@ -1272,6 +1400,12 @@ sanpra_uiv16.SmartHome = class SmartHome {
 
 	/* ── 11. SAFE UI HELPERS ─────────────────────────────────────────────────
 	   Icon lookup fails softly across Frappe versions; dynamic text is escaped. */
+	_site_locale() {
+		/* Ngay thang theo ngon ngu site (vi -> vi-VN), khong theo locale
+		   trinh duyet — tranh "Tuesday, November 10, 2026" tren site tieng Viet. */
+		var lang = (frappe.boot && frappe.boot.lang) || "en";
+		return lang === "vi" ? "vi-VN" : lang;
+	}
 	_icon(name, size) {
 		try {
 			return frappe.utils.icon(name, size || "sm") || "";
