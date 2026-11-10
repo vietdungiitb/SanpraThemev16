@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.6.5] — 2026-11-10 — Smart Home becomes the system root
+
+### Added
+- Standard `Sidebar` "Smart Home" for the `Sanpra UI V16` module: shell slug equals the
+  `smart-home` page, so the desk keeps `/desk/smart-home` instead of writing
+  `/desk/sanpra-ui-v16/smart-home`.
+- Sidebar rows: Hôm nay (claimed via `is_default_module`), Điều hành (Giám sát vận hành,
+  Giáo dục thông minh, Không gian Giáo viên), Nghiệp vụ (Lead, Course, Điểm danh, Sổ điểm,
+  Học phí), Hệ thống (Tất cả ứng dụng) — no theme-settings rows.
+
 ## [2.6.4] — 2026-11-09 — Ops center header + Smart Home 3 lớp
 
 ### Fixed
