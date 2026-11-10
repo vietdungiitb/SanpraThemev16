@@ -160,7 +160,9 @@
   grid-template-columns: repeat(12, minmax(0, 1fr));
   grid-auto-flow: row;
   gap: 16px;
-  align-items: start;
+  /* F1 RICH-FIX: stretch de cac card cung hang (bo 3 half) thang day nhau
+     thay vi cao theo noi dung rieng. */
+  align-items: stretch;
 }
 
 .st-sh-widget {
@@ -387,6 +389,7 @@
    Recent, Quick Create, and Attention reuse this shared card frame. */
 .st-sh-card {
   min-height: 265px;
+  height: 100%;
   overflow: hidden;
   border: 1px solid var(--border-color, var(--sanpra-c-e5e9ee));
   border-radius: 13px;

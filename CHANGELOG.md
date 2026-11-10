@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.6.8] — 2026-11-10 — Fix audit UI/UX: trio đều nhau, chart deep-link, GSVH bấm được
+
+### Fixed
+- F1: 3 card nửa (Ngày của tôi + Cần xử lý + Báo cáo) chung hàng giờ thẳng đáy
+  nhau (`align-items: stretch` + `.st-sh-card { height: 100% }`) thay vì cao theo
+  nội dung riêng.
+- F2: 2 biểu đồ link thẳng Form view của Dashboard Chart doc
+  (`/desk/dashboard-chart/<tên>`, docname đã xác minh trên staging) thay vì đáp
+  xuống trang workspace chung.
+- F3: click Number Card GSVH so khớp chuẩn hóa trên **mọi** đoạn route (URL
+  canonical có shell đứng trước: `/desk/<shell>/<workspace>`) thay vì chỉ
+  `route[0]` — trước đây return sớm nên bấm không ăn.
+
 ## [2.6.7] — 2026-11-10 — Smart Home xếp theo mức độ ưu tiên người dùng
 
 ### Changed

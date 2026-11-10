@@ -1220,14 +1220,13 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	_render_reports_charts() {
 		var $container = this.$body.find("#st-sh-rc");
 		if (!$container.length) return;
-		var slug = (frappe.router && frappe.router.slug)
-			? frappe.router.slug("Giám sát vận hành")
-			: "giam-sat-van-hanh";
+		/* Bieu do link thang Form view cua Dashboard Chart doc (F2 RICH-FIX),
+		   khong ve trang workspace chung. Docname da xac minh tren staging. */
 		var items = [
 			{ label: __("Hiệu quả giáo viên"), route: "/desk/query-report/hieu-qua-giao-vien" },
 			{ label: __("Học phí đến hạn hôm nay"), route: "/desk/query-report/hoc-phi-den-han-hom-nay" },
-			{ label: __("Doanh thu theo tháng"), route: "/desk/" + slug },
-			{ label: __("Công nợ theo tháng"), route: "/desk/" + slug },
+			{ label: __("Doanh thu theo tháng"), route: "/desk/dashboard-chart/" + encodeURIComponent("Doanh thu theo tháng") },
+			{ label: __("Công nợ theo tháng"), route: "/desk/dashboard-chart/" + encodeURIComponent("Công nợ theo tháng") },
 		];
 		$container.html('<div class="st-sh-qc-grid">' + items.map(function (item) {
 			return (
