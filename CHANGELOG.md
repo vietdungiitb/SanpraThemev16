@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.6.7] — 2026-11-10 — Smart Home xếp theo mức độ ưu tiên người dùng
+
+### Changed
+- Thứ tự mặc định: KPI → bộ 3 hành động (Ngày của tôi + Cần xử lý + Báo cáo &
+  Biểu đồ, 4+4+4) → Giám sát hệ thống → Tài liệu gần đây + Tạo nhanh → Ứng dụng
+  của bạn xuống cuối (launcher tần suất thấp, sidebar đã cover).
+- Bump storage key `st_smart_home_layout_v2` → `v3` để mọi user thấy thứ tự mới
+  (đánh đổi: mất bố cục kéo-thả cũ); xóa migration đặt `your-apps` sau KPI
+  (chỉ còn nghĩa với layout cũ).
+
 ## [2.6.6] — 2026-11-10 — Smart Home giàu thông tin + Number Card GSVH bấm được
 
 ### Added

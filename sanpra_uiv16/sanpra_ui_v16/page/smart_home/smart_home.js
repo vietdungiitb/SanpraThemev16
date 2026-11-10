@@ -36,7 +36,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		this.wrapper = $(wrapper);
 		this.$body = this.wrapper.find(".page-content");
 		this.user = (frappe.session && frappe.session.user) || "Guest";
-		this.storage_key = "st_smart_home_layout_v2::" + this.user;
+		this.storage_key = "st_smart_home_layout_v3::" + this.user;
 		this.editing = false;
 		this.dragged = null;
 		this.library_drag_id = null;
@@ -203,7 +203,39 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				if (hidden.indexOf(kpi.id) === -1) $grid.append(self._kpi_widget(kpi));
 			});
 
-		if (hidden.indexOf("your-apps") === -1) $grid.append(this._apps_widget());
+		/* Thu tu mac dinh theo muc do uu tien (RICH-ORDER 2026-11-10):
+		   bo 3 hanh dong -> giam sat he thong -> tiep tuc viec do/tao moi
+		   -> launcher xuong cuoi. */
+		if (hidden.indexOf("today-focus") === -1) $grid.append(
+			this._panel_widget(
+				"today-focus",
+				__("My Day"),
+				__("Your todos, events and notifications"),
+				"calendar",
+				"half",
+				'<div id="st-sh-today" class="st-sh-card-body"><div class="st-sh-spin"></div></div>'
+			)
+		);
+		if (hidden.indexOf("needs-attention") === -1) $grid.append(
+			this._panel_widget(
+				"needs-attention",
+				__("Needs Attention"),
+				__("Items waiting on action"),
+				"warning",
+				"half",
+				'<div id="st-sh-pending" class="st-sh-card-body"><div class="st-sh-spin"></div></div>'
+			)
+		);
+		if (hidden.indexOf("reports-charts") === -1) $grid.append(
+			this._panel_widget(
+				"reports-charts",
+				__("Reports & Charts"),
+				__("One click to the ops reports"),
+				"chart",
+				"half",
+				'<div id="st-sh-rc" class="st-sh-card-body"></div>'
+			)
+		);
 
 		/* Layer 3 (system, viewer-only): ops entry, revealed only if the pool
 		   let this user see the workspace (same check as header ops icon). */
@@ -229,37 +261,8 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				'<div id="st-sh-qc" class="st-sh-card-body"></div>'
 			)
 		);
-		if (hidden.indexOf("needs-attention") === -1) $grid.append(
-			this._panel_widget(
-				"needs-attention",
-				__("Needs Attention"),
-				__("Items waiting on action"),
-				"warning",
-				"half",
-				'<div id="st-sh-pending" class="st-sh-card-body"><div class="st-sh-spin"></div></div>'
-			)
-		);
-		/* Hang cuoi can 3 o half (4+4+4): them 2 widget canh Needs Attention. */
-		if (hidden.indexOf("today-focus") === -1) $grid.append(
-			this._panel_widget(
-				"today-focus",
-				__("My Day"),
-				__("Your todos, events and notifications"),
-				"calendar",
-				"half",
-				'<div id="st-sh-today" class="st-sh-card-body"><div class="st-sh-spin"></div></div>'
-			)
-		);
-		if (hidden.indexOf("reports-charts") === -1) $grid.append(
-			this._panel_widget(
-				"reports-charts",
-				__("Reports & Charts"),
-				__("One click to the ops reports"),
-				"chart",
-				"half",
-				'<div id="st-sh-rc" class="st-sh-card-body"></div>'
-			)
-		);
+		/* Launcher xuong cuoi: tan suat dung thap khi da quen route, sidebar da cover. */
+		if (hidden.indexOf("your-apps") === -1) $grid.append(this._apps_widget());
 
 		(this.state.added || []).forEach(function (id) {
 			var template = self._find_template(id);
@@ -826,17 +829,8 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			if (known[id]) $grid.append(known[id]);
 		});
 
-		/* Existing saved layouts predate the upstream apps launcher. Place that
-		   new widget after the KPI row once, then let future saved order win. */
-		if (order.indexOf("your-apps") === -1 && known["your-apps"]) {
-			var last_kpi = $grid.children(".st-sh-kpi").last()[0];
-			if (last_kpi) {
-				last_kpi.parentNode.insertBefore(known["your-apps"], last_kpi.nextSibling);
-			} else {
-				$grid.prepend(known["your-apps"]);
-			}
-			delete known["your-apps"];
-		}
+		/* v3 key = layout moi hoan toan, khong con saved order cu de migrate:
+		   DOM order o _render_widgets da la thu tu uu tien. */
 
 		/* Other newly-added or newly-permitted widgets append instead of
 		   disappearing from an older saved layout that does not know their IDs. */
