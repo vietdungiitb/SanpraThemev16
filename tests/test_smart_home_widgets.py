@@ -20,7 +20,8 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertIn("dragstart.st_sh_layout", js)
         self.assertIn("dragover.st_sh_layout", js)
         self.assertIn("drop.st_sh_layout", js)
-        self.assertIn("st_smart_home_layout_v2::", js)
+        self.assertIn("st_smart_home_layout_v3::", js)
+        self.assertNotIn("st_smart_home_layout_v2::", js)
 
     def test_layout_has_customize_reset_and_accessible_move_controls(self):
         js = JS.read_text(encoding="utf-8")
@@ -100,6 +101,24 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertIn('_ops_widget', js)
         self.assertIn('data-widget-id="giam-sat-van-hanh"', js)
         self.assertIn("self._ops_workspace_name", js)
+
+    def test_default_order_follows_user_priority(self):
+        """Thu tu mac dinh: bo 3 hanh dong -> ops -> recent/quick -> apps cuoi."""
+        js = JS.read_text(encoding="utf-8")
+        body = js.split("_render_widgets() {", 1)[1].split("this._render_quick_create();", 1)[0]
+        markers = [
+            '"today-focus"',
+            '"needs-attention"',
+            '"reports-charts"',
+            '"giam-sat-van-hanh"',
+            '"recent-documents"',
+            '"quick-create"',
+            '"your-apps"',
+        ]
+        positions = [body.index(marker) for marker in markers]
+        self.assertEqual(positions, sorted(positions))
+        # Khong con migration dat your-apps sau KPI (key v3 = layout moi).
+        self.assertNotIn("predate the upstream apps launcher", js)
 
     def test_ops_widget_has_live_body_and_links(self):
         """O Giam sat khong duoc trong: body lay get_ops_summary + link ve workspace."""
