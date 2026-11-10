@@ -1718,11 +1718,13 @@
     $(document).on("click.st_ops_cards", '#editorjs [number_card_name] .widget-body', function () {
       try {
         if ($(this).closest(".edit-mode").length) return;
-        var want = (frappe.router && frappe.router.slug)
-          ? frappe.router.slug("Gi\u00e1m s\u00e1t v\u1eadn h\u00e0nh")
-          : "giam-sat-van-hanh";
+        // URL canonical dat shell len truoc: /desk/<shell>/<workspace> (VD
+        // smart_edu_core + ten giu dau) nen so khop chuan hoa tren MOI doan,
+        // khong chi route[0] (F3 RICH-FIX 2026-11-10).
+        var want = "giam-sat-van-hanh";
         var route = (frappe.get_route && frappe.get_route()) || [];
-        if (!route.length || route[0] !== want) return;
+        var on_ops_page = route.some(function (seg) { return st_norm_vi(seg) === want; });
+        if (!on_ops_page) return;
         var holder = $(this).closest("[number_card_name]");
         var raw = holder.attr("number_card_name") || "";
         var dest = ST_OPS_CARD_ROUTES[st_norm_vi(raw)];

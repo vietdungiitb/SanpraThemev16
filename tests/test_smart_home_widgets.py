@@ -120,6 +120,25 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         # Khong con migration dat your-apps sau KPI (key v3 = layout moi).
         self.assertNotIn("predate the upstream apps launcher", js)
 
+    def test_trio_cards_share_equal_height(self):
+        """F1: 3 card half cung hang thang day nhau (stretch + full height)."""
+        css = CSS.read_text(encoding="utf-8")
+        self.assertIn("align-items: stretch", css)
+        self.assertIn("height: 100%", css)
+
+    def test_report_charts_deep_link_to_chart_docs(self):
+        """F2: bieu do link thang Dashboard Chart doc, khong ve workspace chung."""
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn('"/desk/dashboard-chart/"', js)
+        self.assertNotIn('route: "/desk/" + slug', js)
+
+    def test_ops_click_matches_any_route_segment(self):
+        """F3: URL canonical co shell dung truoc nen so khop tren moi doan."""
+        root = Path(__file__).resolve().parents[1]
+        desk_js = (root / "sanpra_uiv16" / "public" / "js" / "sanpra_uiv16.js").read_text(encoding="utf-8")
+        self.assertIn("on_ops_page", desk_js)
+        self.assertNotIn("route[0] !== want", desk_js)
+
     def test_ops_widget_has_live_body_and_links(self):
         """O Giam sat khong duoc trong: body lay get_ops_summary + link ve workspace."""
         js = JS.read_text(encoding="utf-8")
