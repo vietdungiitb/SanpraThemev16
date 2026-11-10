@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.14] — 2026-11-10 — Smart Home v3: KPI Nhiệm vụ đang mở đúng theo user
+
+### Fixed
+- KPI "Nhiệm vụ đang mở" giờ gọi API `smart_edu_core.api.ops.get_my_open_tasks`
+  (join ToDo→Task phía server; Task không có field assignee) thay cho
+  `frappe.client.get_count` trên Task toàn site. Lỗi → "—", không hiện số sai.
+
 ## [2.6.13] — 2026-11-10 — Smart Home v2: hết trùng, có charts thật
 
 ### Fixed
