@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.6.12] — 2026-11-10 — Ép trình duyệt nhận fix norm (v78)
+
+### Fixed
+- Bump `sanpra_uiv16.js?v=77→78`: fix norm (PR #44) trùng URL bản cũ nên browser
+  giữ cache, click GSVH vẫn chết dù code đúng đã lên staging.
+
 ## [2.6.11] — 2026-11-10 — Fix thật click GSVH: chuẩn hóa khoảng trắng
 
 ### Fixed
