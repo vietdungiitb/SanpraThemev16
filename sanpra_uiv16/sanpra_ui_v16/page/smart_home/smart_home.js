@@ -904,6 +904,22 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		this.kpis.forEach(function (kpi) {
 			var $num = self.$body
 				.find('[data-widget-id="' + kpi.id + '"] [data-kpi-value]');
+			if (kpi.id === "open-tasks") {
+				if (typeof frappe.xcall !== "function") {
+					$num.text("—");
+					return;
+				}
+				frappe.xcall("smart_edu_core.api.ops.get_my_open_tasks").then(
+					function (result) {
+						var count = result && result.count;
+						$num.text(count !== undefined && count !== null ? count : "—");
+					},
+					function () {
+						$num.text("—");
+					}
+				);
+				return;
+			}
 			frappe.call({
 				method: "frappe.client.get_count",
 				args: { doctype: kpi.dt, filters: kpi.filters },
