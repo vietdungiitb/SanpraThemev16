@@ -313,5 +313,41 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertNotIn("toLocaleDateString(undefined", js)
 
 
+    def test_ops_widget_calls_me_before_site_and_respects_permission(self):
+        """G5: widget ops phải gọi `scope=me` TRƯỚC, và chỉ gọi `scope=site` khi
+        server báo `site_allowed` (server là nguồn sự thật cho quyền).
+
+        Vì sao: gọi `scope=site` vô điều kiện ⇒ user không có viewer role nhận
+        403 ⇒ Frappe bắn toast "Không được phép" mỗi lần mở `/desk` (đo staging
+        12/11/2026 — PermissionError tại `api/dashboard.py:195`).
+        """
+        js = JS.read_text(encoding="utf-8")
+        body = js.split("_refresh_ops() {", 1)[1].split("_refresh_today() {", 1)[0]
+
+        self.assertIn("site_allowed", body)
+        self.assertLess(
+            body.index('scope: "me"'),
+            body.index('scope: "site"'),
+            "phai goi scope=me truoc scope=site",
+        )
+        self.assertLess(
+            body.index("site_allowed"),
+            body.index('scope: "site"'),
+            "phai doc co site_allowed truoc khi goi scope=site",
+        )
+        self.assertEqual(body.count('scope: "site"'), 1, "chi duoc co MOT loi goi scope=site")
+
+    def test_smart_home_marker_html_keeps_page_out_of_local_storage_cache(self):
+        """G8: file `.html` trong thư mục page ép `_dynamic_page=True` ⇒ bypass
+        cache `localStorage` của Frappe (`pageview.js` chỉ cache khi KHÔNG
+        dynamic). Mất file này ⇒ browser giữ JS cũ ⇒ toast 403 quay lại âm thầm.
+        """
+        marker = (
+            ROOT / "sanpra_uiv16" / "sanpra_ui_v16" / "page" / "smart_home" / "smart_home.html"
+        )
+        self.assertTrue(marker.exists(), "thieu file marker .html — JS bi cache trong localStorage")
+        self.assertIn("_dynamic_page", marker.read_text(encoding="utf-8"))
+
+
 if __name__ == "__main__":
     unittest.main()

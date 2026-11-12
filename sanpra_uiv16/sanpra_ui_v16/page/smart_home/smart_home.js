@@ -418,8 +418,9 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	}
 
  	/* ★ Giám sát hệ thống (viewer-only entry to Trung tâm điều hành). Body lay
- 	   `smart_edu_core.api.ops.get_ops_summary` (scope site, fallback me khi 403):
- 	   mini stat + thanh suc khoe job + top loi — chi so dem, khong PII (S7). */
+ 	   `smart_edu_core.api.ops.get_ops_summary` (scope me truoc, scope site chi
+ 	   khi server tra co `site_allowed`): mini stat + thanh suc khoe job + top loi
+ 	   — chi so dem, khong PII (S7). */
  	_ops_widget() {
  		var ws_name = "Gi\u00e1m s\u00e1t v\u1eadn h\u00e0nh";
  		this._ops_workspace_name = ws_name;
@@ -1155,9 +1156,9 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	}
 
 	/* ── 10b. OPS LIVE BODY ────────────────────────────────────────────────────
-	   Mini stat + suc khoe job + top loi tu get_ops_summary (scope site,
-	   fallback me khi 403). Chi so dem, khong PII (S7). Moi o deu la link
-	   nhu KPI Smart Home. */
+	   Mini stat + suc khoe job + top loi tu get_ops_summary (scope me truoc,
+	   scope site chi khi server tra co `site_allowed`). Chi so dem, khong PII (S7).
+	   Moi o deu la link nhu KPI Smart Home. */
 	_refresh_ops() {
 		var $stats = this.$body.find("[data-ops-stats]");
 		if (!$stats.length) return;
@@ -1217,21 +1218,37 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			if ($updated.length) $updated.text(__("Cập nhật") + " " + new Date().toLocaleTimeString());
 		}
 
+		function show_unavailable() {
+			$stats.html('<div class="st-sh-empty"><span>' + __("Ops data unavailable.") + '</span></div>');
+		}
+
 		function render_me() {
 			frappe.xcall("smart_edu_core.api.ops.get_ops_summary", { scope: "me" }).then(
 				function (r) { render(r || {}, false); },
-				function () {
-					$stats.html('<div class="st-sh-empty"><span>' + __("Ops data unavailable.") + '</span></div>');
-				}
+				show_unavailable
 			);
 		}
 		if (typeof frappe.xcall !== "function") {
 			render_me();
 			return;
 		}
-		frappe.xcall("smart_edu_core.api.ops.get_ops_summary", { scope: "site" }).then(
-			function (r) { render(r || {}, true); },
-			render_me
+		/* Gọi scope=me TRƯỚC: server trả `site_allowed` ⇒ biết ngay user có
+		   được gọi scope=site không. Gọi site vô điều kiện ⇒ 403 ⇒ Frappe bắn
+		   toast "Không được phép" cho mọi user không phải viewer (đo staging
+		   12/11/2026 — PermissionError tại api/dashboard.py:195). */
+		frappe.xcall("smart_edu_core.api.ops.get_ops_summary", { scope: "me" }).then(
+			function (r) {
+				r = r || {};
+				if (!r.site_allowed) {
+					render(r, false);
+					return;
+				}
+				frappe.xcall("smart_edu_core.api.ops.get_ops_summary", { scope: "site" }).then(
+					function (s) { render(s || {}, true); },
+					function () { render(r, false); }
+				);
+			},
+			show_unavailable
 		);
 	}
 
