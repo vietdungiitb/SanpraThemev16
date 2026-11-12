@@ -22,6 +22,11 @@
   khóa file marker `smart_home.html` (ép `_dynamic_page=True` ⇒ bypass cache
   `localStorage` — mất file này thì browser giữ JS cũ và toast 403 quay lại
   âm thầm).
+- Sửa test lỗi thời `test_reports_charts_renders_chart_container` (commit
+  `37059f7` đã bỏ biểu đồ khỏi card Báo cáo nhưng không cập nhật test ⇒ 1 fail
+  có sẵn chặn CI Python 3.10/3.14 + Windows của mọi PR sau đó, đo 12/11/2026).
+  Test mới khoá đúng quyết định PM 10/11/2026: **không** biểu đồ, **giữ** 6 link
+  báo cáo.
 
 ## [2.6.14] — 2026-11-10 — Smart Home v3: KPI Nhiệm vụ đang mở đúng theo user
 

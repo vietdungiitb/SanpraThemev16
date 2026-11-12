@@ -281,13 +281,31 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertIn("outstanding_amount", js)
         self.assertIn("overdue tuition fees", js)
 
-    def test_reports_charts_renders_chart_container(self):
-        """Chart that qua frappe.Chart + dashboard_chart.get; thieu -> fallback link."""
+    def test_reports_card_renders_six_links_without_charts(self):
+        """PM 10/11/2026: card "Báo cáo" bỏ biểu đồ, giữ 6 link báo cáo.
+
+        Vì sao test này sửa lại (thay test cũ khóa `frappe.Chart`): commit
+        `37059f7` bỏ biểu đồ khỏi card nhưng **không** cập nhật test cũ ⇒ test
+        đỏ và chặn CI của mọi PR sau đó (đo 12/11/2026: Python 3.10/3.14 +
+        Windows đỏ trên PR #49 vì 1 fail có sẵn này).
+        """
         js = JS.read_text(encoding="utf-8")
-        self.assertIn("frappe.Chart", js)
-        self.assertIn("dashboard_chart.dashboard_chart.get", js)
-        self.assertIn("st-sh-chart-canvas", js)
-        self.assertIn("st-sh-rc-links", js)
+        body = js.split("_render_reports_charts() {", 1)[1].split("_render_attention(", 1)[0]
+
+        # Không vẽ biểu đồ nữa (quyết định PM 10/11/2026).
+        self.assertNotIn("frappe.Chart", body)
+        self.assertNotIn("dashboard_chart.dashboard_chart.get", body)
+        self.assertNotIn("st-sh-chart-canvas", body)
+
+        # Vẫn giữ 6 link báo cáo (route tĩnh, không phụ thuộc dấu tiếng Việt).
+        for route in (
+            "/desk/query-report/hieu-qua-giao-vien",
+            "/desk/query-report/hoc-phi-den-han-hom-nay",
+            "/desk/dashboard-chart/",
+            "/desk/sales-invoice",
+            "/desk/payment-entry",
+        ):
+            self.assertIn(route, body)
 
     def test_apps_grid_filters_technical(self):
         """Luoi apps an 7 tile ky thuat tieng Anh (PM quyet 10/11/2026)."""
