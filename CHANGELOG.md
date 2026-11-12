@@ -1,5 +1,33 @@
 # Changelog
 
+## [2.6.15] — 2026-11-12 — Smart Home: hết toast 403 cho user không có quyền
+
+### Fixed
+- Widget "Giám sát vận hành" (`_refresh_ops`) **không** còn gọi
+  `smart_edu_core.api.ops.get_ops_summary` với `scope:"site"` vô điều kiện.
+  Gọi vô điều kiện ⇒ user không có viewer role nhận **403** ⇒ Frappe bắn toast
+  "Không được phép" **mỗi lần** mở `/desk` (đo staging 12/11/2026 —
+  `PermissionError` tại `smart_edu_core/api/dashboard.py:195`).
+  Nay: gọi `scope:"me"` **trước**, đọc cờ `site_allowed` do **server** trả, và
+  chỉ gọi `scope:"site"` khi cờ là `true`. Server là nguồn sự thật cho quyền
+  ⇒ theme **không** nhân bản danh sách role (gate giữ một chỗ).
+- Fail-safe: response chưa có `site_allowed` (ERP chưa deploy cờ) ⇒ không gọi
+  `scope:"site"` ⇒ widget chỉ hiện phần số cá nhân, **không** có 403/toast.
+
+### Tests
+- `tests/smart_home_ops.test.js` (node --test): nạp `smart_home.js` thật vào
+  `node:vm`, đếm lệnh gọi `frappe.xcall` — user không viewer ⇒ đúng 1 lệnh gọi
+  `scope:"me"`; viewer ⇒ `me` rồi `site`; thiếu cờ ⇒ chỉ `me`.
+- `tests/test_smart_home_widgets.py`: khóa thứ tự `me` → `site` + đọc cờ, và
+  khóa file marker `smart_home.html` (ép `_dynamic_page=True` ⇒ bypass cache
+  `localStorage` — mất file này thì browser giữ JS cũ và toast 403 quay lại
+  âm thầm).
+- Sửa test lỗi thời `test_reports_charts_renders_chart_container` (commit
+  `37059f7` đã bỏ biểu đồ khỏi card Báo cáo nhưng không cập nhật test ⇒ 1 fail
+  có sẵn chặn CI Python 3.10/3.14 + Windows của mọi PR sau đó, đo 12/11/2026).
+  Test mới khoá đúng quyết định PM 10/11/2026: **không** biểu đồ, **giữ** 6 link
+  báo cáo.
+
 ## [2.6.14] — 2026-11-10 — Smart Home v3: KPI Nhiệm vụ đang mở đúng theo user
 
 ### Fixed

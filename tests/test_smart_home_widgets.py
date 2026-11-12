@@ -281,13 +281,31 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertIn("outstanding_amount", js)
         self.assertIn("overdue tuition fees", js)
 
-    def test_reports_charts_renders_chart_container(self):
-        """Chart that qua frappe.Chart + dashboard_chart.get; thieu -> fallback link."""
+    def test_reports_card_renders_six_links_without_charts(self):
+        """PM 10/11/2026: card "Báo cáo" bỏ biểu đồ, giữ 6 link báo cáo.
+
+        Vì sao test này sửa lại (thay test cũ khóa `frappe.Chart`): commit
+        `37059f7` bỏ biểu đồ khỏi card nhưng **không** cập nhật test cũ ⇒ test
+        đỏ và chặn CI của mọi PR sau đó (đo 12/11/2026: Python 3.10/3.14 +
+        Windows đỏ trên PR #49 vì 1 fail có sẵn này).
+        """
         js = JS.read_text(encoding="utf-8")
-        self.assertIn("frappe.Chart", js)
-        self.assertIn("dashboard_chart.dashboard_chart.get", js)
-        self.assertIn("st-sh-chart-canvas", js)
-        self.assertIn("st-sh-rc-links", js)
+        body = js.split("_render_reports_charts() {", 1)[1].split("_render_attention(", 1)[0]
+
+        # Không vẽ biểu đồ nữa (quyết định PM 10/11/2026).
+        self.assertNotIn("frappe.Chart", body)
+        self.assertNotIn("dashboard_chart.dashboard_chart.get", body)
+        self.assertNotIn("st-sh-chart-canvas", body)
+
+        # Vẫn giữ 6 link báo cáo (route tĩnh, không phụ thuộc dấu tiếng Việt).
+        for route in (
+            "/desk/query-report/hieu-qua-giao-vien",
+            "/desk/query-report/hoc-phi-den-han-hom-nay",
+            "/desk/dashboard-chart/",
+            "/desk/sales-invoice",
+            "/desk/payment-entry",
+        ):
+            self.assertIn(route, body)
 
     def test_apps_grid_filters_technical(self):
         """Luoi apps an 7 tile ky thuat tieng Anh (PM quyet 10/11/2026)."""
@@ -311,6 +329,42 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertIn("_site_locale()", js)
         self.assertIn('"vi-VN"', js)
         self.assertNotIn("toLocaleDateString(undefined", js)
+
+
+    def test_ops_widget_calls_me_before_site_and_respects_permission(self):
+        """G5: widget ops phải gọi `scope=me` TRƯỚC, và chỉ gọi `scope=site` khi
+        server báo `site_allowed` (server là nguồn sự thật cho quyền).
+
+        Vì sao: gọi `scope=site` vô điều kiện ⇒ user không có viewer role nhận
+        403 ⇒ Frappe bắn toast "Không được phép" mỗi lần mở `/desk` (đo staging
+        12/11/2026 — PermissionError tại `api/dashboard.py:195`).
+        """
+        js = JS.read_text(encoding="utf-8")
+        body = js.split("_refresh_ops() {", 1)[1].split("_refresh_today() {", 1)[0]
+
+        self.assertIn("site_allowed", body)
+        self.assertLess(
+            body.index('scope: "me"'),
+            body.index('scope: "site"'),
+            "phai goi scope=me truoc scope=site",
+        )
+        self.assertLess(
+            body.index("site_allowed"),
+            body.index('scope: "site"'),
+            "phai doc co site_allowed truoc khi goi scope=site",
+        )
+        self.assertEqual(body.count('scope: "site"'), 1, "chi duoc co MOT loi goi scope=site")
+
+    def test_smart_home_marker_html_keeps_page_out_of_local_storage_cache(self):
+        """G8: file `.html` trong thư mục page ép `_dynamic_page=True` ⇒ bypass
+        cache `localStorage` của Frappe (`pageview.js` chỉ cache khi KHÔNG
+        dynamic). Mất file này ⇒ browser giữ JS cũ ⇒ toast 403 quay lại âm thầm.
+        """
+        marker = (
+            ROOT / "sanpra_uiv16" / "sanpra_ui_v16" / "page" / "smart_home" / "smart_home.html"
+        )
+        self.assertTrue(marker.exists(), "thieu file marker .html — JS bi cache trong localStorage")
+        self.assertIn("_dynamic_page", marker.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":
