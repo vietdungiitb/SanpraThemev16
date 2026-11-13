@@ -1416,8 +1416,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			];
 		}
 		if (!items.length) {
-			$container.html('<div class="st-sh-empty"><span>' + __("Không có báo cáo nào bạn được phép mở.") + '</span></div>');
-			return;
+		return;
 		}
 		$container.html('<div class="st-sh-qc-grid">' + items.map(function (item) {
 			return (
