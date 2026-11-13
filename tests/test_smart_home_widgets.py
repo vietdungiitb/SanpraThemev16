@@ -20,7 +20,8 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertIn("dragstart.st_sh_layout", js)
         self.assertIn("dragover.st_sh_layout", js)
         self.assertIn("drop.st_sh_layout", js)
-        self.assertIn("st_smart_home_layout_v3::", js)
+        self.assertIn("st_smart_home_layout_v4::", js)
+        self.assertNotIn("st_smart_home_layout_v3::", js)
         self.assertNotIn("st_smart_home_layout_v2::", js)
 
     def test_layout_has_customize_reset_and_accessible_move_controls(self):
@@ -89,11 +90,11 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         )
 
     def test_personal_kpis_render_before_system_kpis(self):
-        """Lớp 1 (việc cá nhân) lên trước lớp hệ thống trong default order."""
+        """Layout mac dinh theo ho so: KPI len truoc, bang sau, launcher cuoi."""
         js = JS.read_text(encoding="utf-8")
-        self.assertIn('personal_ids = ["my-todos", "open-tasks"]', js)
-        self.assertIn("personal_ids.indexOf", js)
-        self.assertIn("Layer 1 (personal)", js)
+        self.assertIn("this.profile && Array.isArray(this.profile.kpis)", js)
+        self.assertIn("profile.rows", js)
+        self.assertIn("_render_widgets_legacy", js)
 
     def test_apps_grid_shows_12_and_ops_widget_is_viewer_gated(self):
         js = JS.read_text(encoding="utf-8")
@@ -103,21 +104,13 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertIn("self._ops_workspace_name", js)
 
     def test_default_order_follows_user_priority(self):
-        """Thu tu mac dinh: bo 3 hanh dong -> ops -> recent/quick -> apps cuoi."""
+        """Layout mac dinh theo ho so: rows tu server, khong hardcode thu tu."""
         js = JS.read_text(encoding="utf-8")
         body = js.split("_render_widgets() {", 1)[1].split("this._render_quick_create();", 1)[0]
-        markers = [
-            '"today-focus"',
-            '"needs-attention"',
-            '"reports-charts"',
-            '"giam-sat-van-hanh"',
-            '"recent-documents"',
-            '"quick-create"',
-            '"your-apps"',
-        ]
-        positions = [body.index(marker) for marker in markers]
-        self.assertEqual(positions, sorted(positions))
-        # Khong con migration dat your-apps sau KPI (key v3 = layout moi).
+        self.assertIn("profile.rows", body)
+        self.assertIn("item.kind === \"kpi\"", body)
+        self.assertIn("_profile", js)
+        # Khong con migration dat your-apps sau KPI (key v4 = layout moi).
         self.assertNotIn("predate the upstream apps launcher", js)
 
     def test_trio_cards_share_equal_height(self):
