@@ -388,7 +388,7 @@
 /* ── PANEL WIDGETS ───────────────────────────────────────────────────────────
    Recent, Quick Create, and Attention reuse this shared card frame. */
 .st-sh-card {
-  min-height: 265px;
+  min-height: 0;
   height: 100%;
   overflow: hidden;
   border: 1px solid var(--border-color, var(--sanpra-c-e5e9ee));
@@ -443,7 +443,7 @@
 }
 
 .st-sh-card-body {
-  min-height: 194px;
+  min-height: 0;
 }
 
 /* The upstream apps launcher participates in the customizable widget grid. */

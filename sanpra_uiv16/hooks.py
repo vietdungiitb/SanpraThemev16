@@ -1,4 +1,4 @@
-# ── APP METADATA ───────────────────────────────────────────────────────────────
+﻿# ── APP METADATA ───────────────────────────────────────────────────────────────
 app_name = "sanpra_uiv16"
 app_title = "Sanpra UI V16"
 app_publisher = "Sanpra"
@@ -22,7 +22,7 @@ app_include_css = [
     "/assets/sanpra_uiv16/css/sanpra_uiv16.css?v=82",
     "/assets/sanpra_uiv16/css/sidebar.css?v=43",
     "/assets/sanpra_uiv16/css/command_palette.css?v=8",
-    "/assets/sanpra_uiv16/css/smart_home.css?v=15",
+    "/assets/sanpra_uiv16/css/smart_home.css?v=16",
     "/assets/sanpra_uiv16/css/notification_center.css?v=6",
     "/assets/sanpra_uiv16/css/polish.css?v=4",
     "/assets/sanpra_uiv16/css/dark_mode.css?v=18",

@@ -36,7 +36,8 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		this.wrapper = $(wrapper);
 		this.$body = this.wrapper.find(".page-content");
 		this.user = (frappe.session && frappe.session.user) || "Guest";
-		this.storage_key = "st_smart_home_layout_v3::" + this.user;
+		this.storage_key = "st_smart_home_layout_v4::" + this.user;
+		this.profile = null;
 		this.editing = false;
 		this.dragged = null;
 		this.library_drag_id = null;
@@ -50,10 +51,27 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		if (this._built) return;
 		this._built = true;
 		this._build_shell();
-		this._render_widgets();
-		this._restore_layout();
-		this._bind_layout_events();
-		this.refresh();
+		var self = this;
+		var $grid = this.$body.find("#st-sh-widget-grid");
+		$grid.html('<div class="st-sh-spin"></div>');
+		this._load_profile().then(function () {
+			$grid.empty();
+			self._render_widgets();
+			self._restore_layout();
+			self._bind_layout_events();
+			self.refresh();
+		});
+	}
+
+	/* Tải hồ sơ vai trò từ server (server là nguồn sự thật — AGENTS.md §2.1).
+	   Nếu lỗi ⇒ profile=null ⇒ render theo fallback cũ (không trắng trang). */
+	_load_profile() {
+		var self = this;
+		if (typeof frappe.xcall !== "function") return Promise.resolve(null);
+		return frappe.xcall("smart_edu_core.api.home.get_home_profile").then(
+			function (r) { self.profile = r || null; return self.profile; },
+			function () { self.profile = null; return null; }
+		);
 	}
 
 	/* Update data in place without rebuilding or reordering widget nodes. */
@@ -185,14 +203,76 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	}
 
 	/* ── 4. WIDGET REGISTRY / FACTORIES ──────────────────────────────────────
-	   Permission-safe KPI definitions and standard panels share one grid. */
+	   Permission-safe KPI definitions and standard panels share one grid.
+	   Layout mac dinh theo ho so (server la nguon su that — AGENTS.md §2.1):
+	   moi hang can du 12 cot, khong de khoang trong du thua. */
 	_render_widgets() {
 		var $grid = this.$body.find("#st-sh-widget-grid");
 		var self = this;
 		var hidden = this.state.hidden || [];
+		var profile = this.profile || {};
 
-		/* Layer 1 (personal): personal KPIs come first so the daily routine is
-		   visible immediately; system KPIs follow so they stay deliberate. */
+		/* Fallback khi profile chua tai duoc (offline / loi mang): giu nguyen
+		   hanh vi cu de trang khong trang. */
+		if (!profile.rows) {
+			this._render_widgets_legacy();
+			return;
+		}
+
+		var kpis = profile.kpis || [];
+		var widgets = profile.widgets || [];
+		var widgetMeta = {};
+		widgets.forEach(function (w) { widgetMeta[w.id] = w; });
+		var kpiMeta = {};
+		kpis.forEach(function (k) { kpiMeta[k.id] = k; });
+
+		function panelBody(id) {
+			if (id === "today-focus") return '<div id="st-sh-today" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (id === "needs-attention") return '<div id="st-sh-pending" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (id === "reports-charts") return '<div id="st-sh-rc" class="st-sh-card-body"></div>';
+			if (id === "recent-documents") return '<div id="st-sh-recent" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (id === "quick-create") return '<div id="st-sh-qc" class="st-sh-card-body"></div>';
+			return '<div class="st-sh-card-body"></div>';
+		}
+
+		(profile.rows || []).forEach(function (row) {
+			(row || []).forEach(function (item) {
+				if (!item || hidden.indexOf(item.id) !== -1) return;
+				if (item.kind === "kpi") {
+					var kpi = kpiMeta[item.id];
+					if (kpi) $grid.append(self._kpi_widget(kpi, item.size || kpi.size));
+				} else if (item.id === "giam-sat-van-hanh") {
+					$grid.append(self._ops_widget());
+				} else if (item.id === "your-apps") {
+					$grid.append(self._apps_widget());
+				} else {
+					var w = widgetMeta[item.id];
+					if (w) $grid.append(self._panel_widget(
+						w.id, w.title, w.subtitle, w.icon, item.size || w.size, panelBody(w.id)));
+				}
+			});
+		});
+
+		(this.state.added || []).forEach(function (id) {
+			var template = self._find_template(id);
+			if (template && hidden.indexOf(id) === -1) $grid.append(self._template_widget(template));
+		});
+		(this.state.custom || []).forEach(function (widget) {
+			if (hidden.indexOf(widget.id) === -1) $grid.append(self._custom_widget(widget));
+		});
+
+		this._render_quick_create();
+		this._render_reports_charts();
+		this._render_apps_grid();
+		this._start_live_widgets();
+	}
+
+	/* Ban cu (fallback) — giu nguyen hanh vi khi profile chua tai duoc. */
+	_render_widgets_legacy() {
+		var $grid = this.$body.find("#st-sh-widget-grid");
+		var self = this;
+		var hidden = this.state.hidden || [];
+
 		var personal_ids = ["my-todos", "open-tasks"];
 		this.kpis
 			.slice()
@@ -203,65 +283,29 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				if (hidden.indexOf(kpi.id) === -1) $grid.append(self._kpi_widget(kpi));
 			});
 
-		/* Thu tu mac dinh theo muc do uu tien (RICH-ORDER 2026-11-10):
-		   bo 3 hanh dong -> giam sat he thong -> tiep tuc viec do/tao moi
-		   -> launcher xuong cuoi. */
 		if (hidden.indexOf("today-focus") === -1) $grid.append(
-			this._panel_widget(
-				"today-focus",
-				__("My Day"),
-				__("Your todos, events and notifications"),
-				"calendar",
-				"half",
-				'<div id="st-sh-today" class="st-sh-card-body"><div class="st-sh-spin"></div></div>'
-			)
+			this._panel_widget("today-focus", __("My Day"), __("Your todos, events and notifications"), "calendar", "half",
+				'<div id="st-sh-today" class="st-sh-card-body"><div class="st-sh-spin"></div></div>')
 		);
 		if (hidden.indexOf("needs-attention") === -1) $grid.append(
-			this._panel_widget(
-				"needs-attention",
-				__("Needs Attention"),
-				__("Items waiting on action"),
-				"warning",
-				"half",
-				'<div id="st-sh-pending" class="st-sh-card-body"><div class="st-sh-spin"></div></div>'
-			)
+			this._panel_widget("needs-attention", __("Needs Attention"), __("Items waiting on action"), "warning", "half",
+				'<div id="st-sh-pending" class="st-sh-card-body"><div class="st-sh-spin"></div></div>')
 		);
 		if (hidden.indexOf("reports-charts") === -1) $grid.append(
-			this._panel_widget(
-				"reports-charts",
-				__("Reports"),
-				__("One click to the ops reports"),
-				"chart",
-				"half",
-				'<div id="st-sh-rc" class="st-sh-card-body"></div>'
-			)
+			this._panel_widget("reports-charts", __("Reports"), __("One click to the ops reports"), "chart", "half",
+				'<div id="st-sh-rc" class="st-sh-card-body"></div>')
 		);
 
-		/* Layer 3 (system, viewer-only): ops entry, revealed only if the pool
-		   let this user see the workspace (same check as header ops icon). */
 		if (hidden.indexOf("giam-sat-van-hanh") === -1) $grid.append(this._ops_widget());
 
 		if (hidden.indexOf("recent-documents") === -1) $grid.append(
-			this._panel_widget(
-				"recent-documents",
-				__("Recent Documents"),
-				__("Records you opened lately"),
-				"clock",
-				"wide",
-				'<div id="st-sh-recent" class="st-sh-card-body"><div class="st-sh-spin"></div></div>'
-			)
+			this._panel_widget("recent-documents", __("Recent Documents"), __("Records you opened lately"), "clock", "wide",
+				'<div id="st-sh-recent" class="st-sh-card-body"><div class="st-sh-spin"></div></div>')
 		);
 		if (hidden.indexOf("quick-create") === -1) $grid.append(
-			this._panel_widget(
-				"quick-create",
-				__("Quick Create"),
-				__("Start something new"),
-				"add",
-				"half",
-				'<div id="st-sh-qc" class="st-sh-card-body"></div>'
-			)
+			this._panel_widget("quick-create", __("Quick Create"), __("Start something new"), "add", "half",
+				'<div id="st-sh-qc" class="st-sh-card-body"></div>')
 		);
-		/* Launcher xuong cuoi: tan suat dung thap khi da quen route, sidebar da cover. */
 		if (hidden.indexOf("your-apps") === -1) $grid.append(this._apps_widget());
 
 		(this.state.added || []).forEach(function (id) {
@@ -364,8 +408,10 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		);
 	}
 
-	/* KPI content remains a normal Desk link outside customization mode. */
-	_kpi_widget(kpi) {
+	/* KPI content remains a normal Desk link outside customization mode.
+	   `size` do server (home_catalog) quyet dinh de hang can du 12 cot. */
+	_kpi_widget(kpi, size) {
+		size = size || "quarter";
 		var inner =
 			'<a href="' + kpi.route + '" class="st-sh-kpi-link" tabindex="0">' +
 				'<div class="st-sh-kpi-top">' +
@@ -378,7 +424,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 
 		return this._widget_shell(
 			kpi.id,
-			"quarter",
+			size,
 			inner,
 			"st-sh-kpi st-sh-tone-" + kpi.accent
 		);
@@ -902,9 +948,20 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	   Requests are independent so one failed DocType cannot block other KPIs. */
 	_refresh_kpis() {
 		var self = this;
-		this.kpis.forEach(function (kpi) {
+		var kpis = (this.profile && Array.isArray(this.profile.kpis) && this.profile.kpis.length)
+			? this.profile.kpis
+			: this.kpis;
+		kpis.forEach(function (kpi) {
 			var $num = self.$body
 				.find('[data-widget-id="' + kpi.id + '"] [data-kpi-value]');
+			if (kpi.kind === "method" && kpi.method) {
+				if (typeof frappe.xcall !== "function") { $num.text("—"); return; }
+				frappe.xcall(kpi.method).then(
+					function (result) { $num.text(result !== undefined && result !== null ? result : "—"); },
+					function () { $num.text("—"); }
+				);
+				return;
+			}
 			if (kpi.id === "open-tasks") {
 				if (typeof frappe.xcall !== "function") {
 					$num.text("—");
@@ -992,15 +1049,20 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	   Static session permissions determine a compact, predictable action list. */
 	_render_quick_create() {
 		var $container = this.$body.find("#st-sh-qc");
-		var can_create = ((frappe.boot && frappe.boot.user && frappe.boot.user.can_create) || []);
-		var order = [
-			"Sales Invoice", "Quotation", "Sales Order", "Purchase Order",
-			"Purchase Invoice", "Expense Claim", "Leave Application",
-			"Customer", "Supplier", "Task", "ToDo",
-		];
-		var items = order.filter(function (doctype) {
-			return can_create.indexOf(doctype) !== -1;
-		}).slice(0, 6);
+		var items = [];
+		if (this.profile && Array.isArray(this.profile.quick_create) && this.profile.quick_create.length) {
+			items = this.profile.quick_create.map(function (q) { return q.dt; }).slice(0, 6);
+		} else {
+			var can_create = ((frappe.boot && frappe.boot.user && frappe.boot.user.can_create) || []);
+			var order = [
+				"Sales Invoice", "Quotation", "Sales Order", "Purchase Order",
+				"Purchase Invoice", "Expense Claim", "Leave Application",
+				"Customer", "Supplier", "Task", "ToDo",
+			];
+			items = order.filter(function (doctype) {
+				return can_create.indexOf(doctype) !== -1;
+			}).slice(0, 6);
+		}
 
 		if (!items.length) {
 			$container.html('<div class="st-sh-empty"><span>' + __("No create permissions found.") + '</span></div>');
@@ -1050,6 +1112,13 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			var visible = (pages || []).filter(function (p) {
 				return !isHidden(p);
 			});
+			/* Loc theo ho so (server la nguon su that): chi hien workspace lien quan
+			   vai tro. Neu profile chua tai duoc ⇒ giu hanh vi cu (12 tile). */
+			if (self.profile && Array.isArray(self.profile.workspaces) && self.profile.workspaces.length) {
+				var allowed = {};
+				self.profile.workspaces.forEach(function (w) { allowed[w.label] = true; });
+				visible = visible.filter(function (p) { return !!allowed[p.name] || !!allowed[p.title]; });
+			}
 			/* Hiển thị 12 mục đầu (tăng từ 8) — tổng workspace của hệ thống
 			   (~10) phải lọt hết vào lưới mà cần cuộn — `slice(0, 8)` cũ khiến
 			   "Giám sát vận hành" (sequence 21) rớt khỏi 8 ô đầu. */
@@ -1330,16 +1399,25 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	_render_reports_charts() {
 		var $container = this.$body.find("#st-sh-rc");
 		if (!$container.length) return;
-		/* 6 hang muc bao cao — khong ve bieu do (user: loai bo bieu do,
-		   giu 6 link bao cao). */
-		var items = [
-			{ label: __("Hiệu quả giáo viên"), route: "/desk/query-report/hieu-qua-giao-vien" },
-			{ label: __("Học phí đến hạn hôm nay"), route: "/desk/query-report/hoc-phi-den-han-hom-nay" },
-			{ label: __("Doanh thu theo tháng"), route: "/desk/dashboard-chart/" + encodeURIComponent("Doanh thu theo tháng") },
-			{ label: __("Công nợ theo tháng"), route: "/desk/dashboard-chart/" + encodeURIComponent("Công nợ theo tháng") },
-			{ label: __("Hóa đơn học phí"), route: "/desk/sales-invoice" },
-			{ label: __("Phiếu thu"), route: "/desk/payment-entry" },
-		];
+		var items = [];
+		if (this.profile && Array.isArray(this.profile.reports) && this.profile.reports.length) {
+			items = this.profile.reports.map(function (r) {
+				return { label: r.label, route: r.route };
+			});
+		} else {
+			/* Fallback khi profile chua tai duoc (offline). */
+			items = [
+				{ label: __("Hiệu quả giáo viên"), route: "/desk/query-report/hieu-qua-giao-vien" },
+				{ label: __("Học phí đến hạn hôm nay"), route: "/desk/query-report/hoc-phi-den-han-hom-nay" },
+				{ label: __("Doanh thu theo tháng"), route: "/desk/dashboard-chart/" + encodeURIComponent("Doanh thu theo tháng") },
+				{ label: __("Công nợ theo tháng"), route: "/desk/dashboard-chart/" + encodeURIComponent("Công nợ theo tháng") },
+				{ label: __("Hóa đơn học phí"), route: "/desk/sales-invoice" },
+				{ label: __("Phiếu thu"), route: "/desk/payment-entry" },
+			];
+		}
+		if (!items.length) {
+		return;
+		}
 		$container.html('<div class="st-sh-qc-grid">' + items.map(function (item) {
 			return (
 				'<a href="' + item.route + '" class="st-sh-qc-item">' +
