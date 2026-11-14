@@ -915,22 +915,18 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	_restore_layout() {
 		var $grid = this.$body.find("#st-sh-widget-grid");
 		var order = Array.isArray(this.state.order) ? this.state.order : [];
-		var known = {};
-		$grid.children(".st-sh-widget").each(function () {
-			known[this.dataset.widgetId] = this;
-		});
-		order.forEach(function (id) {
-			if (known[id]) $grid.append(known[id]);
-		});
-
-		/* v3 key = layout moi hoan toan, khong con saved order cu de migrate:
-		   DOM order o _render_widgets da la thu tu uu tien. */
-
-		/* Other newly-added or newly-permitted widgets append instead of
-		   disappearing from an older saved layout that does not know their IDs. */
-		Object.keys(known).forEach(function (id) {
-			if (order.indexOf(id) === -1) $grid.append(known[id]);
-		});
+		if (order.length) {
+			var known = {};
+			$grid.children(".st-sh-widget").each(function () {
+				known[this.dataset.widgetId] = this;
+			});
+			order.forEach(function (id) {
+				if (known[id]) $grid.append(known[id]);
+			});
+			Object.keys(known).forEach(function (id) {
+				if (order.indexOf(id) === -1) $grid.append(known[id]);
+			});
+		}
 
 		var sizes = this.state.sizes || {};
 		var self = this;

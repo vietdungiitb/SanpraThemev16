@@ -42,6 +42,7 @@ class HomeSidebarTest(unittest.TestCase):
         self.assertIn(("Workspace", "Giám sát vận hành"), targets)
         self.assertIn(("Workspace", "Giáo dục thông minh"), targets)
         self.assertIn(("Page", "all-apps"), targets)
+        self.assertNotIn(("DocType", "Lead"), targets)
         self.assertNotIn(("DocType", "Theme Settings"), targets)
         self.assertNotIn(("Page", "theme-studio"), targets)
 

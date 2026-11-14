@@ -29,19 +29,19 @@
 
     /* Hide Frappe 16 section headers left empty after RBAC filters their links. */
     _hide_empty_sections: function () {
-      var containers = document.querySelectorAll(".body-sidebar-container .sidebar-item-container");
+      var containers = document.querySelectorAll(".body-sidebar-container .sidebar-item-container.section-item");
       containers.forEach(function (sec) {
-        var nested = sec.querySelector(".sidebar-child-item.nested-container");
+        var nested = sec.querySelector(":scope > .sidebar-child-item.nested-container");
         if (!nested) return;
         var hasVisibleChild = Array.prototype.some.call(nested.children || [], function (child) {
           if (child.classList.contains("hide") || child.style.display === "none") return false;
           return true;
         });
         if (!hasVisibleChild) {
-          sec.style.display = "none";
+          sec.style.setProperty("display", "none", "important");
           sec.setAttribute("data-st-empty-section", "1");
         } else if (sec.getAttribute("data-st-empty-section") === "1") {
-          sec.style.display = "";
+          sec.style.removeProperty("display");
           sec.removeAttribute("data-st-empty-section");
         }
       });
