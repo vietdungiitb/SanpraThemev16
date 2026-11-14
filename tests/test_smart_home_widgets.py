@@ -60,6 +60,24 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertIn(".st-sh-library", css)
         self.assertIn(".st-sh-builder", css)
 
+    def test_moi_panel_id_moi_deu_co_container(self):
+        """S1-S4: moi panel id trong ho so vai tro phai co container rieng
+        va co renderer — khong duoc tra '<div class=\"st-sh-card-body\"></div>'
+        rong cho panel id moi (bug 14/11/2026: 6/7 the rong)."""
+        js = JS.read_text(encoding="utf-8")
+
+        panel_ids = [
+            "todo-list", "attention-leave", "attention-money", "recent",
+            "reports", "workspaces", "shortcuts", "quick-create", "ops",
+            "new-students", "graduated-students", "risk-students", "open-invoices",
+        ]
+        for pid in panel_ids:
+            self.assertIn(pid, js, f"panel id {pid!r} khong xuat hien trong JS")
+
+        self.assertIn("_render_docs_list_panels", js)
+        self.assertIn("_render_shortcuts_panel", js)
+        self.assertIn("_empty_state", js)
+
     def test_custom_widgets_are_saved_per_user(self):
         js = JS.read_text(encoding="utf-8")
 

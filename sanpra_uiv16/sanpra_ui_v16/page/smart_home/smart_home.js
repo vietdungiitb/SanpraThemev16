@@ -79,7 +79,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		if (!this._built) return;
 		this._refresh_kpis();
 		this._refresh_recent();
-		this._refresh_pending();
+		this._refresh_pending(this._attention_checks);
 		this._refresh_ops();
 		this._refresh_today();
 	}
@@ -227,11 +227,23 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		kpis.forEach(function (k) { kpiMeta[k.id] = k; });
 
 		function panelBody(id) {
+			/* Bridge id moi -> container id ma cac renderer cu da dung (js:996-1429).
+			   Khong doi container id de cac ham render cu (refresh/today/pending/...)
+			   van tim duoc dung phan tu sau khi build xong. */
+			if (id === "todo-list") return '<div id="st-sh-today" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (id === "attention-leave" || id === "attention-money") return '<div id="st-sh-pending" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (id === "reports") return '<div id="st-sh-rc" class="st-sh-card-body"></div>';
+			if (id === "recent") return '<div id="st-sh-recent" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (id === "quick-create") return '<div id="st-sh-qc" class="st-sh-card-body"></div>';
+			if (id === "workspaces") return '<div id="st-sh-apps" class="st-sh-apps-body"><div class="st-sh-spin"></div></div>';
+			if (id === "shortcuts") return '<div id="st-sh-shortcuts" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (id === "ops") return '<div id="st-sh-ops" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (id === "new-students" || id === "graduated-students" || id === "risk-students" || id === "open-invoices") return '<div id="st-sh-panel-' + id + '" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			/* legacy id giu nguyen hanh vi cu */
 			if (id === "today-focus") return '<div id="st-sh-today" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
 			if (id === "needs-attention") return '<div id="st-sh-pending" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
 			if (id === "reports-charts") return '<div id="st-sh-rc" class="st-sh-card-body"></div>';
 			if (id === "recent-documents") return '<div id="st-sh-recent" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
-			if (id === "quick-create") return '<div id="st-sh-qc" class="st-sh-card-body"></div>';
 			return '<div class="st-sh-card-body"></div>';
 		}
 
@@ -241,7 +253,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				if (item.kind === "kpi") {
 					var kpi = kpiMeta[item.id];
 					if (kpi) $grid.append(self._kpi_widget(kpi, item.size || kpi.size));
-				} else if (item.id === "giam-sat-van-hanh") {
+				} else if (item.id === "ops" || item.id === "giam-sat-van-hanh") {
 					$grid.append(self._ops_widget());
 				} else if (item.id === "your-apps") {
 					$grid.append(self._apps_widget());
@@ -261,9 +273,20 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			if (hidden.indexOf(widget.id) === -1) $grid.append(self._custom_widget(widget));
 		});
 
+		this._docs_list_sources = [];
+		this._attention_sources = [];
+		var self = this;
+		(profile.widgets || []).forEach(function (w) {
+			if (w.kind === "docs_list") self._docs_list_sources.push({ id: w.id, source: w.source || {} });
+			if (w.kind === "attention") self._attention_sources.push({ id: w.id, source: w.source || {} });
+		});
+		this._attention_checks = (this._attention_sources.length && this._attention_sources[0].source.items) ? this._attention_sources[0].source.items : null;
+
 		this._render_quick_create();
 		this._render_reports_charts();
 		this._render_apps_grid();
+		this._render_docs_list_panels();
+		this._render_shortcuts_panel();
 		this._start_live_widgets();
 	}
 
@@ -1080,6 +1103,79 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		}).join("") + '</div>');
 	}
 
+	/* ── 9b. DOCS LIST PANELS ────────────────────────────────────────────────
+	   Render danh sach theo `source` server gui (dt/fields/filters/order_by/limit).
+	   Fail-closed: PermissionError / loi mang => empty state, khong toast do. */
+	_render_docs_list_panels() {
+		var self = this;
+		var sources = this._docs_list_sources || [];
+		if (!sources.length) return;
+		sources.forEach(function (entry) {
+			var $container = self.$body.find("#st-sh-panel-" + entry.id);
+			if (!$container.length) return;
+			var source = entry.source || {};
+			var dt = source.dt;
+			if (!dt) { $container.html(self._empty_state()); return; }
+			frappe.call({
+				method: "frappe.client.get_list",
+				args: {
+					doctype: dt,
+					fields: source.fields || ["name"],
+					filters: source.filters || {},
+					limit_page_length: source.limit || 5,
+					order_by: source.order_by || "modified desc",
+				},
+				callback: function (response) {
+					var rows = response.message || [];
+					if (!rows.length) { $container.html(self._empty_state()); return; }
+					var fields = source.fields || ["name"];
+					var html = '<div class="st-sh-docs-list">';
+					rows.forEach(function (row) {
+						var title = row[fields[0]] || row.name;
+						var sub = fields.length > 1 ? (row[fields[1]] || "") : "";
+						var url = "/desk/" + frappe.router.slug(dt) + "/" + encodeURIComponent(row.name || row[fields[0]]);
+						html += '<a href="' + url + '" class="st-sh-pending-row">' +
+							'<span class="st-sh-doc-copy">' +
+								'<span class="st-sh-doc-name">' + self._esc(title) + '</span>' +
+								(sub ? '<span class="st-sh-doc-dt">' + self._esc(sub) + '</span>' : '') +
+							'</span>' +
+							'<span class="st-sh-row-arrow" aria-hidden="true">&rarr;</span>' +
+						'</a>';
+					});
+					html += '</div>';
+					$container.html(html);
+				},
+				error: function () {
+					$container.html(self._empty_state());
+				},
+			});
+		});
+	}
+
+	/* ── 9c. SHORTCUTS PANEL ────────────────────────────────────────────────
+	   Render lenh nhanh tu profile.shortcuts (server da kh? trung label). */
+	_render_shortcuts_panel() {
+		var $container = this.$body.find("#st-sh-shortcuts");
+		if (!$container.length) return;
+		var items = (this.profile && Array.isArray(this.profile.shortcuts)) ? this.profile.shortcuts : [];
+		if (!items.length) { $container.html(this._empty_state()); return; }
+		var html = '<div class="st-sh-qc-grid">' + items.slice(0, 8).map(function (item) {
+			return (
+				'<a href="' + item.route + '" class="st-sh-qc-item">' +
+					'<span class="st-sh-qc-plus">&rarr;</span>' +
+					'<span>' + item.label + '</span>' +
+				'</a>'
+			);
+		}).join("") + '</div>';
+		$container.html(html);
+	}
+
+	/* ── 9d. EMPTY STATE CHUNG ─────────────────────────────────────────────── */
+	_empty_state() {
+		return '<div class="st-sh-all-clear"><span class="st-sh-clear-check">—</span>' +
+			'<div><strong>' + __("No data yet") + '</strong></div></div>';
+	}
+
 	/* Reuse module_cards.js so Today's View and All Apps stay identical. */
 	_render_apps_grid() {
 		var $row = this.$body.find("#st-sh-apps");
@@ -1153,10 +1249,10 @@ sanpra_uiv16.SmartHome = class SmartHome {
 
 	/* ── 10. NEEDS ATTENTION ─────────────────────────────────────────────────
 	   Permission-safe counts run in parallel and render as one settled batch. */
-	_refresh_pending() {
+	_refresh_pending(checks) {
 		var $container = this.$body.find("#st-sh-pending");
 		var can_read = ((frappe.boot && frappe.boot.user && frappe.boot.user.can_read) || []);
-		var checks = [
+		var default_checks = [
 			{
 				dt: "Sales Invoice",
 				filters: { status: "Overdue", docstatus: 1 },
@@ -1189,7 +1285,20 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				label: __("{0} expense claims pending"),
 				route: "/desk/expense-claim",
 			},
-		].filter(function (check) {
+		];
+		if (checks && checks.length) {
+			checks = checks.map(function (it) {
+				return {
+					dt: it.dt,
+					filters: it.filters || {},
+					label: it.label || it.dt,
+					route: it.route || ("/desk/" + frappe.router.slug(it.dt)),
+				};
+			});
+		} else {
+			checks = default_checks;
+		}
+		checks = checks.filter(function (check) {
 			return can_read.indexOf(check.dt) !== -1;
 		});
 
