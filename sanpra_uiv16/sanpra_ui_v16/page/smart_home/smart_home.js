@@ -238,7 +238,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			if (id === "workspaces") return '<div id="st-sh-apps" class="st-sh-apps-body"><div class="st-sh-spin"></div></div>';
 			if (id === "shortcuts") return '<div id="st-sh-shortcuts" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
 			if (id === "ops") return '<div id="st-sh-ops" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
-			if (id === "new-students" || id === "graduated-students" || id === "risk-students" || id === "open-invoices") return '<div id="st-sh-panel-' + id + '" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (id === "new-students" || id === "graduated-students" || id === "risk-students" || id === "open-invoices" || id === "my-classes" || id === "my-timetable" || id === "my-courses" || id === "events") return '<div id="st-sh-panel-' + id + '" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
 			/* legacy id giu nguyen hanh vi cu */
 			if (id === "today-focus") return '<div id="st-sh-today" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
 			if (id === "needs-attention") return '<div id="st-sh-pending" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
