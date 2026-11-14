@@ -377,6 +377,16 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertTrue(marker.exists(), "thieu file marker .html — JS bi cache trong localStorage")
         self.assertIn("_dynamic_page", marker.read_text(encoding="utf-8"))
 
+    def test_admin_chrome_and_all_apps_link_are_permission_gated(self):
+        """Khong ve nut Tuy chinh bo cuc cho non-admin va an /desk/all-apps khi thieu quyen Page."""
+        js = JS.read_text(encoding="utf-8")
+        shell = js.split("_build_shell() {", 1)[1].split("_widget_library_markup() {", 1)[0]
+        self.assertIn("this._is_admin_role()", shell)
+        self.assertIn("this._can_read_page()", shell)
+        self.assertIn("st-sh-customize", shell)
+        self.assertIn("/desk/all-apps", shell)
+        self.assertIn('can_read("Page")', js)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -84,6 +84,19 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		this._refresh_today();
 	}
 
+	/* An nut tuy chinh bo cuc cho non-admin va an link /desk/all-apps khi user khong co quyen Page. */
+	_is_admin_role() {
+		var user = (frappe.session && frappe.session.user) || "";
+		if (user === "Administrator") return true;
+		var roles = frappe.user_roles || [];
+		return roles.indexOf("System Manager") !== -1 || roles.indexOf("Edu Administrator") !== -1;
+	}
+
+	_can_read_page() {
+		if (this._is_admin_role()) return true;
+		return Boolean(frappe.model && frappe.model.can_read && frappe.model.can_read("Page"));
+	}
+
 	/* ── 3. PAGE SHELL ────────────────────────────────────────────────────────
 	   The greeting is fixed page chrome; everything below it is a widget. */
 	_build_shell() {
@@ -106,6 +119,24 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			day: "numeric",
 		});
 
+		var layout_controls = this._is_admin_role() ? (
+			'<button class="btn btn-default btn-sm st-sh-add-widgets" type="button">' +
+				this._icon("add", "sm") + '<span>' + __("Add widgets") + '</span>' +
+			'</button>' +
+			'<button class="btn btn-default btn-sm st-sh-reset" type="button">' +
+				this._icon("refresh", "sm") + '<span>' + __("Reset") + '</span>' +
+			'</button>' +
+			'<button class="btn btn-primary btn-sm st-sh-customize" type="button" aria-pressed="false">' +
+				this._icon("edit", "sm") +
+				'<span class="st-sh-customize-label">' + __("Customize layout") + '</span>' +
+			'</button>'
+		) : "";
+		var all_ws_link = this._can_read_page() ? (
+			'<a href="/desk/all-apps" class="st-sh-all-ws">' +
+				__("All Workspaces") + ' <span aria-hidden="true">&rarr;</span>' +
+			'</a>'
+		) : "";
+
 		this.$body.html(
 			'<main class="st-smart-home">' +
 				'<header class="st-sh-header">' +
@@ -118,19 +149,8 @@ sanpra_uiv16.SmartHome = class SmartHome {
 					'</div>' +
 					'<div class="st-sh-header-actions">' +
 						'<span class="st-sh-save-state" role="status" aria-live="polite"></span>' +
-						'<button class="btn btn-default btn-sm st-sh-add-widgets" type="button">' +
-							this._icon("add", "sm") + '<span>' + __("Add widgets") + '</span>' +
-						'</button>' +
-						'<button class="btn btn-default btn-sm st-sh-reset" type="button">' +
-							this._icon("refresh", "sm") + '<span>' + __("Reset") + '</span>' +
-						'</button>' +
-						'<button class="btn btn-primary btn-sm st-sh-customize" type="button" aria-pressed="false">' +
-							this._icon("edit", "sm") +
-							'<span class="st-sh-customize-label">' + __("Customize layout") + '</span>' +
-						'</button>' +
-						'<a href="/desk/all-apps" class="st-sh-all-ws">' +
-							__("All Workspaces") + ' <span aria-hidden="true">&rarr;</span>' +
-						'</a>' +
+						layout_controls +
+						all_ws_link +
 					'</div>' +
 				'</header>' +
 				this._widget_library_markup() +
@@ -1159,11 +1179,12 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		if (!$container.length) return;
 		var items = (this.profile && Array.isArray(this.profile.shortcuts)) ? this.profile.shortcuts : [];
 		if (!items.length) { $container.html(this._empty_state()); return; }
+		var self = this;
 		var html = '<div class="st-sh-qc-grid">' + items.slice(0, 8).map(function (item) {
 			return (
-				'<a href="' + item.route + '" class="st-sh-qc-item">' +
+				'<a href="' + self._esc(item.route) + '" class="st-sh-qc-item">' +
 					'<span class="st-sh-qc-plus">&rarr;</span>' +
-					'<span>' + item.label + '</span>' +
+					'<span>' + self._esc(item.label) + '</span>' +
 				'</a>'
 			);
 		}).join("") + '</div>';
