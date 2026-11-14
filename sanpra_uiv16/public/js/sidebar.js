@@ -17,11 +17,47 @@
     _tooltip: null,
 
     init: function () {
-      if (this._done) return;
-      this._done = true;
-      this._sync_localstorage();
-      this._setup_tooltips();
-      this._watch_state();
+      if (!this._done) {
+        this._done = true;
+        this._sync_localstorage();
+        this._setup_tooltips();
+        this._watch_state();
+      }
+      this._watch_empty_sections();
+      this._hide_empty_sections();
+    },
+
+    /* Hide Frappe 16 section headers left empty after RBAC filters their links. */
+    _hide_empty_sections: function () {
+      var containers = document.querySelectorAll(".body-sidebar-container .sidebar-item-container");
+      containers.forEach(function (sec) {
+        var nested = sec.querySelector(".sidebar-child-item.nested-container");
+        if (!nested) return;
+        var hasVisibleChild = Array.prototype.some.call(nested.children || [], function (child) {
+          if (child.classList.contains("hide") || child.style.display === "none") return false;
+          return true;
+        });
+        if (!hasVisibleChild) {
+          sec.style.display = "none";
+          sec.setAttribute("data-st-empty-section", "1");
+        } else if (sec.getAttribute("data-st-empty-section") === "1") {
+          sec.style.display = "";
+          sec.removeAttribute("data-st-empty-section");
+        }
+      });
+    },
+
+    _watch_empty_sections: function () {
+      if (this._emptyObserver || typeof MutationObserver === "undefined") return;
+      var self = this;
+      var root = document.querySelector(".body-sidebar-container");
+      if (!root) return;
+      var timer = null;
+      this._emptyObserver = new MutationObserver(function () {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(function () { self._hide_empty_sections(); }, 80);
+      });
+      this._emptyObserver.observe(root, { childList: true, subtree: true });
     },
 
     /* If user previously saved st_sidebar_expanded, mirror it to Frappe's key

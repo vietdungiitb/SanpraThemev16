@@ -387,6 +387,39 @@ class SmartHomeWidgetsTest(unittest.TestCase):
         self.assertIn("/desk/all-apps", shell)
         self.assertIn('can_read("Page")', js)
 
+    def test_role_profile_hardening_fixes_empty_arrays_ops_and_docs_list(self):
+        """Bao ve 5 sua loi U0/U1: docs_list dong, empty [] khong fallback, empty_hint CTA, ops 403, sidebar rong."""
+        js = JS.read_text(encoding="utf-8")
+        sidebar_js = (ROOT / "sanpra_uiv16" / "public" / "js" / "sidebar.js").read_text(encoding="utf-8")
+
+        # 1. Dynamic docs_list panelBody container
+        self.assertIn('kind === "docs_list"', js)
+        self.assertIn("panelBody(w.id, w.kind)", js)
+
+        # 2. Empty array from server must NOT fall back to hardcoded admin lists
+        qc_head = js.split("_render_quick_create() {", 1)[1].split("var can_create =", 1)[0]
+        self.assertIn("Array.isArray(this.profile.quick_create)", qc_head)
+        self.assertNotIn("this.profile.quick_create.length", qc_head)
+
+        rc_head = js.split("_render_reports_charts() {", 1)[1].split("/* Fallback", 1)[0]
+        self.assertIn("Array.isArray(this.profile.reports)", rc_head)
+        self.assertNotIn("this.profile.reports.length", rc_head)
+
+        # 3. _render_docs_list_panels passes empty_hint / empty_route / empty_cta
+        docs_fn = js.split("_render_docs_list_panels() {", 1)[1].split("_render_shortcuts_panel()", 1)[0]
+        self.assertIn("source.empty_hint", docs_fn)
+        self.assertIn("source.empty_route", docs_fn)
+        self.assertIn("source.empty_cta", docs_fn)
+
+        # 4. _refresh_ops gates Error Log & Scheduled Job Log with can_read
+        ops_fn = js.split("_refresh_ops() {", 1)[1].split("_refresh_today() {", 1)[0]
+        self.assertIn('can_read.indexOf("Error Log") !== -1', ops_fn)
+        self.assertIn('can_read.indexOf("Scheduled Job Log") !== -1', ops_fn)
+
+        # 5. sidebar.js hides empty Section Break containers
+        self.assertIn("_hide_empty_sections", sidebar_js)
+        self.assertIn(".sidebar-child-item.nested-container", sidebar_js)
+
 
 if __name__ == "__main__":
     unittest.main()

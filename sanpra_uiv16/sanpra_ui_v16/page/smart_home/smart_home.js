@@ -246,7 +246,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		var kpiMeta = {};
 		kpis.forEach(function (k) { kpiMeta[k.id] = k; });
 
-		function panelBody(id) {
+		function panelBody(id, kind) {
 			/* Bridge id moi -> container id ma cac renderer cu da dung (js:996-1429).
 			   Khong doi container id de cac ham render cu (refresh/today/pending/...)
 			   van tim duoc dung phan tu sau khi build xong. */
@@ -258,7 +258,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			if (id === "workspaces") return '<div id="st-sh-apps" class="st-sh-apps-body"><div class="st-sh-spin"></div></div>';
 			if (id === "shortcuts") return '<div id="st-sh-shortcuts" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
 			if (id === "ops") return '<div id="st-sh-ops" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
-			if (id === "new-students" || id === "graduated-students" || id === "risk-students" || id === "open-invoices" || id === "my-classes" || id === "my-timetable" || id === "my-courses" || id === "events") return '<div id="st-sh-panel-' + id + '" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (kind === "docs_list" || id === "new-students" || id === "graduated-students" || id === "risk-students" || id === "open-invoices" || id === "my-classes" || id === "my-timetable" || id === "my-courses" || id === "events") return '<div id="st-sh-panel-' + self._esc(id) + '" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
 			/* legacy id giu nguyen hanh vi cu */
 			if (id === "today-focus") return '<div id="st-sh-today" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
 			if (id === "needs-attention") return '<div id="st-sh-pending" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
@@ -280,7 +280,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				} else {
 					var w = widgetMeta[item.id];
 					if (w) $grid.append(self._panel_widget(
-						w.id, w.title, w.subtitle, w.icon, item.size || w.size, panelBody(w.id)));
+						w.id, w.title, w.subtitle, w.icon, item.size || w.size, panelBody(w.id, w.kind)));
 				}
 			});
 		});
@@ -1093,7 +1093,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	_render_quick_create() {
 		var $container = this.$body.find("#st-sh-qc");
 		var items = [];
-		if (this.profile && Array.isArray(this.profile.quick_create) && this.profile.quick_create.length) {
+		if (this.profile && Array.isArray(this.profile.quick_create)) {
 			items = this.profile.quick_create.map(function (q) { return q.dt; }).slice(0, 6);
 		} else {
 			var can_create = ((frappe.boot && frappe.boot.user && frappe.boot.user.can_create) || []);
@@ -1135,7 +1135,10 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			if (!$container.length) return;
 			var source = entry.source || {};
 			var dt = source.dt;
-			if (!dt) { $container.html(self._empty_state()); return; }
+			if (!dt) {
+				$container.html(self._empty_state(source.empty_hint, source.empty_route, source.empty_cta));
+				return;
+			}
 			frappe.call({
 				method: "frappe.client.get_list",
 				args: {
@@ -1147,7 +1150,10 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				},
 				callback: function (response) {
 					var rows = response.message || [];
-					if (!rows.length) { $container.html(self._empty_state()); return; }
+					if (!rows.length) {
+						$container.html(self._empty_state(source.empty_hint, source.empty_route, source.empty_cta));
+						return;
+					}
 					var fields = source.fields || ["name"];
 					var html = '<div class="st-sh-docs-list">';
 					rows.forEach(function (row) {
@@ -1166,7 +1172,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 					$container.html(html);
 				},
 				error: function () {
-					$container.html(self._empty_state());
+					$container.html(self._empty_state(source.empty_hint, source.empty_route, source.empty_cta));
 				},
 			});
 		});
@@ -1192,9 +1198,15 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	}
 
 	/* ── 9d. EMPTY STATE CHUNG ─────────────────────────────────────────────── */
-	_empty_state() {
+	_empty_state(hint, route, cta) {
+		var title = hint ? this._esc(hint) : __("Chưa có dữ liệu");
+		var safe_route = route ? this._safe_url(route) : "";
+		var action = (safe_route && safe_route !== "#")
+			? '<div><a href="' + safe_route + '" class="st-sh-empty-cta">' +
+				this._esc(cta || __("Mở danh sách")) + ' &rarr;</a></div>'
+			: '';
 		return '<div class="st-sh-all-clear"><span class="st-sh-clear-check">—</span>' +
-			'<div><strong>' + __("No data yet") + '</strong></div></div>';
+			'<div><strong>' + title + '</strong>' + action + '</div></div>';
 	}
 
 	/* Reuse module_cards.js so Today's View and All Apps stay identical. */
@@ -1373,19 +1385,23 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		}
 
 		function render(summary, is_site) {
+			var can_read = ((frappe.boot && frappe.boot.user && frappe.boot.user.can_read) || []);
+			var can_see_errors = Boolean(is_site && can_read.indexOf("Error Log") !== -1);
+			var can_see_jobs = Boolean(is_site && can_read.indexOf("Scheduled Job Log") !== -1);
 			var html =
 				stat(__("Việc mở"), "/desk/todo?status=Open", summary.todos_open) +
 				stat(__("Việc quá hạn"), "/desk/todo?status=Open", summary.todos_overdue) +
 				stat(__("Sự kiện"), "/desk/event", summary.events_today) +
 				stat(__("Chưa đọc"), "/desk/notification-log", summary.notifications_unread);
-			if (is_site) {
-				html +=
-					stat(__("Lỗi 24 giờ"), "/desk/error-log", summary.errors_24h) +
-					stat(__("Job lỗi 24 giờ"), "/desk/scheduled-job-log", summary.jobs_failed_24h);
+			if (can_see_errors) {
+				html += stat(__("Lỗi 24 giờ"), "/desk/error-log", summary.errors_24h);
+			}
+			if (can_see_jobs) {
+				html += stat(__("Job lỗi 24 giờ"), "/desk/scheduled-job-log", summary.jobs_failed_24h);
 			}
 			$stats.html(html);
 			var job_health = summary.job_status_summary;
-			if (is_site && job_health) {
+			if (can_see_jobs && job_health) {
 				var parts = [
 					["ran", __("Chạy tốt")],
 					["stale", __("Stale")],
@@ -1405,7 +1421,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				).prop("hidden", false);
 			}
 			var groups = summary.groups;
-			if (is_site && groups && groups.length) {
+			if (can_see_errors && groups && groups.length) {
 				$errors.html(
 					'<div class="st-sh-ops-health-title">' + __("Lỗi nhiều nhất 24 giờ") + '</div>' +
 					groups.map(function (g) {
@@ -1530,7 +1546,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		var $container = this.$body.find("#st-sh-rc");
 		if (!$container.length) return;
 		var items = [];
-		if (this.profile && Array.isArray(this.profile.reports) && this.profile.reports.length) {
+		if (this.profile && Array.isArray(this.profile.reports)) {
 			items = this.profile.reports.map(function (r) {
 				return { label: r.label, route: r.route };
 			});
@@ -1546,13 +1562,15 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			];
 		}
 		if (!items.length) {
-		return;
+			$container.html(this._empty_state(__("Chưa có báo cáo được phân quyền.")));
+			return;
 		}
+		var self = this;
 		$container.html('<div class="st-sh-qc-grid">' + items.map(function (item) {
 			return (
-				'<a href="' + item.route + '" class="st-sh-qc-item">' +
+				'<a href="' + self._safe_url(item.route) + '" class="st-sh-qc-item">' +
 					'<span class="st-sh-qc-plus">&rarr;</span>' +
-					'<span>' + item.label + '</span>' +
+					'<span>' + self._esc(item.label) + '</span>' +
 				'</a>'
 			);
 		}).join("") + '</div>');
