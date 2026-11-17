@@ -77,8 +77,8 @@
       // ── Workspaces (from sidebar boot data if available) ──────────────────
       var sidebar_pages = (boot.sidebar_items && boot.sidebar_items.pages) || [];
       sidebar_pages.forEach(function (page) {
-        var workspace_route = page.route ||
-          ((frappe.router && frappe.router.slug) ? frappe.router.slug(page.name || page.title || "") : "");
+        var workspace_route = sanpra_uiv16.canonicalWorkspaceRoute(page);
+        if (!workspace_route) return; // AC-3: không tạo item trỏ đến /desk/
         items.push({
           label:  page.title || page.name,
           sub:    __("Workspace"),
