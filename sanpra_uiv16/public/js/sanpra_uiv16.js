@@ -405,8 +405,8 @@
         var APP_TITLE_MAP = {
           "smart_edu_core": "Smart Edu Core",
           "crm": "Quản lý tuyển sinh CRM",
-          "education": "Học vấn",
-          "lms": "Học tập",
+          "education": "Quản lý Đào tạo",
+          "lms": "Quản lý Học tập",
           "frappe": "Khung hệ thống",
           "erpnext": "ERPNext",
           "hrms": "Frappe HR",
