@@ -2993,7 +2993,7 @@ html[dir="rtl"] #st-lang-dropdown {
    - The core desktop template (.desktop-navbar: brand cube + centered
      search + bell + avatar) duplicates the main navbar (search + bell +
      avatar). Hide the duplicate; navbar search/user stay functional.
-   - App tiles show translated titles (Education→Học vấn, CRM→Quản lý
+   - App tiles show translated titles (Education→Quản lý Đào tạo, CRM→Quản lý
      tuyển sinh...); allow 2 lines so long names are never cut to "...".
    Scoped to #page-desktop so no other Desk page is affected.
    ═══════════════════════════════════════════════════════════════════════ */
