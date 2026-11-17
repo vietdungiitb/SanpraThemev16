@@ -370,8 +370,9 @@
           return frappe.utils.escape_html(String(value || ""));
         }
         function routeFor(page) {
-          return page.route ||
-            ((frappe.router && frappe.router.slug) ? frappe.router.slug(page.name || page.title || "") : "");
+          // Dùng helper chung: route stale dùng chung cho cả module bị loại,
+          // route đúng của chính workspace (có shell prefix) được giữ.
+          return sanpra_uiv16.canonicalWorkspaceRoute(page);
         }
 
         /* First page per app (in the order the admin already arranged
@@ -621,7 +622,8 @@
         $dropdown.append('<div class="st-module-category">' + cat + "</div>");
 
         catItems.forEach(function (p) {
-          var route = p.route || slugify(p.title);
+          var route = sanpra_uiv16.canonicalWorkspaceRoute(p);
+          if (!route) return; // AC-3: không phát href="/desk/" cho item vô danh
           var $item = $(
             '<a class="st-module-item" href="/desk/' + route + '">' +
               '<span class="st-module-dot"></span>' +
@@ -1451,7 +1453,8 @@
       var $items = $('<div class="st-op-items" id="' + sectionId + '"></div>');
 
       items.forEach(function (p) {
-        var slug = p.route || (frappe.router && frappe.router.slug(p.title || p.name)) || encodeURIComponent((p.title || p.name || "").toLowerCase());
+        var slug = sanpra_uiv16.canonicalWorkspaceRoute(p);
+        if (!slug) return; // AC-3
         var $a = $(
           '<a class="st-op-item" href="/desk/' + slug + '" data-title="' + (p.title || p.name) + '">' +
             '<span class="st-op-dot"></span>' +
