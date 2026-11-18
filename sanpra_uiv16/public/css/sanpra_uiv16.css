@@ -959,6 +959,11 @@ a:hover { color: var(--st-primary-hover) !important; opacity: 0.85; }
 .side-panel .form-tabs-list {
   top: 0 !important;
 }
+/* Slice 6: khi nhảy tới section/tab, tiêu đề không bị thanh tab sticky cắt. */
+.form-page .form-section,
+.form-page .section-head {
+  scroll-margin-top: calc(var(--st-header-height, 36px) + var(--page-head-height, 48px) + 44px) !important;
+}
 .list-row:hover,
 .dt-row:hover {
   background: var(--st-list-row-hover) !important;
