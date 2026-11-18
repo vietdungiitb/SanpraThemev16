@@ -824,7 +824,7 @@
 
     /* Left: App Switcher + clock + Desktop View */
     var appsTitle = (window.frappe && frappe._) ? frappe._("Apps") : "Apps";
-    var deskTitle = (window.frappe && frappe._) ? frappe._("Desktop") : "Desktop";
+    var deskTitle = (window.frappe && frappe._) ? frappe._("Desk Workspace") : "Desk Workspace";
     var $left = $(
       '<div class="st-tb-left">' +
         '<button id="st-tb-app-switcher" class="st-tb-btn" title="' + appsTitle + '" aria-label="' + appsTitle + '">' +
