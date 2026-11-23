@@ -3046,3 +3046,17 @@ test("non-workspace inspector selection remains unchanged", () => {
     ["first"], ["addClass", "is-inspected"], ["position", element],
   ]);
 });
+
+
+// WP-T102 — search song ngữ: query VI có/không dấu + EN đều khớp cùng trường.
+test("T102 alias search normalization (VI co dau / khong dau / EN)", () => {
+  const studio = loadThemeStudio();
+  assert.equal(typeof studio._normalize_search_text, "function",
+    "can _normalize_search_text de index alias song ngu");
+  const n = (s) => studio._normalize_search_text(s);
+  assert.equal(n("Màu sắc"), n("mau sac"), "dau va khong dau phai cung alias");
+  assert.equal(n("MÀU SẮC"), n("mau sac"), "hoa/thuong khong anh huong");
+  assert.equal(n("color"), n("mau"), "EN color alias -> VI mau");
+  assert.equal(n("radius"), n("ban kinh"), "EN radius alias -> VI ban kinh");
+  assert.equal(n("mau sac"), n("color"), "query VI -> alias EN");
+});

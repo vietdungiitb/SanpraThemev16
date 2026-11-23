@@ -2376,6 +2376,31 @@ sanpra_uiv16.ThemeStudio = class ThemeStudio {
 	}
 
 	/* ── 7. SEARCH, JSON, AND RESET OPERATIONS ──────────────────────────────── */
+	/* WP-T102: alias song ngữ — VI có/không dấu + EN cùng một khóa so khớp.
+	   Không viết lại search engine; chỉ chuẩn hóa chuỗi trước indexOf. */
+	_normalize_search_text(value) {
+		var s = String(value || "").toLowerCase();
+		var map = {
+			"color": "mau", "colors": "mau", "colour": "mau",
+			"radius": "radius", "ban kinh": "radius", "border": "vien", "background": "nen",
+			"font": "chu", "text": "van ban", "size": "kich co", "width": "chieu rong",
+			"height": "chieu cao", "margin": "le", "padding": "dem", "shadow": "bong",
+			"light": "sang", "dark": "toi", "primary": "chinh", "secondary": "phu",
+		};
+		var out = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+		return map[out] || out.replace(/\bmau sac\b/g, "mau");
+	}
+	_search_text_haystack(value) {
+		var self = this;
+		return String(value || "")
+			.toLowerCase()
+			.split(/[^a-z0-9]+/)
+			.filter(Boolean)
+			.map(function (token) { return self._normalize_search_text(token); })
+			.join(" ")
+			+ " " + this._normalize_search_text(String(value || ""));
+	}
+
 	_search_controls(query) {
 		query = String(query || "").trim().toLowerCase();
 		this.$root.toggleClass("is-searching", !!query);
@@ -2387,7 +2412,10 @@ sanpra_uiv16.ThemeStudio = class ThemeStudio {
 		$panels.each(function () {
 			var $panel = $(this), matches = 0;
 			$panel.find(".sts-field,.sts-color-row,.sts-range-row,.sts-check").each(function () {
-				var match = $(this).text().toLowerCase().indexOf(query) !== -1;
+				var self2 = this;
+			var hay = self2._search_text_haystack($(this).text());
+			var nq = self2._normalize_search_text(query);
+			var match = hay.indexOf(nq) !== -1;
 				$(this).toggle(match);
 				if (match) matches++;
 			});
