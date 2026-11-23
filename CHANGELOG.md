@@ -1,5 +1,150 @@
 # Changelog
 
+## [2.6.15] — 2026-11-12 — Smart Home: hết toast 403 cho user không có quyền
+
+### Fixed
+- Widget "Giám sát vận hành" (`_refresh_ops`) **không** còn gọi
+  `smart_edu_core.api.ops.get_ops_summary` với `scope:"site"` vô điều kiện.
+  Gọi vô điều kiện ⇒ user không có viewer role nhận **403** ⇒ Frappe bắn toast
+  "Không được phép" **mỗi lần** mở `/desk` (đo staging 12/11/2026 —
+  `PermissionError` tại `smart_edu_core/api/dashboard.py:195`).
+  Nay: gọi `scope:"me"` **trước**, đọc cờ `site_allowed` do **server** trả, và
+  chỉ gọi `scope:"site"` khi cờ là `true`. Server là nguồn sự thật cho quyền
+  ⇒ theme **không** nhân bản danh sách role (gate giữ một chỗ).
+- Fail-safe: response chưa có `site_allowed` (ERP chưa deploy cờ) ⇒ không gọi
+  `scope:"site"` ⇒ widget chỉ hiện phần số cá nhân, **không** có 403/toast.
+
+### Tests
+- `tests/smart_home_ops.test.js` (node --test): nạp `smart_home.js` thật vào
+  `node:vm`, đếm lệnh gọi `frappe.xcall` — user không viewer ⇒ đúng 1 lệnh gọi
+  `scope:"me"`; viewer ⇒ `me` rồi `site`; thiếu cờ ⇒ chỉ `me`.
+- `tests/test_smart_home_widgets.py`: khóa thứ tự `me` → `site` + đọc cờ, và
+  khóa file marker `smart_home.html` (ép `_dynamic_page=True` ⇒ bypass cache
+  `localStorage` — mất file này thì browser giữ JS cũ và toast 403 quay lại
+  âm thầm).
+- Sửa test lỗi thời `test_reports_charts_renders_chart_container` (commit
+  `37059f7` đã bỏ biểu đồ khỏi card Báo cáo nhưng không cập nhật test ⇒ 1 fail
+  có sẵn chặn CI Python 3.10/3.14 + Windows của mọi PR sau đó, đo 12/11/2026).
+  Test mới khoá đúng quyết định PM 10/11/2026: **không** biểu đồ, **giữ** 6 link
+  báo cáo.
+
+## [2.6.14] — 2026-11-10 — Smart Home v3: KPI Nhiệm vụ đang mở đúng theo user
+
+### Fixed
+- KPI "Nhiệm vụ đang mở" giờ gọi API `smart_edu_core.api.ops.get_my_open_tasks`
+  (join ToDo→Task phía server; Task không có field assignee) thay cho
+  `frappe.client.get_count` trên Task toàn site. Lỗi → "—", không hiện số sai.
+
+## [2.6.13] — 2026-11-10 — Smart Home v2: hết trùng, có charts thật
+
+### Fixed
+- "Nhiệm vụ đang mở" GIỮ nguyên đếm site-wide (Task KHÔNG có field
+  `allocated_to` — đã đo container; filter sai ném popup "Field not permitted"
+  cho mọi user, phát hiện ở UAT 10/11). Đếm đúng theo user cần backend join
+  (deferred, cần PM duyệt API mới). Test khóa: filter open-tasks không được
+  chứa field lạ (mutation check đỏ khi chèn `allocated_to`).
+- "Ngày của tôi" đổi từ 4 dòng đếm trùng KPI sang danh sách việc tiếp theo
+  (link thẳng bản ghi, quá hạn lên trước); trống thì thu gọn 1 dòng all-clear.
+- "Cần xử lý" thêm "học phí quá hạn" (Fees không có field status — lọc theo
+  `due_date` + `outstanding_amount`, đã xác minh source Education trong container).
+- Widget "Báo cáo & Biểu đồ" vẽ 2 biểu đồ thật (`frappe.Chart` có sẵn trong Desk
+  + API whitelist `dashboard_chart.get`; đã xác minh `ui/chart.js:4` và decorator
+  `@whitelist`); thiếu chart doc → giữ lưới link cũ, không trắng.
+- Lưới "Ứng dụng của bạn" ẩn 7 tile kỹ thuật tiếng Anh (Build, HR Setup, Tenure,
+  Invoicing, Payments, Recruitment, Accounting — quyết định PM 10/11; vào qua
+  sidebar như cũ); "Tài liệu gần đây" bỏ qua DocType User (hết email thô).
+- Ngày dưới lời chào theo site lang (`vi` → `vi-VN`) thay vì locale trình duyệt.
+
+### Changed
+- Bump `smart_home.css?v=14→15` để trình duyệt nhận CSS mới (smart_home.js đi
+  theo build image, không cần version riêng).
+- i18n: +3 chuỗi (`overdue tuition fees`, `events today`, `unread`).
+
+## [2.6.12] — 2026-11-10 — Ép trình duyệt nhận fix norm (v78)
+
+### Fixed
+- Bump `sanpra_uiv16.js?v=77→78`: fix norm (PR #44) trùng URL bản cũ nên browser
+  giữ cache, click GSVH vẫn chết dù code đúng đã lên staging.
+
+## [2.6.11] — 2026-11-10 — Fix thật click GSVH: chuẩn hóa khoảng trắng
+
+### Fixed
+- `st_norm_vi` thiếu đổi khoảng trắng thành gạch ngang nên route thật
+  `["Workspaces", "Giám sát vận hành"]` (đo từ browser user) và 13 nhãn thẻ
+  đều trượt match — click chết dù code đúng. Thêm `.replace(/\s+/g, "-")`,
+  key map chuyển sang dạng gạch ngang; test mới mô phỏng chuẩn hóa trên đúng
+  13 nhãn thật để khóa.
+
+## [2.6.10] — 2026-11-10 — Card ứng dụng căn giữa + lấp đầy Báo cáo & Biểu đồ
+
+### Fixed
+- Card lưới ứng dụng (Smart Home + Tất cả ứng dụng): nội dung đã căn giữa từ
+  d054ecb nhưng `module_cards.css` không bump version nên browser giữ bản cũ
+  lệch trái — bump `module_cards.css?v=2→3` để trình duyệt nhận bản căn giữa.
+- Widget Báo cáo & Biểu đồ thêm 2 nút (Hóa đơn học phí, Phiếu thu — 2 thao tác
+  nhanh đầu của workspace Giám sát vận hành): 6 nút lấp đầy khoảng trống.
+
+## [2.6.9] — 2026-11-10 — Cache-bust để trình duyệt nhận fix F3
+
+### Fixed
+- Bump `sanpra_uiv16.js?v=76→77`, `smart_home.css?v=13→14`: fix F3 (PR #42) xong
+  nhưng browser vẫn cache URL cũ nên click GSVH vẫn chết — đổi URL để ép tải mới.
+- Handler click GSVH thêm nhánh dự phòng đọc `location.pathname` khi
+  `frappe.get_route` chưa sẵn sàng.
+
+## [2.6.8] — 2026-11-10 — Fix audit UI/UX: trio đều nhau, chart deep-link, GSVH bấm được
+
+### Fixed
+- F1: 3 card nửa (Ngày của tôi + Cần xử lý + Báo cáo) chung hàng giờ thẳng đáy
+  nhau (`align-items: stretch` + `.st-sh-card { height: 100% }`) thay vì cao theo
+  nội dung riêng.
+- F2: 2 biểu đồ link thẳng Form view của Dashboard Chart doc
+  (`/desk/dashboard-chart/<tên>`, docname đã xác minh trên staging) thay vì đáp
+  xuống trang workspace chung.
+- F3: click Number Card GSVH so khớp chuẩn hóa trên **mọi** đoạn route (URL
+  canonical có shell đứng trước: `/desk/<shell>/<workspace>`) thay vì chỉ
+  `route[0]` — trước đây return sớm nên bấm không ăn.
+
+## [2.6.7] — 2026-11-10 — Smart Home xếp theo mức độ ưu tiên người dùng
+
+### Changed
+- Thứ tự mặc định: KPI → bộ 3 hành động (Ngày của tôi + Cần xử lý + Báo cáo &
+  Biểu đồ, 4+4+4) → Giám sát hệ thống → Tài liệu gần đây + Tạo nhanh → Ứng dụng
+  của bạn xuống cuối (launcher tần suất thấp, sidebar đã cover).
+- Bump storage key `st_smart_home_layout_v2` → `v3` để mọi user thấy thứ tự mới
+  (đánh đổi: mất bố cục kéo-thả cũ); xóa migration đặt `your-apps` sau KPI
+  (chỉ còn nghĩa với layout cũ).
+
+## [2.6.6] — 2026-11-10 — Smart Home giàu thông tin + Number Card GSVH bấm được
+
+### Added
+- Ô Giám sát hệ thống có thân live: mini stat 6 ô (việc mở/quá hạn/sự kiện/chưa
+  đọc + lỗi 24 giờ/job lỗi 24 giờ ở scope site), thanh sức khỏe job nền
+  (`job_status_summary`), top lỗi 24 giờ (`groups` đã che) — tất cả là link như
+  KPI Smart Home; poll lại 2 phút + timestamp cập nhật. Dữ liệu từ
+  `smart_edu_core.api.ops.get_ops_summary` (site, fallback me khi 403), chỉ số
+  đếm, không PII.
+- 2 widget half cạnh Cần xử lý (hàng cuối 4+4+4): `today-focus` (việc mở/quá hạn/
+  sự kiện/thông báo của chính user, scope `me`) và `reports-charts` (link tới 2
+  query report + 2 biểu đồ điều hành).
+- Number Card trên workspace Giám sát vận hành bấm được: delegated click trên
+  block EditorJS `[number_card_name]` map 13 thẻ (6 snapshot + 5 ops + 2 finance)
+  về đúng List/Report; không match thì giữ hành vi cũ + `console.warn`; bỏ qua khi
+  đang sửa layout (`.edit-mode`).
+
+### Fixed
+- `sanpra_uiv16.js?v=75→76`, `smart_home.css?v=12→13` (cache-bust).
+
+## [2.6.5] — 2026-11-10 — Smart Home becomes the system root
+
+### Added
+- Standard `Sidebar` "Smart Home" for the `Sanpra UI V16` module: shell slug equals the
+  `smart-home` page, so the desk keeps `/desk/smart-home` instead of writing
+  `/desk/sanpra-ui-v16/smart-home`.
+- Sidebar rows: Hôm nay (claimed via `is_default_module`), Điều hành (Giám sát vận hành,
+  Giáo dục thông minh, Không gian Giáo viên), Nghiệp vụ (Lead, Course, Điểm danh, Sổ điểm,
+  Học phí), Hệ thống (Tất cả ứng dụng) — no theme-settings rows.
+
 ## [2.6.4] — 2026-11-09 — Ops center header + Smart Home 3 lớp
 
 ### Fixed

@@ -959,6 +959,11 @@ a:hover { color: var(--st-primary-hover) !important; opacity: 0.85; }
 .side-panel .form-tabs-list {
   top: 0 !important;
 }
+/* Slice 6: khi nhảy tới section/tab, tiêu đề không bị thanh tab sticky cắt. */
+.form-page .form-section,
+.form-page .section-head {
+  scroll-margin-top: calc(var(--st-header-height, 36px) + var(--page-head-height, 48px) + 44px) !important;
+}
 .list-row:hover,
 .dt-row:hover {
   background: var(--st-list-row-hover) !important;
@@ -1718,7 +1723,9 @@ html[data-theme="dark"] .for-forgot .page-card-actions::after {
    header menu), while staying well below this theme's modal/toolbar layers
    (1040–1200), so it never covers something it shouldn't. */
 .awesomplete > [role="listbox"] {
-  z-index: var(--zi-raised) !important;
+  /* FIX 24/11/2026: dung 20 nhu comment tren (truong dung var(--zi-raised)=10
+     bi tie voi .dt-header=10 => report de len dropdown). */
+  z-index: 20 !important;
 }
 /* Dropdown menus — z-index above our toolbar (1060) so they're never hidden by it */
 .dropdown-menu,
@@ -2993,7 +3000,7 @@ html[dir="rtl"] #st-lang-dropdown {
    - The core desktop template (.desktop-navbar: brand cube + centered
      search + bell + avatar) duplicates the main navbar (search + bell +
      avatar). Hide the duplicate; navbar search/user stay functional.
-   - App tiles show translated titles (Education→Học vấn, CRM→Quản lý
+   - App tiles show translated titles (Education→Quản lý Đào tạo, CRM→Quản lý
      tuyển sinh...); allow 2 lines so long names are never cut to "...".
    Scoped to #page-desktop so no other Desk page is affected.
    ═══════════════════════════════════════════════════════════════════════ */

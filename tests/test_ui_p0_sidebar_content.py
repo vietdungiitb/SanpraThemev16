@@ -90,6 +90,13 @@ class P0AssetVersionTest(unittest.TestCase):
         hooks = HOOKS.read_text(encoding="utf-8")
         self.assertRegex(hooks, r"sidebar\.css\?v=\d+")
         self.assertRegex(hooks, r"sanpra_uiv16\.css\?v=\d+")
+        self.assertRegex(hooks, r"sidebar\.js\?v=\d+")
+
+    def test_hide_empty_sections_targets_section_item_only(self):
+        """Frappe v16 leaf sidebar links also contain an empty .nested-container; never hide leaves."""
+        js = (ROOT / "sanpra_uiv16" / "public" / "js" / "sidebar.js").read_text(encoding="utf-8")
+        self.assertIn(".sidebar-item-container.section-item", js)
+        self.assertIn("important", js)
 
 
 if __name__ == "__main__":

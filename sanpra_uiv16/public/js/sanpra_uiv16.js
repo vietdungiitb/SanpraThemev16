@@ -370,8 +370,9 @@
           return frappe.utils.escape_html(String(value || ""));
         }
         function routeFor(page) {
-          return page.route ||
-            ((frappe.router && frappe.router.slug) ? frappe.router.slug(page.name || page.title || "") : "");
+          // Dùng helper chung: route stale dùng chung cho cả module bị loại,
+          // route đúng của chính workspace (có shell prefix) được giữ.
+          return sanpra_uiv16.canonicalWorkspaceRoute(page);
         }
 
         /* First page per app (in the order the admin already arranged
@@ -404,8 +405,8 @@
         var APP_TITLE_MAP = {
           "smart_edu_core": "Smart Edu Core",
           "crm": "Quản lý tuyển sinh CRM",
-          "education": "Học vấn",
-          "lms": "Học tập",
+          "education": "Quản lý Đào tạo",
+          "lms": "Quản lý Học tập",
           "frappe": "Khung hệ thống",
           "erpnext": "ERPNext",
           "hrms": "Frappe HR",
@@ -621,7 +622,8 @@
         $dropdown.append('<div class="st-module-category">' + cat + "</div>");
 
         catItems.forEach(function (p) {
-          var route = p.route || slugify(p.title);
+          var route = sanpra_uiv16.canonicalWorkspaceRoute(p);
+          if (!route) return; // AC-3: không phát href="/desk/" cho item vô danh
           var $item = $(
             '<a class="st-module-item" href="/desk/' + route + '">' +
               '<span class="st-module-dot"></span>' +
@@ -822,7 +824,7 @@
 
     /* Left: App Switcher + clock + Desktop View */
     var appsTitle = (window.frappe && frappe._) ? frappe._("Apps") : "Apps";
-    var deskTitle = (window.frappe && frappe._) ? frappe._("Desktop") : "Desktop";
+    var deskTitle = (window.frappe && frappe._) ? frappe._("Desk Workspace") : "Desk Workspace";
     var $left = $(
       '<div class="st-tb-left">' +
         '<button id="st-tb-app-switcher" class="st-tb-btn" title="' + appsTitle + '" aria-label="' + appsTitle + '">' +
@@ -1451,7 +1453,8 @@
       var $items = $('<div class="st-op-items" id="' + sectionId + '"></div>');
 
       items.forEach(function (p) {
-        var slug = p.route || (frappe.router && frappe.router.slug(p.title || p.name)) || encodeURIComponent((p.title || p.name || "").toLowerCase());
+        var slug = sanpra_uiv16.canonicalWorkspaceRoute(p);
+        if (!slug) return; // AC-3
         var $a = $(
           '<a class="st-op-item" href="/desk/' + slug + '" data-title="' + (p.title || p.name) + '">' +
             '<span class="st-op-dot"></span>' +
@@ -1682,6 +1685,68 @@
   }, true);
 
   /* ────────────────────────────────────────────────────────────────────────────
+     OPS NUMBER CARDS CLICKABLE (RICH-HOME 2026-11-10)
+     Frappe Custom card khong co .route (backend tra chuoi de ne NaN — WBS-141)
+     nen click goc la no-op. Map them o day (additive): khong match thi giu
+     hanh vi cu; Frappe gate quyen o trang dich. EditorJS number_card block dat
+     `number_card_name` = dung nhan the (frappe blocks/block.js: make()).
+     Key chuan hoa khong dau de khop moi dau tieng Viet.
+  ──────────────────────────────────────────────────────────────────────────── */
+  var ST_OPS_CARD_ROUTES = {
+    "viec-mo-toan-he-thong": "todo",
+    "viec-qua-han-toan-he-thong": "todo",
+    "su-kien-hom-nay": "event",
+    "loi-24-gio": "error-log",
+    "job-loi-24-gio": "scheduled-job-log",
+    "so-hoc-vien-dang-hoc": "student",
+    "so-lop-dang-mo": "student-group",
+    "lead-moi-tu-dau-thang": "crm-lead",
+    "doanh-thu-ngay-qua": "payment-entry",
+    "diem-danh-hom-nay": "edu-attendance-session",
+    "lead-moi-hom-nay": "crm-lead",
+    "tong-cong-no-chua-thu": "sales-invoice",
+    "cong-no-qua-han": "sales-invoice"
+  };
+
+  function st_norm_vi(value) {
+    return String(value == null ? "" : value)
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/đ/g, "d")
+      .replace(/\s+/g, "-")
+      .trim();
+  }
+
+  function wireOpsNumberCards() {
+    $(document).on("click.st_ops_cards", '#editorjs [number_card_name] .widget-body', function () {
+      try {
+        if ($(this).closest(".edit-mode").length) return;
+        // URL canonical dat shell len truoc: /desk/<shell>/<workspace> (VD
+        // smart_edu_core + ten giu dau) nen so khop chuan hoa tren MOI doan,
+        // khong chi route[0] (F3 RICH-FIX 2026-11-10).
+        var want = "giam-sat-van-hanh";
+        var route = (frappe.get_route && frappe.get_route()) || [];
+        var on_ops_page = route.some(function (seg) { return st_norm_vi(seg) === want; });
+        if (!on_ops_page) {
+          // Du phong khi get_route chua san sang: doc truc tiep URL.
+          var path_segs = String(window.location.pathname || "").split("/");
+          on_ops_page = path_segs.some(function (seg) { return st_norm_vi(seg) === want; });
+        }
+        if (!on_ops_page) return;
+        var holder = $(this).closest("[number_card_name]");
+        var raw = holder.attr("number_card_name") || "";
+        var dest = ST_OPS_CARD_ROUTES[st_norm_vi(raw)];
+        if (!dest) {
+          if (window.console && console.warn) console.warn("[sanpra] number card chua map:", raw);
+          return;
+        }
+        frappe.set_route(dest);
+      } catch (e) { /* giu hanh vi cu khi loi */ }
+    });
+  }
+
+  /* ────────────────────────────────────────────────────────────────────────────
      BOOT SEQUENCE
   ──────────────────────────────────────────────────────────────────────────── */
   frappe.provide("sanpra_uiv16");
@@ -1771,6 +1836,7 @@
       if (frappe.router && frappe.router.on) {
         frappe.router.on("change", syncRailHighlight);
       }
+      wireOpsNumberCards();
 
     /* Move Frappe's native notification bell into toolbar after desktop page renders */
       setTimeout(moveNativeBell, 800);

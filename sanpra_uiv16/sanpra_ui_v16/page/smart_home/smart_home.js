@@ -36,7 +36,8 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		this.wrapper = $(wrapper);
 		this.$body = this.wrapper.find(".page-content");
 		this.user = (frappe.session && frappe.session.user) || "Guest";
-		this.storage_key = "st_smart_home_layout_v2::" + this.user;
+		this.storage_key = "st_smart_home_layout_v4::" + this.user;
+		this.profile = null;
 		this.editing = false;
 		this.dragged = null;
 		this.library_drag_id = null;
@@ -50,10 +51,27 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		if (this._built) return;
 		this._built = true;
 		this._build_shell();
-		this._render_widgets();
-		this._restore_layout();
-		this._bind_layout_events();
-		this.refresh();
+		var self = this;
+		var $grid = this.$body.find("#st-sh-widget-grid");
+		$grid.html('<div class="st-sh-spin"></div>');
+		this._load_profile().then(function () {
+			$grid.empty();
+			self._render_widgets();
+			self._restore_layout();
+			self._bind_layout_events();
+			self.refresh();
+		});
+	}
+
+	/* Tải hồ sơ vai trò từ server (server là nguồn sự thật — AGENTS.md §2.1).
+	   Nếu lỗi ⇒ profile=null ⇒ render theo fallback cũ (không trắng trang). */
+	_load_profile() {
+		var self = this;
+		if (typeof frappe.xcall !== "function") return Promise.resolve(null);
+		return frappe.xcall("smart_edu_core.api.home.get_home_profile").then(
+			function (r) { self.profile = r || null; return self.profile; },
+			function () { self.profile = null; return null; }
+		);
 	}
 
 	/* Update data in place without rebuilding or reordering widget nodes. */
@@ -61,7 +79,22 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		if (!this._built) return;
 		this._refresh_kpis();
 		this._refresh_recent();
-		this._refresh_pending();
+		this._refresh_pending(this._attention_checks);
+		this._refresh_ops();
+		this._refresh_today();
+	}
+
+	/* An nut tuy chinh bo cuc cho non-admin va an link /desk/all-apps khi user khong co quyen Page. */
+	_is_admin_role() {
+		var user = (frappe.session && frappe.session.user) || "";
+		if (user === "Administrator") return true;
+		var roles = frappe.user_roles || [];
+		return roles.indexOf("System Manager") !== -1 || roles.indexOf("Edu Administrator") !== -1;
+	}
+
+	_can_read_page() {
+		if (this._is_admin_role()) return true;
+		return Boolean(frappe.model && frappe.model.can_read && frappe.model.can_read("Page"));
 	}
 
 	/* ── 3. PAGE SHELL ────────────────────────────────────────────────────────
@@ -79,12 +112,30 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			(frappe.session && frappe.session.user_fullname) ||
 			this.user ||
 			"";
-		var date_label = new Date().toLocaleDateString(undefined, {
+		var date_label = new Date().toLocaleDateString(this._site_locale(), {
 			weekday: "long",
 			year: "numeric",
 			month: "long",
 			day: "numeric",
 		});
+
+		var layout_controls = this._is_admin_role() ? (
+			'<button class="btn btn-default btn-sm st-sh-add-widgets" type="button">' +
+				this._icon("add", "sm") + '<span>' + __("Add widgets") + '</span>' +
+			'</button>' +
+			'<button class="btn btn-default btn-sm st-sh-reset" type="button">' +
+				this._icon("refresh", "sm") + '<span>' + __("Reset") + '</span>' +
+			'</button>' +
+			'<button class="btn btn-primary btn-sm st-sh-customize" type="button" aria-pressed="false">' +
+				this._icon("edit", "sm") +
+				'<span class="st-sh-customize-label">' + __("Customize layout") + '</span>' +
+			'</button>'
+		) : "";
+		var all_ws_link = this._can_read_page() ? (
+			'<a href="/desk/all-apps" class="st-sh-all-ws">' +
+				__("All Workspaces") + ' <span aria-hidden="true">&rarr;</span>' +
+			'</a>'
+		) : "";
 
 		this.$body.html(
 			'<main class="st-smart-home">' +
@@ -98,19 +149,8 @@ sanpra_uiv16.SmartHome = class SmartHome {
 					'</div>' +
 					'<div class="st-sh-header-actions">' +
 						'<span class="st-sh-save-state" role="status" aria-live="polite"></span>' +
-						'<button class="btn btn-default btn-sm st-sh-add-widgets" type="button">' +
-							this._icon("add", "sm") + '<span>' + __("Add widgets") + '</span>' +
-						'</button>' +
-						'<button class="btn btn-default btn-sm st-sh-reset" type="button">' +
-							this._icon("refresh", "sm") + '<span>' + __("Reset") + '</span>' +
-						'</button>' +
-						'<button class="btn btn-primary btn-sm st-sh-customize" type="button" aria-pressed="false">' +
-							this._icon("edit", "sm") +
-							'<span class="st-sh-customize-label">' + __("Customize layout") + '</span>' +
-						'</button>' +
-						'<a href="/desk/all-apps" class="st-sh-all-ws">' +
-							__("All Workspaces") + ' <span aria-hidden="true">&rarr;</span>' +
-						'</a>' +
+						layout_controls +
+						all_ws_link +
 					'</div>' +
 				'</header>' +
 				this._widget_library_markup() +
@@ -183,14 +223,99 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	}
 
 	/* ── 4. WIDGET REGISTRY / FACTORIES ──────────────────────────────────────
-	   Permission-safe KPI definitions and standard panels share one grid. */
+	   Permission-safe KPI definitions and standard panels share one grid.
+	   Layout mac dinh theo ho so (server la nguon su that — AGENTS.md §2.1):
+	   moi hang can du 12 cot, khong de khoang trong du thua. */
 	_render_widgets() {
 		var $grid = this.$body.find("#st-sh-widget-grid");
 		var self = this;
 		var hidden = this.state.hidden || [];
+		var profile = this.profile || {};
 
-		/* Layer 1 (personal): personal KPIs come first so the daily routine is
-		   visible immediately; system KPIs follow so they stay deliberate. */
+		/* Fallback khi profile chua tai duoc (offline / loi mang): giu nguyen
+		   hanh vi cu de trang khong trang. */
+		if (!profile.rows) {
+			this._render_widgets_legacy();
+			return;
+		}
+
+		var kpis = profile.kpis || [];
+		var widgets = profile.widgets || [];
+		var widgetMeta = {};
+		widgets.forEach(function (w) { widgetMeta[w.id] = w; });
+		var kpiMeta = {};
+		kpis.forEach(function (k) { kpiMeta[k.id] = k; });
+
+		function panelBody(id, kind) {
+			/* Bridge id moi -> container id ma cac renderer cu da dung (js:996-1429).
+			   Khong doi container id de cac ham render cu (refresh/today/pending/...)
+			   van tim duoc dung phan tu sau khi build xong. */
+			if (id === "todo-list") return '<div id="st-sh-today" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (id === "attention-leave" || id === "attention-money") return '<div id="st-sh-pending" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (id === "reports") return '<div id="st-sh-rc" class="st-sh-card-body"></div>';
+			if (id === "recent") return '<div id="st-sh-recent" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (id === "quick-create") return '<div id="st-sh-qc" class="st-sh-card-body"></div>';
+			if (id === "workspaces") return '<div id="st-sh-apps" class="st-sh-apps-body"><div class="st-sh-spin"></div></div>';
+			if (id === "shortcuts") return '<div id="st-sh-shortcuts" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (id === "ops") return '<div id="st-sh-ops" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (kind === "docs_list" || id === "new-students" || id === "graduated-students" || id === "risk-students" || id === "open-invoices" || id === "my-classes" || id === "my-timetable" || id === "my-courses" || id === "events") return '<div id="st-sh-panel-' + self._esc(id) + '" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			/* legacy id giu nguyen hanh vi cu */
+			if (id === "today-focus") return '<div id="st-sh-today" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (id === "needs-attention") return '<div id="st-sh-pending" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			if (id === "reports-charts") return '<div id="st-sh-rc" class="st-sh-card-body"></div>';
+			if (id === "recent-documents") return '<div id="st-sh-recent" class="st-sh-card-body"><div class="st-sh-spin"></div></div>';
+			return '<div class="st-sh-card-body"></div>';
+		}
+
+		(profile.rows || []).forEach(function (row) {
+			(row || []).forEach(function (item) {
+				if (!item || hidden.indexOf(item.id) !== -1) return;
+				if (item.kind === "kpi") {
+					var kpi = kpiMeta[item.id];
+					if (kpi) $grid.append(self._kpi_widget(kpi, item.size || kpi.size));
+				} else if (item.id === "ops" || item.id === "giam-sat-van-hanh") {
+					$grid.append(self._ops_widget());
+				} else if (item.id === "your-apps") {
+					$grid.append(self._apps_widget());
+				} else {
+					var w = widgetMeta[item.id];
+					if (w) $grid.append(self._panel_widget(
+						w.id, w.title, w.subtitle, w.icon, item.size || w.size, panelBody(w.id, w.kind)));
+				}
+			});
+		});
+
+		(this.state.added || []).forEach(function (id) {
+			var template = self._find_template(id);
+			if (template && hidden.indexOf(id) === -1) $grid.append(self._template_widget(template));
+		});
+		(this.state.custom || []).forEach(function (widget) {
+			if (hidden.indexOf(widget.id) === -1) $grid.append(self._custom_widget(widget));
+		});
+
+		this._docs_list_sources = [];
+		this._attention_sources = [];
+		var self = this;
+		(profile.widgets || []).forEach(function (w) {
+			if (w.kind === "docs_list") self._docs_list_sources.push({ id: w.id, source: w.source || {} });
+			if (w.kind === "attention") self._attention_sources.push({ id: w.id, source: w.source || {} });
+		});
+		this._attention_checks = (this._attention_sources.length && this._attention_sources[0].source.items) ? this._attention_sources[0].source.items : null;
+
+		this._render_quick_create();
+		this._render_reports_charts();
+		this._render_apps_grid();
+		this._render_docs_list_panels();
+		this._render_shortcuts_panel();
+		this._start_live_widgets();
+	}
+
+	/* Ban cu (fallback) — giu nguyen hanh vi khi profile chua tai duoc. */
+	_render_widgets_legacy() {
+		var $grid = this.$body.find("#st-sh-widget-grid");
+		var self = this;
+		var hidden = this.state.hidden || [];
+
 		var personal_ids = ["my-todos", "open-tasks"];
 		this.kpis
 			.slice()
@@ -201,42 +326,30 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				if (hidden.indexOf(kpi.id) === -1) $grid.append(self._kpi_widget(kpi));
 			});
 
-		if (hidden.indexOf("your-apps") === -1) $grid.append(this._apps_widget());
+		if (hidden.indexOf("today-focus") === -1) $grid.append(
+			this._panel_widget("today-focus", __("My Day"), __("Your todos, events and notifications"), "calendar", "half",
+				'<div id="st-sh-today" class="st-sh-card-body"><div class="st-sh-spin"></div></div>')
+		);
+		if (hidden.indexOf("needs-attention") === -1) $grid.append(
+			this._panel_widget("needs-attention", __("Needs Attention"), __("Items waiting on action"), "warning", "half",
+				'<div id="st-sh-pending" class="st-sh-card-body"><div class="st-sh-spin"></div></div>')
+		);
+		if (hidden.indexOf("reports-charts") === -1) $grid.append(
+			this._panel_widget("reports-charts", __("Reports"), __("One click to the ops reports"), "chart", "half",
+				'<div id="st-sh-rc" class="st-sh-card-body"></div>')
+		);
 
-		/* Layer 3 (system, viewer-only): ops entry, revealed only if the pool
-		   let this user see the workspace (same check as header ops icon). */
 		if (hidden.indexOf("giam-sat-van-hanh") === -1) $grid.append(this._ops_widget());
 
 		if (hidden.indexOf("recent-documents") === -1) $grid.append(
-			this._panel_widget(
-				"recent-documents",
-				__("Recent Documents"),
-				__("Records you opened lately"),
-				"clock",
-				"wide",
-				'<div id="st-sh-recent" class="st-sh-card-body"><div class="st-sh-spin"></div></div>'
-			)
+			this._panel_widget("recent-documents", __("Recent Documents"), __("Records you opened lately"), "clock", "wide",
+				'<div id="st-sh-recent" class="st-sh-card-body"><div class="st-sh-spin"></div></div>')
 		);
 		if (hidden.indexOf("quick-create") === -1) $grid.append(
-			this._panel_widget(
-				"quick-create",
-				__("Quick Create"),
-				__("Start something new"),
-				"add",
-				"half",
-				'<div id="st-sh-qc" class="st-sh-card-body"></div>'
-			)
+			this._panel_widget("quick-create", __("Quick Create"), __("Start something new"), "add", "half",
+				'<div id="st-sh-qc" class="st-sh-card-body"></div>')
 		);
-		if (hidden.indexOf("needs-attention") === -1) $grid.append(
-			this._panel_widget(
-				"needs-attention",
-				__("Needs Attention"),
-				__("Items waiting on action"),
-				"warning",
-				"half",
-				'<div id="st-sh-pending" class="st-sh-card-body"><div class="st-sh-spin"></div></div>'
-			)
-		);
+		if (hidden.indexOf("your-apps") === -1) $grid.append(this._apps_widget());
 
 		(this.state.added || []).forEach(function (id) {
 			var template = self._find_template(id);
@@ -247,6 +360,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		});
 
 		this._render_quick_create();
+		this._render_reports_charts();
 		this._render_apps_grid();
 		this._start_live_widgets();
 	}
@@ -337,8 +451,10 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		);
 	}
 
-	/* KPI content remains a normal Desk link outside customization mode. */
-	_kpi_widget(kpi) {
+	/* KPI content remains a normal Desk link outside customization mode.
+	   `size` do server (home_catalog) quyet dinh de hang can du 12 cot. */
+	_kpi_widget(kpi, size) {
+		size = size || "quarter";
 		var inner =
 			'<a href="' + kpi.route + '" class="st-sh-kpi-link" tabindex="0">' +
 				'<div class="st-sh-kpi-top">' +
@@ -351,7 +467,7 @@ sanpra_uiv16.SmartHome = class SmartHome {
 
 		return this._widget_shell(
 			kpi.id,
-			"quarter",
+			size,
 			inner,
 			"st-sh-kpi st-sh-tone-" + kpi.accent
 		);
@@ -390,29 +506,36 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		return this._widget_shell("your-apps", "full", inner, "st-sh-panel-widget");
 	}
 
-	/* ★ Giám sát hệ thống (viewer-only entry to Trung tâm điều hành). Rendered
-	   hidden by default and revealed by `_render_apps_grid` when the workspace
-	   is in this user's pool — same gate as the header ops icon. */
-	_ops_widget() {
-		var ws_name = "Gi\u00e1m s\u00e1t v\u1eadn h\u00e0nh";
-		this._ops_workspace_name = ws_name;
-		var slug = (frappe.router && frappe.router.slug)
-			? frappe.router.slug(ws_name)
-			: ws_name;
-		var inner =
-			'<div class="st-sh-card st-sh-ops-card">' +
-				'<div class="st-sh-card-head st-sh-ops-head">' +
-					'<div class="st-sh-card-heading">' +
-						'<span class="st-sh-card-icon">' + this._icon("warning", "sm") + '</span>' +
-						'<div><h3>' + __("Giám sát hệ thống") + '</h3><p>' + __("Trung tâm công việc hàng ngày — theo dõi toàn hệ thống") + '</p></div>' +
-					'</div>' +
-					'<a href="/desk/' + encodeURIComponent(slug) + '" class="st-sh-all-ws" data-ops-link="' + slug + '">' +
-						__("Mở trung tâm điều hành") + ' <span aria-hidden="true">&rarr;</span>' +
-					'</a>' +
-				'</div>' +
-			'</div>';
-		return this._widget_shell("giam-sat-van-hanh", "full", inner, "st-sh-panel-widget");
-	}
+ 	/* ★ Giám sát hệ thống (viewer-only entry to Trung tâm điều hành). Body lay
+ 	   `smart_edu_core.api.ops.get_ops_summary` (scope me truoc, scope site chi
+ 	   khi server tra co `site_allowed`): mini stat + thanh suc khoe job + top loi
+ 	   — chi so dem, khong PII (S7). */
+ 	_ops_widget() {
+ 		var ws_name = "Gi\u00e1m s\u00e1t v\u1eadn h\u00e0nh";
+ 		this._ops_workspace_name = ws_name;
+ 		var slug = (frappe.router && frappe.router.slug)
+ 			? frappe.router.slug(ws_name)
+ 			: ws_name;
+ 		var inner =
+ 			'<div class="st-sh-card st-sh-ops-card">' +
+ 				'<div class="st-sh-card-head st-sh-ops-head">' +
+ 					'<div class="st-sh-card-heading">' +
+ 						'<span class="st-sh-card-icon">' + this._icon("warning", "sm") + '</span>' +
+ 						'<div><h3>' + __("Giám sát hệ thống") + '</h3><p>' + __("Trung tâm công việc hàng ngày — theo dõi toàn hệ thống") + '</p></div>' +
+ 					'</div>' +
+ 					'<a href="/desk/' + encodeURIComponent(slug) + '" class="st-sh-all-ws" data-ops-link="' + slug + '">' +
+ 						__("Mở trung tâm điều hành") + ' <span aria-hidden="true">&rarr;</span>' +
+ 					'</a>' +
+ 				'</div>' +
+ 				'<div class="st-sh-card-body st-sh-ops-body">' +
+ 					'<div class="st-sh-ops-stats" data-ops-stats><div class="st-sh-spin"></div></div>' +
+ 					'<div class="st-sh-ops-health" data-ops-health hidden></div>' +
+ 					'<div class="st-sh-ops-errors" data-ops-errors hidden></div>' +
+ 					'<div class="st-sh-ops-foot"><span data-ops-updated></span></div>' +
+ 				'</div>' +
+ 			'</div>';
+ 		return this._widget_shell("giam-sat-van-hanh", "full", inner, "st-sh-panel-widget");
+ 	}
 
 	/* Filter before rendering so inaccessible DocTypes never enter the DOM. */
 	_get_kpi_definitions() {
@@ -440,6 +563,10 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				id: "open-tasks",
 				label: __("Open Tasks"),
 				dt: "Task",
+				/* Task KHONG co field allocated_to (do container 10/11/2026) —
+				   filter allocated_to o day nem popup "Field not permitted"
+				   cho MOI user (UAT 10/11). Giu dem site-wide nhu cu; dem dung
+				   theo user can backend join (deferred, can PM duyet API moi). */
 				filters: { status: "Open" },
 				route: "/desk/task?status=Open",
 				icon: "list-todo",
@@ -788,31 +915,18 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	_restore_layout() {
 		var $grid = this.$body.find("#st-sh-widget-grid");
 		var order = Array.isArray(this.state.order) ? this.state.order : [];
-		var known = {};
-		$grid.children(".st-sh-widget").each(function () {
-			known[this.dataset.widgetId] = this;
-		});
-		order.forEach(function (id) {
-			if (known[id]) $grid.append(known[id]);
-		});
-
-		/* Existing saved layouts predate the upstream apps launcher. Place that
-		   new widget after the KPI row once, then let future saved order win. */
-		if (order.indexOf("your-apps") === -1 && known["your-apps"]) {
-			var last_kpi = $grid.children(".st-sh-kpi").last()[0];
-			if (last_kpi) {
-				last_kpi.parentNode.insertBefore(known["your-apps"], last_kpi.nextSibling);
-			} else {
-				$grid.prepend(known["your-apps"]);
-			}
-			delete known["your-apps"];
+		if (order.length) {
+			var known = {};
+			$grid.children(".st-sh-widget").each(function () {
+				known[this.dataset.widgetId] = this;
+			});
+			order.forEach(function (id) {
+				if (known[id]) $grid.append(known[id]);
+			});
+			Object.keys(known).forEach(function (id) {
+				if (order.indexOf(id) === -1) $grid.append(known[id]);
+			});
 		}
-
-		/* Other newly-added or newly-permitted widgets append instead of
-		   disappearing from an older saved layout that does not know their IDs. */
-		Object.keys(known).forEach(function (id) {
-			if (order.indexOf(id) === -1) $grid.append(known[id]);
-		});
 
 		var sizes = this.state.sizes || {};
 		var self = this;
@@ -846,10 +960,17 @@ sanpra_uiv16.SmartHome = class SmartHome {
 			var now = new Date();
 			self.$body.find("[data-live-clock]").text(now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
 			self.$body.find("[data-date-day]").text(now.getDate());
-			self.$body.find("[data-date-month]").text(now.toLocaleDateString(undefined, { weekday: "long", month: "long" }));
+			self.$body.find("[data-date-month]").text(now.toLocaleDateString(self._site_locale(), { weekday: "long", month: "long" }));
 		}
 		update();
 		if (!this._clock_timer) this._clock_timer = setInterval(update, 30000);
+		/* Realtime nhe: ops + my-day poll lai 2 phut (API chi dem, re). */
+		if (!this._ops_timer) {
+			this._ops_timer = setInterval(function () {
+				self._refresh_ops();
+				self._refresh_today();
+			}, 120000);
+		}
 	}
 
 	/* Inline feedback avoids showing a global toast after every small movement. */
@@ -866,9 +987,36 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	   Requests are independent so one failed DocType cannot block other KPIs. */
 	_refresh_kpis() {
 		var self = this;
-		this.kpis.forEach(function (kpi) {
+		var kpis = (this.profile && Array.isArray(this.profile.kpis) && this.profile.kpis.length)
+			? this.profile.kpis
+			: this.kpis;
+		kpis.forEach(function (kpi) {
 			var $num = self.$body
 				.find('[data-widget-id="' + kpi.id + '"] [data-kpi-value]');
+			if (kpi.kind === "method" && kpi.method) {
+				if (typeof frappe.xcall !== "function") { $num.text("—"); return; }
+				frappe.xcall(kpi.method).then(
+					function (result) { $num.text(result !== undefined && result !== null ? result : "—"); },
+					function () { $num.text("—"); }
+				);
+				return;
+			}
+			if (kpi.id === "open-tasks") {
+				if (typeof frappe.xcall !== "function") {
+					$num.text("—");
+					return;
+				}
+				frappe.xcall("smart_edu_core.api.ops.get_my_open_tasks").then(
+					function (result) {
+						var count = result && result.count;
+						$num.text(count !== undefined && count !== null ? count : "—");
+					},
+					function () {
+						$num.text("—");
+					}
+				);
+				return;
+			}
 			frappe.call({
 				method: "frappe.client.get_count",
 				args: { doctype: kpi.dt, filters: kpi.filters },
@@ -897,6 +1045,8 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				route[0] === "Form" &&
 				route[1] &&
 				route[2] &&
+				/* Bo qua DocType User: docname la email, hien len vo nghia. */
+				route[1] !== "User" &&
 				!String(route[2]).startsWith("new-")
 			) {
 				var key = route[1] + "::" + route[2];
@@ -938,15 +1088,20 @@ sanpra_uiv16.SmartHome = class SmartHome {
 	   Static session permissions determine a compact, predictable action list. */
 	_render_quick_create() {
 		var $container = this.$body.find("#st-sh-qc");
-		var can_create = ((frappe.boot && frappe.boot.user && frappe.boot.user.can_create) || []);
-		var order = [
-			"Sales Invoice", "Quotation", "Sales Order", "Purchase Order",
-			"Purchase Invoice", "Expense Claim", "Leave Application",
-			"Customer", "Supplier", "Task", "ToDo",
-		];
-		var items = order.filter(function (doctype) {
-			return can_create.indexOf(doctype) !== -1;
-		}).slice(0, 6);
+		var items = [];
+		if (this.profile && Array.isArray(this.profile.quick_create)) {
+			items = this.profile.quick_create.map(function (q) { return q.dt; }).slice(0, 6);
+		} else {
+			var can_create = ((frappe.boot && frappe.boot.user && frappe.boot.user.can_create) || []);
+			var order = [
+				"Sales Invoice", "Quotation", "Sales Order", "Purchase Order",
+				"Purchase Invoice", "Expense Claim", "Leave Application",
+				"Customer", "Supplier", "Task", "ToDo",
+			];
+			items = order.filter(function (doctype) {
+				return can_create.indexOf(doctype) !== -1;
+			}).slice(0, 6);
+		}
 
 		if (!items.length) {
 			$container.html('<div class="st-sh-empty"><span>' + __("No create permissions found.") + '</span></div>');
@@ -964,6 +1119,92 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		}).join("") + '</div>');
 	}
 
+	/* ── 9b. DOCS LIST PANELS ────────────────────────────────────────────────
+	   Render danh sach theo `source` server gui (dt/fields/filters/order_by/limit).
+	   Fail-closed: PermissionError / loi mang => empty state, khong toast do. */
+	_render_docs_list_panels() {
+		var self = this;
+		var sources = this._docs_list_sources || [];
+		if (!sources.length) return;
+		sources.forEach(function (entry) {
+			var $container = self.$body.find("#st-sh-panel-" + entry.id);
+			if (!$container.length) return;
+			var source = entry.source || {};
+			var dt = source.dt;
+			if (!dt) {
+				$container.html(self._empty_state(source.empty_hint, source.empty_route, source.empty_cta));
+				return;
+			}
+			frappe.call({
+				method: "frappe.client.get_list",
+				args: {
+					doctype: dt,
+					fields: source.fields || ["name"],
+					filters: source.filters || {},
+					limit_page_length: source.limit || 5,
+					order_by: source.order_by || "modified desc",
+				},
+				callback: function (response) {
+					var rows = response.message || [];
+					if (!rows.length) {
+						$container.html(self._empty_state(source.empty_hint, source.empty_route, source.empty_cta));
+						return;
+					}
+					var fields = source.fields || ["name"];
+					var html = '<div class="st-sh-docs-list">';
+					rows.forEach(function (row) {
+						var title = row[fields[0]] || row.name;
+						var sub = fields.length > 1 ? (row[fields[1]] || "") : "";
+						var url = "/desk/" + frappe.router.slug(dt) + "/" + encodeURIComponent(row.name || row[fields[0]]);
+						html += '<a href="' + url + '" class="st-sh-pending-row">' +
+							'<span class="st-sh-doc-copy">' +
+								'<span class="st-sh-doc-name">' + self._esc(title) + '</span>' +
+								(sub ? '<span class="st-sh-doc-dt">' + self._esc(sub) + '</span>' : '') +
+							'</span>' +
+							'<span class="st-sh-row-arrow" aria-hidden="true">&rarr;</span>' +
+						'</a>';
+					});
+					html += '</div>';
+					$container.html(html);
+				},
+				error: function () {
+					$container.html(self._empty_state(source.empty_hint, source.empty_route, source.empty_cta));
+				},
+			});
+		});
+	}
+
+	/* ── 9c. SHORTCUTS PANEL ────────────────────────────────────────────────
+	   Render lenh nhanh tu profile.shortcuts (server da kh? trung label). */
+	_render_shortcuts_panel() {
+		var $container = this.$body.find("#st-sh-shortcuts");
+		if (!$container.length) return;
+		var items = (this.profile && Array.isArray(this.profile.shortcuts)) ? this.profile.shortcuts : [];
+		if (!items.length) { $container.html(this._empty_state()); return; }
+		var self = this;
+		var html = '<div class="st-sh-qc-grid">' + items.slice(0, 8).map(function (item) {
+			return (
+				'<a href="' + self._esc(item.route) + '" class="st-sh-qc-item">' +
+					'<span class="st-sh-qc-plus">&rarr;</span>' +
+					'<span>' + self._esc(item.label) + '</span>' +
+				'</a>'
+			);
+		}).join("") + '</div>';
+		$container.html(html);
+	}
+
+	/* ── 9d. EMPTY STATE CHUNG ─────────────────────────────────────────────── */
+	_empty_state(hint, route, cta) {
+		var title = hint ? this._esc(hint) : __("Chưa có dữ liệu");
+		var safe_route = route ? this._safe_url(route) : "";
+		var action = (safe_route && safe_route !== "#")
+			? '<div><a href="' + safe_route + '" class="st-sh-empty-cta">' +
+				this._esc(cta || __("Mở danh sách")) + ' &rarr;</a></div>'
+			: '';
+		return '<div class="st-sh-all-clear"><span class="st-sh-clear-check">—</span>' +
+			'<div><strong>' + title + '</strong>' + action + '</div></div>';
+	}
+
 	/* Reuse module_cards.js so Today's View and All Apps stay identical. */
 	_render_apps_grid() {
 		var $row = this.$body.find("#st-sh-apps");
@@ -974,10 +1215,39 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		var self = this;
 
 		wc.fetchWorkspaces(function (pages) {
+			/* Loc tile ky thuat tieng Anh (PM quyet 10/11/2026): Build, HR Setup,
+			   Tenure, Invoicing, Payments, Recruitment, Accounting — van vao duoc
+			   qua sidebar, chi an tren luoi Smart Home. So khop tren title chuan
+			   hoa (khong dau, lower) de chiu duoc dich label. */
+			var HIDDEN_APPS = ["build", "hr setup", "tenure", "invoicing", "payments", "recruitment", "accounting"];
+			function normTitle(value) {
+				/* Chuan hoa de so khop: lower + bo dau (title co the da Viet hoa). */
+				var s = String(value || "").toLowerCase();
+				try {
+					s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+				} catch (e) {}
+				return s.replace(/đ/g, "d");
+			}
+			function isHidden(page) {
+				return (
+					HIDDEN_APPS.indexOf(normTitle(page && page.name)) !== -1 ||
+					HIDDEN_APPS.indexOf(normTitle(page && page.title)) !== -1
+				);
+			}
+			var visible = (pages || []).filter(function (p) {
+				return !isHidden(p);
+			});
+			/* Loc theo ho so (server la nguon su that): chi hien workspace lien quan
+			   vai tro. Neu profile chua tai duoc ⇒ giu hanh vi cu (12 tile). */
+			if (self.profile && Array.isArray(self.profile.workspaces) && self.profile.workspaces.length) {
+				var allowed = {};
+				self.profile.workspaces.forEach(function (w) { allowed[w.label] = true; });
+				visible = visible.filter(function (p) { return !!allowed[p.name] || !!allowed[p.title]; });
+			}
 			/* Hiển thị 12 mục đầu (tăng từ 8) — tổng workspace của hệ thống
 			   (~10) phải lọt hết vào lưới mà cần cuộn — `slice(0, 8)` cũ khiến
 			   "Giám sát vận hành" (sequence 21) rớt khỏi 8 ô đầu. */
-			var items = (pages || []).slice(0, 12);
+			var items = visible.slice(0, 12);
 
 			/* Ops entry (Giám sát vận hành): chỉ hiện khi user có quyền xem (pool
 			   đã lọc theo role ở server) — cùng gate với icon header ops. */
@@ -1008,15 +1278,23 @@ sanpra_uiv16.SmartHome = class SmartHome {
 
 	/* ── 10. NEEDS ATTENTION ─────────────────────────────────────────────────
 	   Permission-safe counts run in parallel and render as one settled batch. */
-	_refresh_pending() {
+	_refresh_pending(checks) {
 		var $container = this.$body.find("#st-sh-pending");
 		var can_read = ((frappe.boot && frappe.boot.user && frappe.boot.user.can_read) || []);
-		var checks = [
+		var default_checks = [
 			{
 				dt: "Sales Invoice",
 				filters: { status: "Overdue", docstatus: 1 },
 				label: __("{0} overdue sales invoices"),
 				route: "/desk/sales-invoice?status=Overdue",
+			},
+			{
+				/* Hoc phi qua han: Fees KHONG co field status (do that Education
+				   container 10/11/2026) — loc theo due_date + outstanding_amount. */
+				dt: "Fees",
+				filters: { due_date: ["<", frappe.datetime.nowdate()], outstanding_amount: [">", 0], docstatus: 1 },
+				label: __("{0} overdue tuition fees"),
+				route: "/desk/fees",
 			},
 			{
 				dt: "Purchase Order",
@@ -1036,7 +1314,20 @@ sanpra_uiv16.SmartHome = class SmartHome {
 				label: __("{0} expense claims pending"),
 				route: "/desk/expense-claim",
 			},
-		].filter(function (check) {
+		];
+		if (checks && checks.length) {
+			checks = checks.map(function (it) {
+				return {
+					dt: it.dt,
+					filters: it.filters || {},
+					label: it.label || it.dt,
+					route: it.route || ("/desk/" + frappe.router.slug(it.dt)),
+				};
+			});
+		} else {
+			checks = default_checks;
+		}
+		checks = checks.filter(function (check) {
 			return can_read.indexOf(check.dt) !== -1;
 		});
 
@@ -1071,6 +1362,216 @@ sanpra_uiv16.SmartHome = class SmartHome {
 		});
 	}
 
+	/* ── 10b. OPS LIVE BODY ────────────────────────────────────────────────────
+	   Mini stat + suc khoe job + top loi tu get_ops_summary (scope me truoc,
+	   scope site chi khi server tra co `site_allowed`). Chi so dem, khong PII (S7).
+	   Moi o deu la link nhu KPI Smart Home. */
+	_refresh_ops() {
+		var $stats = this.$body.find("[data-ops-stats]");
+		if (!$stats.length) return;
+		var $health = this.$body.find("[data-ops-health]");
+		var $errors = this.$body.find("[data-ops-errors]");
+		var $updated = this.$body.find("[data-ops-updated]");
+		var self = this;
+
+		function stat(label, route, value) {
+			return '<a href="' + route + '" class="st-sh-ops-stat">' +
+				'<span class="st-sh-ops-num">' + self._esc(value !== undefined && value !== null ? value : "—") + '</span>' +
+				'<span class="st-sh-ops-cap">' + label + '</span></a>';
+		}
+
+		function render(summary, is_site) {
+			var can_read = ((frappe.boot && frappe.boot.user && frappe.boot.user.can_read) || []);
+			var can_see_errors = Boolean(is_site && can_read.indexOf("Error Log") !== -1);
+			var can_see_jobs = Boolean(is_site && can_read.indexOf("Scheduled Job Log") !== -1);
+			var html =
+				stat(__("Việc mở"), "/desk/todo?status=Open", summary.todos_open) +
+				stat(__("Việc quá hạn"), "/desk/todo?status=Open", summary.todos_overdue) +
+				stat(__("Sự kiện"), "/desk/event", summary.events_today) +
+				stat(__("Chưa đọc"), "/desk/notification-log", summary.notifications_unread);
+			if (can_see_errors) {
+				html += stat(__("Lỗi 24 giờ"), "/desk/error-log", summary.errors_24h);
+			}
+			if (can_see_jobs) {
+				html += stat(__("Job lỗi 24 giờ"), "/desk/scheduled-job-log", summary.jobs_failed_24h);
+			}
+			$stats.html(html);
+			var job_health = summary.job_status_summary;
+			if (can_see_jobs && job_health) {
+				var parts = [
+					["ran", __("Chạy tốt")],
+					["stale", __("Stale")],
+					["never_ran", __("Chưa chạy")],
+					["stopped", __("Đã dừng")],
+				];
+				var total = parts.reduce(function (n, p) {
+					return n + (parseInt(job_health[p[0]], 10) || 0);
+				}, 0) || 1;
+				$health.html(
+					'<div class="st-sh-ops-health-title">' + __("Sức khỏe job nền") + '</div>' +
+					'<div class="st-sh-ops-bars">' + parts.map(function (p) {
+						var v = parseInt(job_health[p[0]], 10) || 0;
+						return '<div class="st-sh-ops-bar-row"><span>' + p[1] + ' ' + v + '</span>' +
+							'<span class="st-sh-ops-bar"><i style="width:' + Math.round((v / total) * 100) + '%"></i></span></div>';
+					}).join("") + '</div>'
+				).prop("hidden", false);
+			}
+			var groups = summary.groups;
+			if (can_see_errors && groups && groups.length) {
+				$errors.html(
+					'<div class="st-sh-ops-health-title">' + __("Lỗi nhiều nhất 24 giờ") + '</div>' +
+					groups.map(function (g) {
+						return '<a href="/desk/error-log" class="st-sh-ops-err"><span>' +
+							self._esc(g.method || "") + '</span><b>' + self._esc(g.count) + '</b></a>';
+					}).join("")
+				).prop("hidden", false);
+			}
+			if ($updated.length) $updated.text(__("Cập nhật") + " " + new Date().toLocaleTimeString());
+		}
+
+		function show_unavailable() {
+			$stats.html('<div class="st-sh-empty"><span>' + __("Ops data unavailable.") + '</span></div>');
+		}
+
+		function render_me() {
+			frappe.xcall("smart_edu_core.api.ops.get_ops_summary", { scope: "me" }).then(
+				function (r) { render(r || {}, false); },
+				show_unavailable
+			);
+		}
+		if (typeof frappe.xcall !== "function") {
+			render_me();
+			return;
+		}
+		/* Gọi scope=me TRƯỚC: server trả `site_allowed` ⇒ biết ngay user có
+		   được gọi scope=site không. Gọi site vô điều kiện ⇒ 403 ⇒ Frappe bắn
+		   toast "Không được phép" cho mọi user không phải viewer (đo staging
+		   12/11/2026 — PermissionError tại api/dashboard.py:195). */
+		frappe.xcall("smart_edu_core.api.ops.get_ops_summary", { scope: "me" }).then(
+			function (r) {
+				r = r || {};
+				if (!r.site_allowed) {
+					render(r, false);
+					return;
+				}
+				frappe.xcall("smart_edu_core.api.ops.get_ops_summary", { scope: "site" }).then(
+					function (s) { render(s || {}, true); },
+					function () { render(r, false); }
+				);
+			},
+			show_unavailable
+		);
+	}
+
+	/* ── 10c. MY DAY + REPORTS ────────────────────────────────────────────────
+	   today-focus: so ca nhan tu scope me (sau fix O1 loc dung session user;
+	   events_today la so chung cua site vi Event khong co truong ca nhan).
+	   reports-charts: link tinh vao bao cao/bieu do dieu hanh, Frappe gate
+	   quyen o trang dich. */
+	_refresh_today() {
+		/* Ngay cua toi = danh sach viec tiep theo (link thang ban ghi), KHONG
+		   dem so — so dem da co tren KPI my-todos/open-tasks (tranh trung lap).
+		   Trong het -> thu gon 1 dong all-clear thay vi 4 dong 0. */
+		var $container = this.$body.find("#st-sh-today");
+		if (!$container.length || typeof frappe.xcall !== "function") return;
+		var self = this;
+		function renderList(todos, summary) {
+			summary = summary || {};
+			var html = "";
+			if (todos.length) {
+				html += todos.map(function (td) {
+					var title = td.description || td.name;
+					return (
+						'<a href="/desk/todo/' + encodeURIComponent(td.name) + '" class="st-sh-pending-row">' +
+							'<span class="st-sh-todo-dot' + (td._overdue ? " st-sh-todo-late" : "") + '"></span>' +
+							'<span class="st-sh-todo-name">' + self._esc(title) + '</span>' +
+							'<span class="st-sh-todo-date">' + self._esc(td.date || "") + '</span>' +
+							'<span class="st-sh-row-arrow" aria-hidden="true">&rarr;</span>' +
+						'</a>'
+					);
+				}).join("");
+			} else {
+				html += '<div class="st-sh-all-clear"><span class="st-sh-clear-check">✓</span>' +
+					'<div><strong>' + __("All clear") + '</strong></div></div>';
+			}
+			var foot = [];
+			if (summary.events_today) foot.push('<a href="/desk/event">' + self._esc(summary.events_today) + " " + __("events today") + "</a>");
+			if (summary.notifications_unread) foot.push('<a href="/desk/notification-log">' + self._esc(summary.notifications_unread) + " " + __("unread") + "</a>");
+			if (foot.length) html += '<div class="st-sh-today-foot">' + foot.join(" · ") + "</div>";
+			$container.html(html);
+		}
+		function loadTodos(summary) {
+			frappe.call({
+				method: "frappe.client.get_list",
+				args: {
+					doctype: "ToDo",
+					fields: ["name", "description", "date"],
+					filters: { status: "Open", allocated_to: frappe.session.user },
+					limit_page_length: 5,
+					order_by: "date asc",
+				},
+				callback: function (response) {
+					var today = frappe.datetime.nowdate();
+					var todos = (response.message || []).slice(0, 5).map(function (td) {
+						td._overdue = td.date && td.date < today;
+						return td;
+					});
+					todos.sort(function (a, b) { return (b._overdue ? 1 : 0) - (a._overdue ? 1 : 0); });
+					renderList(todos, summary);
+				},
+				error: function () {
+					renderList([], summary);
+				},
+			});
+		}
+		if (typeof frappe.call !== "function") {
+			renderList([], {});
+			return;
+		}
+		frappe.xcall("smart_edu_core.api.ops.get_ops_summary", { scope: "me" }).then(
+			function (summary) {
+				loadTodos(summary || {});
+			},
+			function () {
+				loadTodos({});
+			}
+		);
+	}
+
+	_render_reports_charts() {
+		var $container = this.$body.find("#st-sh-rc");
+		if (!$container.length) return;
+		var items = [];
+		if (this.profile && Array.isArray(this.profile.reports)) {
+			items = this.profile.reports.map(function (r) {
+				return { label: r.label, route: r.route };
+			});
+		} else {
+			/* Fallback khi profile chua tai duoc (offline). */
+			items = [
+				{ label: __("Hiệu quả giáo viên"), route: "/desk/query-report/hieu-qua-giao-vien" },
+				{ label: __("Học phí đến hạn hôm nay"), route: "/desk/query-report/hoc-phi-den-han-hom-nay" },
+				{ label: __("Doanh thu theo tháng"), route: "/desk/dashboard-chart/" + encodeURIComponent("Doanh thu theo tháng") },
+				{ label: __("Công nợ theo tháng"), route: "/desk/dashboard-chart/" + encodeURIComponent("Công nợ theo tháng") },
+				{ label: __("Hóa đơn học phí"), route: "/desk/sales-invoice" },
+				{ label: __("Phiếu thu"), route: "/desk/payment-entry" },
+			];
+		}
+		if (!items.length) {
+			$container.html(this._empty_state(__("Chưa có báo cáo được phân quyền.")));
+			return;
+		}
+		var self = this;
+		$container.html('<div class="st-sh-qc-grid">' + items.map(function (item) {
+			return (
+				'<a href="' + self._safe_url(item.route) + '" class="st-sh-qc-item">' +
+					'<span class="st-sh-qc-plus">&rarr;</span>' +
+					'<span>' + self._esc(item.label) + '</span>' +
+				'</a>'
+			);
+		}).join("") + '</div>');
+	}
+
 	/* Non-zero results become actionable rows after the request batch settles. */
 	_render_attention($container, found) {
 		if (!found.length) {
@@ -1103,6 +1604,12 @@ sanpra_uiv16.SmartHome = class SmartHome {
 
 	/* ── 11. SAFE UI HELPERS ─────────────────────────────────────────────────
 	   Icon lookup fails softly across Frappe versions; dynamic text is escaped. */
+	_site_locale() {
+		/* Ngay thang theo ngon ngu site (vi -> vi-VN), khong theo locale
+		   trinh duyet — tranh "Tuesday, November 10, 2026" tren site tieng Viet. */
+		var lang = (frappe.boot && frappe.boot.lang) || "en";
+		return lang === "vi" ? "vi-VN" : lang;
+	}
 	_icon(name, size) {
 		try {
 			return frappe.utils.icon(name, size || "sm") || "";

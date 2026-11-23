@@ -47,8 +47,18 @@ class NavigationRoutingTest(unittest.TestCase):
     def test_command_palette_uses_real_workspace_slug(self):
         js = PALETTE.read_text(encoding="utf-8")
 
-        self.assertIn("page.route ||", js)
+        # Route phai suy tu danh tinh cua chinh workspace qua helper dung chung.
+        # Khong duoc tin `page.route || slug(...)` - pattern nay dung chung route
+        # stale cho ca 3 workspace con cua module Accounts (bai hoc 36).
+        self.assertIn("sanpra_uiv16.canonicalWorkspaceRoute(page)", js)
+        self.assertNotIn("page.route ||", js)
         self.assertNotIn('frappe.set_route("workspace", encodeURIComponent(page.name))', js)
+
+    def test_canonical_route_helper_loaded_before_consumers(self):
+        hooks = HOOKS.read_text(encoding="utf-8")
+        helper = hooks.index("/js/workspace_route.js")
+        self.assertLess(helper, hooks.index("/js/sanpra_uiv16.js"))
+        self.assertLess(helper, hooks.index("/js/command_palette.js"))
 
     def test_navigation_assets_are_cache_busted(self):
         hooks = HOOKS.read_text(encoding="utf-8")

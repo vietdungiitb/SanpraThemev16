@@ -1,4 +1,4 @@
-# ── APP METADATA ───────────────────────────────────────────────────────────────
+﻿# ── APP METADATA ───────────────────────────────────────────────────────────────
 app_name = "sanpra_uiv16"
 app_title = "Sanpra UI V16"
 app_publisher = "Sanpra"
@@ -19,14 +19,14 @@ web_include_js = ["/assets/sanpra_uiv16/js/login_theme.js?v=9"]
 # Query versions are bumped whenever an asset changes to invalidate browser cache.
 app_include_css = [
     "/assets/sanpra_uiv16/css/fonts.css?v=1",
-    "/assets/sanpra_uiv16/css/sanpra_uiv16.css?v=82",
+    "/assets/sanpra_uiv16/css/sanpra_uiv16.css?v=83",
     "/assets/sanpra_uiv16/css/sidebar.css?v=43",
     "/assets/sanpra_uiv16/css/command_palette.css?v=8",
-    "/assets/sanpra_uiv16/css/smart_home.css?v=12",
+    "/assets/sanpra_uiv16/css/smart_home.css?v=16",
     "/assets/sanpra_uiv16/css/notification_center.css?v=6",
     "/assets/sanpra_uiv16/css/polish.css?v=4",
     "/assets/sanpra_uiv16/css/dark_mode.css?v=18",
-    "/assets/sanpra_uiv16/css/module_cards.css?v=2",
+    "/assets/sanpra_uiv16/css/module_cards.css?v=3",
     "/assets/sanpra_uiv16/css/density.css?v=2",
     "/assets/sanpra_uiv16/css/theme_studio.css?v=21",
     "/assets/sanpra_uiv16/css/grid_row_slide_panel.css?v=4",
@@ -35,9 +35,10 @@ app_include_js = [
     "/assets/sanpra_uiv16/js/frappe_compat.js?v=2",
     "/assets/sanpra_uiv16/js/dark_mode.js?v=12",
     "/assets/sanpra_uiv16/js/personalization.js?v=1",
-    "/assets/sanpra_uiv16/js/sanpra_uiv16.js?v=75",
-    "/assets/sanpra_uiv16/js/sidebar.js?v=3",
-    "/assets/sanpra_uiv16/js/command_palette.js?v=9",
+    "/assets/sanpra_uiv16/js/workspace_route.js?v=1",
+    "/assets/sanpra_uiv16/js/sanpra_uiv16.js?v=79",
+    "/assets/sanpra_uiv16/js/sidebar.js?v=4",
+    "/assets/sanpra_uiv16/js/command_palette.js?v=10",
     "/assets/sanpra_uiv16/js/notification_center.js?v=4",
     "/assets/sanpra_uiv16/js/module_cards.js?v=11",
     "/assets/sanpra_uiv16/js/theme_runtime.js?v=8",
