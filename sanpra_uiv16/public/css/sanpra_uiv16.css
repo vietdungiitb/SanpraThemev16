@@ -1723,7 +1723,9 @@ html[data-theme="dark"] .for-forgot .page-card-actions::after {
    header menu), while staying well below this theme's modal/toolbar layers
    (1040–1200), so it never covers something it shouldn't. */
 .awesomplete > [role="listbox"] {
-  z-index: var(--zi-raised) !important;
+  /* FIX 24/11/2026: dung 20 nhu comment tren (truong dung var(--zi-raised)=10
+     bi tie voi .dt-header=10 => report de len dropdown). */
+  z-index: 20 !important;
 }
 /* Dropdown menus — z-index above our toolbar (1060) so they're never hidden by it */
 .dropdown-menu,

@@ -19,7 +19,7 @@ web_include_js = ["/assets/sanpra_uiv16/js/login_theme.js?v=9"]
 # Query versions are bumped whenever an asset changes to invalidate browser cache.
 app_include_css = [
     "/assets/sanpra_uiv16/css/fonts.css?v=1",
-    "/assets/sanpra_uiv16/css/sanpra_uiv16.css?v=82",
+    "/assets/sanpra_uiv16/css/sanpra_uiv16.css?v=83",
     "/assets/sanpra_uiv16/css/sidebar.css?v=43",
     "/assets/sanpra_uiv16/css/command_palette.css?v=8",
     "/assets/sanpra_uiv16/css/smart_home.css?v=16",
