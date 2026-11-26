@@ -40,7 +40,14 @@ class SettingsDialogZIndexTest(unittest.TestCase):
         m = re.search(r"sanpra_uiv16\.css\?v=(\d+)", hooks)
         self.assertIsNotNone(m)
         assert m is not None
-        self.assertGreaterEqual(int(m.group(1)), 84, "phai tang ?v de browser lay CSS moi")
+        self.assertGreaterEqual(int(m.group(1)), 85, "phai tang ?v de browser lay CSS moi")
+
+    def test_nut_dong_duoc_hien_lai(self):
+        """Core an .modal-header => nut dong 0x0; theme hien lai co scope."""
+        css = CSS.read_text(encoding="utf-8")
+        self.assertIn(".settings-dialog-wrapper .modal-header.hide", css)
+        block = block_after(css, ".settings-dialog-wrapper .modal-header.hide", 180)
+        self.assertIn("display: flex !important", block)
 
 
 if __name__ == "__main__":
