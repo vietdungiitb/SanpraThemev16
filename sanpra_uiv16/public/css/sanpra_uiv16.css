@@ -1,6 +1,7 @@
 :root {
     --zi-base: 0;
     --zi-raised: 10;
+    --zi-listbox: 20; /* 24/11: > .dt-header(--zi-raised=10); truoc dung literal 20 lam test_zindex_scale do */
     --zi-overlay: 1000;
     --zi-editor: 1200;
     --zi-modal: 2000;
@@ -1725,7 +1726,7 @@ html[data-theme="dark"] .for-forgot .page-card-actions::after {
 .awesomplete > [role="listbox"] {
   /* FIX 24/11/2026: dung 20 nhu comment tren (truong dung var(--zi-raised)=10
      bi tie voi .dt-header=10 => report de len dropdown). */
-  z-index: 20 !important;
+  z-index: var(--zi-listbox) !important;
 }
 /* Dropdown menus — z-index above our toolbar (1060) so they're never hidden by it */
 .dropdown-menu,
@@ -3092,4 +3093,18 @@ input.input-with-feedback.form-control.input-xs {
   gap: 8px !important;
   padding: 6px 12px !important;
   align-items: center !important;
+}
+
+/* ── UI-MODAL-HEADER 26/11 ────────────────────────────────────────────────────
+   DocType Settings (`.settings-dialog-wrapper`) dùng `.modal` của Bootstrap với
+   z-index 1050, thấp hơn toolbar cố định `#st-top-toolbar` (theme --zi-overlay =
+   1060) ⇒ toolbar phủ 11px đỉnh `.modal-dialog` (top 25 vs toolbar bottom 36),
+   làm mất bo góc trên và tạo cảm giác dialog bị ép dưới header.
+   Nâng RIÊNG dialog này lên --zi-modal (2000); backdrop lên --zi-editor (1200)
+   để toolbar được làm mờ đồng bộ (vẫn thấp hơn dialog). KHÔNG đổi .modal global. */
+html body .modal.settings-dialog-wrapper {
+  z-index: var(--zi-modal) !important;
+}
+html body .modal-backdrop.show {
+  z-index: var(--zi-editor) !important;
 }
