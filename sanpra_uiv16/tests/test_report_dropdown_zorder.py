@@ -35,15 +35,24 @@ class TestReportDropdownZOrder(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.css = CSS.read_text(encoding="utf-8")
 
-    def test_listbox_z_index_20(self) -> None:
-        body = rule_body(self.css, '[role="listbox"]')
-        self.assertIn("z-index: 20", body, "listbox phai z-index:20 (khong phai var(--zi-raised)=10)")
-
-    def test_listbox_cao_hon_dt_header(self) -> None:
-        m = re.search(r"z-index:\s*(\d+)", rule_body(self.css, '[role="listbox"]'))
+    def listbox_z(self) -> int:
+        """Doc GIA TRI token thay vi soi literal (26/11: dua 20 vao --zi-listbox)."""
+        m = re.search(r"--zi-listbox:\s*(\d+)", re.sub(r"/\*.*?\*/", "", self.css, flags=re.DOTALL))
         self.assertIsNotNone(m)
         assert m is not None
-        self.assertGreater(int(m.group(1)), header_z(self.css), "listbox phai thang .dt-header")
+        return int(m.group(1))
+
+    def test_listbox_z_index_20(self) -> None:
+        body = rule_body(self.css, '[role="listbox"]')
+        self.assertIn(
+            "z-index: var(--zi-listbox)",
+            body,
+            "listbox phai dung token --zi-listbox=20 (khong phai var(--zi-raised)=10)",
+        )
+        self.assertEqual(self.listbox_z(), 20, "token --zi-listbox phai giu gia tri 20")
+
+    def test_listbox_cao_hon_dt_header(self) -> None:
+        self.assertGreater(self.listbox_z(), header_z(self.css), "listbox phai thang .dt-header")
 
     def test_cache_buster_tang(self) -> None:
         m = re.search(r"sanpra_uiv16\.css\?v=(\d+)", HOOKS.read_text(encoding="utf-8"))
@@ -52,9 +61,9 @@ class TestReportDropdownZOrder(unittest.TestCase):
         self.assertGreaterEqual(int(m.group(1)), 83, "phai tang ?v de browser lay CSS moi")
 
     def test_guard_co_the_do(self) -> None:
-        """Mutation: tra ve 10 thi guard phai DO (bai hoc 61)."""
-        mutated = self.css.replace("z-index: 20 !important;", "z-index: 10 !important;")
-        self.assertNotIn("z-index: 20", rule_body(mutated, '[role="listbox"]'))
+        """Mutation: doi token ve --zi-raised=10 thi guard phai DO (bai hoc 61)."""
+        mutated = self.css.replace("z-index: var(--zi-listbox) !important;", "z-index: var(--zi-raised) !important;")
+        self.assertNotIn("z-index: var(--zi-listbox)", rule_body(mutated, '[role="listbox"]'))
 
 
 if __name__ == "__main__":
