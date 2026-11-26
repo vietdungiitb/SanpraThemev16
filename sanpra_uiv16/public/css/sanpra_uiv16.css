@@ -3108,3 +3108,12 @@ html body .modal.settings-dialog-wrapper {
 html body .modal-backdrop.show {
   z-index: var(--zi-editor) !important;
 }
+/* Frappe core an .modal-header cua Settings dialog (settings_dialog.js:186-188),
+   keo theo nut dong 0x0. Hien lai thanh tieu de co scope rieng cua dialog nay de
+   nguoi dung co duong thoat ro rang; khong sua core (S3). Da thu live-DOM:
+   nut dong 25x25, khong chen nội dung panel. */
+html body .settings-dialog-wrapper .modal-header.hide {
+  display: flex !important;
+  height: 44px;
+  padding: 8px 16px;
+}
