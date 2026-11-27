@@ -17,7 +17,15 @@ ROOT = Path(__file__).resolve().parents[1]
 CSS_DIR = ROOT / "sanpra_uiv16" / "public" / "css"
 TOKENS_FILE = ROOT / "sanpra_uiv16" / "public" / "css" / "sanpra_uiv16.css"
 
-TOKENS = ("--zi-base", "--zi-raised", "--zi-overlay", "--zi-editor", "--zi-modal", "--zi-top")
+TOKENS = (
+    "--zi-base",
+    "--zi-raised",
+    "--zi-overlay",
+    "--zi-editor",
+    "--zi-modal",
+    "--zi-dialog",
+    "--zi-top",
+)
 
 
 class ZIndexScaleTest(unittest.TestCase):

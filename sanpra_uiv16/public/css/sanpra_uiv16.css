@@ -5,6 +5,7 @@
     --zi-overlay: 1000;
     --zi-editor: 1200;
     --zi-modal: 2000;
+    --zi-dialog: 2100;
     --zi-top: 99999;
     --sanpra-c-1c2333: #1c2333;
     --sanpra-c-374151: #374151;
@@ -3100,8 +3101,14 @@ input.input-with-feedback.form-control.input-xs {
    z-index 1050, thấp hơn toolbar cố định `#st-top-toolbar` (theme --zi-overlay =
    1060) ⇒ toolbar phủ 11px đỉnh `.modal-dialog` (top 25 vs toolbar bottom 36),
    làm mất bo góc trên và tạo cảm giác dialog bị ép dưới header.
-   Nâng RIÊNG dialog này lên --zi-modal (2000); backdrop lên --zi-editor (1200)
-   để toolbar được làm mờ đồng bộ (vẫn thấp hơn dialog). KHÔNG đổi .modal global. */
+   27/11: rule trước đó chỉ nâng RIÊNG dialog Settings lên 2000 nhưng lại nâng
+   backdrop lên 1200 cho MỌI modal ⇒ dialog thường (Bootstrap 1050) bị backdrop
+   phủ lên, nội dung mờ/không đọc được. Sửa: giữ backdrop 1200 để mờ toolbar,
+   nâng MỌI dialog lên --zi-dialog (2100) — cao hơn panel Tất cả tùy chọn 2000
+   (`:2480`, edusuccess_desk.css:465-467) nhưng thấp hơn --zi-top 99999. */
+html body .modal {
+  z-index: var(--zi-dialog) !important;
+}
 html body .modal.settings-dialog-wrapper {
   z-index: var(--zi-modal) !important;
 }
